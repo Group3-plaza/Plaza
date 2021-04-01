@@ -2,5 +2,5 @@
 
 #Requirements
 
-Flask
-React
+1. Flask
+2. React
