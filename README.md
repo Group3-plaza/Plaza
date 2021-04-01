@@ -1,1 +1,5 @@
 # Plaza
+
+##Requirements
+Flask
+React
