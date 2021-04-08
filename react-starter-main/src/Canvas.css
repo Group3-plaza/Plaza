@@ -1,0 +1,9 @@
+/* Style data for Canvas.js */
+
+canvas {
+    border: solid 1px black;
+}
+
+canvas:hover {
+    cursor: pointer;
+}
