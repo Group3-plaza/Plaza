@@ -1,23 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
 
+// import project elements:
+import {Canvas} from './Canvas.js';
+import { ColorPicker } from './ColorPicker';
+import { Chat } from './Chat';
+
 function App() {
+
+  // TODO: Conditionally render/configure elements based on whether or not user is logged-in.
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ColorPicker/>
+      <Canvas/>
+      <Chat/>
     </div>
   );
 }
