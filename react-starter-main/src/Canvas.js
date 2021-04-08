@@ -1,0 +1,1 @@
+// Canvas that will display current pixel data.
