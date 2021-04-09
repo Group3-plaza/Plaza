@@ -22,11 +22,10 @@ div.canvas_placeholder {
     margin: 0;
     display: inline-block;
     height: 500px; width: 500px;
-    border: solid 1px gray;
 }
 
 
-canvas:hover, div.canvas_placeholder:hover {
-    cursor: pointer;
+canvas:hover {
+    cursor:crosshair;
     border-color: black;
 }

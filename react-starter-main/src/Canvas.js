@@ -38,6 +38,10 @@ export function Canvas(props) {
                     <div style={{padding: 40}}>
                         <h3>Unable to Load Canvas :(</h3>
                         <p><i>We were unable to get canvas data from our servers. Try reloading the page or trying again later.</i></p>
+                        <a
+                            style={{color: "blue", cursor: "pointer"}}
+                            onClick={()=>{setMode(2)}}
+                        >Continue anyway</a>
                     </div>
                 </div>                
             </div>
