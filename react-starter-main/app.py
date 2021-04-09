@@ -35,7 +35,7 @@ def on_submit(data):
 @socketio.on('canvas_request')
 def on_request():
     byte_array = CanvasState.getState()
-    dimensions = len(byte_array)
+    dimensions = CanvasState.BoardSize
 
     current_time = time.time()
 
@@ -44,7 +44,7 @@ def on_request():
 
 @socketio.on("canvas_set")
 def on_set(data):
-    setPixel(data.pixel, data.color, time.time())
+    setPixel(time.time(), data.x, data.y, data.color) #variable names subjedt to change
 
     socketio.emit("canvas_update", data, broadcast=True,
                   include_self=True)
