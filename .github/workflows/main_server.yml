@@ -38,5 +38,5 @@ jobs:
         run: pip install -r react-starter-main/requirements.txt 
         
       - name: Lint files
-        run: pylint **/*.py
+        run: react-starter-main/serversidecheck.sh
         
