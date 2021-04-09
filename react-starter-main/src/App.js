@@ -1,10 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
+import io from "socket.io-client";
 
 // import project elements:
 import {Canvas} from './Canvas.js';
 import { ColorPicker } from './ColorPicker';
 import { Chat } from './Chat';
+
+export const socket = io();
 
 function App() {
 
