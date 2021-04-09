@@ -2,9 +2,31 @@
 
 canvas {
     border: solid 1px gray;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+
+    height: 500px; width: 500px;
+    display: inline-block;
 }
 
-canvas:hover {
+div.canvas_placeholder > div {
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    height:500px;
+}
+
+div.canvas_placeholder {
+    user-select: none;
+    margin: 0;
+    display: inline-block;
+    height: 500px; width: 500px;
+    border: solid 1px gray;
+}
+
+
+canvas:hover, div.canvas_placeholder:hover {
     cursor: pointer;
     border-color: black;
 }
