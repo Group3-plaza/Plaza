@@ -9,6 +9,19 @@ canvas {
     display: inline-block;
 }
 
+@keyframes fadeIn {
+    0% {opacity: 0; transform: translatey(50px);}
+    100% {opacity: 1; transform: translatey(0);}
+}
+
+div.canvas_placeholder {
+    animation: fadeIn 1s;
+    user-select: none;
+    margin: 0;
+    display: inline-block;
+    height: 500px; width: 500px;
+}
+
 div.canvas_placeholder > div {
     display: flex;
     justify-self: center;
@@ -16,14 +29,6 @@ div.canvas_placeholder > div {
     align-items: center;
     height:500px;
 }
-
-div.canvas_placeholder {
-    user-select: none;
-    margin: 0;
-    display: inline-block;
-    height: 500px; width: 500px;
-}
-
 
 canvas:hover {
     cursor:crosshair;
