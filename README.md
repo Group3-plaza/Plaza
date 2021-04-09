@@ -1,5 +1,13 @@
 # Plaza
 
+## Setup
+- `npm install`
+- `pip install -r requirements.txt`
+
+To prevent _Invalid Host Header_ error:
+
+- `echo "DANGEROUSLY_DISABLE_HOST_CHECK=true" > .env.development.local`
+
 ## Requirements
 
 1. Flask
