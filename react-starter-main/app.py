@@ -1,4 +1,6 @@
 import os
+import CanvasState
+import time
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
@@ -26,13 +28,27 @@ def index(filename):
 def on_connect():
     print('User connected!')
 
+@socketio.on('chat_submit')
+def on_submit(data):
+    socketio.emit("chat_update", data, broadcast=True, include_self=True)
+
 @socketio.on('canvas_request')
 def on_request():
-    print("Do Something")
-    socketio.emit("canvas_state", broadcast=True,
+    byte_array = CanvasState.getState()
+    dimensions = len(byte_array)
+
+    current_time = time.time()
+
+    socketio.emit("canvas_state", [byte_array, dimensions, current_time], broadcast=True,
                   include_self=True)
 
+@socketio.on("canvas_set")
+def on_set(data):
+    setPixel(data.pixel, data.color, time.time())
 
+    socketio.emit("canvas_update", data, broadcast=True,
+                  include_self=True)
+     
 app.run(
     host=os.getenv('IP', '0.0.0.0'),
     port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
