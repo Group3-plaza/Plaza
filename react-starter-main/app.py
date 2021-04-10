@@ -1,6 +1,6 @@
 import os
 import CanvasState
-import time
+from datetime import datetime, time #alternative import time
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
@@ -17,7 +17,6 @@ socketio = SocketIO(app,
                     cors_allowed_origins="*",
                     json=json,
                     manage_session=False)
-
 
 @app.route('/', defaults={"filename": "index.html"})
 @app.route('/<path:filename>')
@@ -37,14 +36,24 @@ def on_request():
     byte_array = CanvasState.getState()
     dimensions = CanvasState.BoardSize
 
-    current_time = time.time()
-
-    socketio.emit("canvas_state", [byte_array, dimensions, current_time], broadcast=True,
+    #current_time = time.time()
+    now = datetime.now()
+    seconds = now.second
+    minutes = now.minute
+    
+    socketio.emit("canvas_state", [byte_array, dimensions, minutes, seconds], broadcast=True,
                   include_self=True)
 
 @socketio.on("canvas_set")
 def on_set(data):
-    setPixel(time.time(), data.x, data.y, data.color) #variable names subjedt to change
+    #current_time = time.time()
+    now = datetime.now()
+    seconds = now.second
+    minutes = now.minute
+
+    byte_seconds = seconds.to_bytes(1, 'big')
+    byte_minutes = minutes.to_bytes(1, 'big')
+    setPixel(byte_minutes, byte_seconds, data.x, data.y, data.color) #variable names subjedt to change
 
     socketio.emit("canvas_update", data, broadcast=True,
                   include_self=True)
