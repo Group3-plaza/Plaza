@@ -14,9 +14,9 @@ def readState():
 def getState():
     return CurrentCanvasState
 
-def setPixel(time, x_cord, y_cord, color):
+def setPixel(mins, secs, x_cord, y_cord, color):
     hist_file = open("History_File","ab")
-    write_arr = bytearray([color, x_cord, y_cord, time])
+    write_arr = bytearray([color, x_cord, y_cord, mins,secs])
     hist_file.write(write_arr)
     hist_file.close()
     #print(write_arr)
