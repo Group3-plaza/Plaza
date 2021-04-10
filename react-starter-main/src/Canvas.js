@@ -87,11 +87,12 @@ export function Canvas(props) {
                 var color = toColor(data[i]);
                 i += 1;
                 context.fillStyle= "rgb("+color[0] + "," + color[1] + "," + color[2] + ")";
-                context.fillRect(x*pixel_width,y*pixel_height,pixel_width,pixel_height);
+                context.fillRect(x*pixel_width+x,y*pixel_height+y,pixel_width,pixel_height);
             }
         }    
     }
 
+    // When canvas is loaded
     useEffect(()=>{
         if (mode == 2) {
             // IMPLEMENT CANVAS PANNING/ZOOMING     http://phrogz.net/tmp/canvas_zoom_to_cursor.html
