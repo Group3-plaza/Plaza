@@ -31,7 +31,9 @@ def on_request():
     print("Do Something")
     socketio.emit("canvas_state", broadcast=True,
                   include_self=True)
-
+@socketio.on('chat_submit')
+def on_chat_submit(data):
+    socketio.emit("chat_update", data, broadcast=True, include_self=True)
 
 app.run(
     host=os.getenv('IP', '0.0.0.0'),

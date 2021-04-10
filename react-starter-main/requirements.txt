@@ -7,3 +7,7 @@ react
 psycopg2
 python-dotenv
 pylint
+pylint-django
+pylint-flask
+pylint-flask-sqlalchemy
+pylint-plugin-utils
