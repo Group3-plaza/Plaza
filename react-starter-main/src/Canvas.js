@@ -7,7 +7,9 @@ import {socket} from "./App.js";
 import loading_circle from './graphics/loading_circle.gif';
 
 export function Canvas(props) {
+    var Renderer;
 
+    // STATES
     const [mode, setMode] = useState(0);  // current mode of canvas:
                                             //  0 - Obtaining canvas data...
                                             //  1 - Timeout obtaining canvas data...
@@ -19,8 +21,6 @@ export function Canvas(props) {
                                                     // NOTE: This is different from HTML canvas size
 
     var canvas_ref = React.createRef();
-    var scale = 1;
-    let buffer = null;
 
     // receive socketio canvas_state
     useEffect(() => {
@@ -33,7 +33,7 @@ export function Canvas(props) {
         });
     }, []);
 
-    // convert index to rgb
+    // convert color index to rgb
     function toColor(x) {
         if (x == 0) {
             return [255,0,0];
@@ -67,60 +67,81 @@ export function Canvas(props) {
             return [0,0,0]; // index out of bounds
         }
     }
-
-
-    // uses 'data' to create pixels
-    function drawData() {
+    // uses 'data' state to create pixels
+    function redraw() {
         var context = canvas_ref.current.getContext('2d');
         var i = 0;
         
         var canvas_width = canvas_ref.current.width;
         var canvas_height = canvas_ref.current.height;
 
-        var pixel_width = canvas_width / canvasSize;
-        var pixel_height = canvas_height / canvasSize;
+        var pixel_width = Math.trunc(canvas_width / canvasSize);
+        var pixel_height = Math.trunc(canvas_height / canvasSize);
 
-        context.clearRect(0,0,canvas_width,canvas_height);
+        var p1 = context.transformedPoint(0,0);
+        var p2 = context.transformedPoint(canvas_width,canvas_height);
+        context.clearRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
 
         for(var x=0;x<canvasSize;x++) {
             for(var y=0;y<canvasSize;y++) {
                 var color = toColor(data[i]);
                 i += 1;
                 context.fillStyle= "rgb("+color[0] + "," + color[1] + "," + color[2] + ")";
-                context.fillRect(x*pixel_width* scale,y*pixel_height* scale,pixel_width* scale,pixel_height* scale);
+                context.fillRect(x*pixel_width,y*pixel_height,pixel_width,pixel_height);
             }
-        }        
+        }    
     }
-
-    // OLD CODE FOR IMAGES:
-    // functions for working with canvas state:
-    /*function updateBuffer() {
-        var len = canvasSize*canvasSize; // length of canvas data
-        if (buffer == null)
-            buffer = new Uint8ClampedArray(len*4); // buffer storing pixel data
-        var i = 0 // buffer index
-        for(var x=0;x<len;x++) { // for each item in data, convert to rgba and put into buffer
-            var color = toColor(data[x]);
-            buffer[i] = color[0];
-            i++;
-            buffer[i] = color[1];
-            i++;
-            buffer[i] = color[2];
-            i++;
-            buffer[i] = 255
-            i++;
-        }
-        var context = document.getElementById("canvas").getContext('2d');
-        var img_data = context.createImageData(500,500);
-        img_data.data.set(buffer);
-        
-        context.putImageData(img_data,100,100);
-    } */
-
 
     useEffect(()=>{
         if (mode == 2) {
-            drawData();
+            // IMPLEMENT CANVAS PANNING/ZOOMING     http://phrogz.net/tmp/canvas_zoom_to_cursor.html
+            var canvas = canvas_ref.current;
+            var ctx = canvas.getContext('2d');
+		    trackTransforms(ctx);
+
+            redraw();
+		
+            var lastX=canvas.width/2, lastY=canvas.height/2;
+            var dragStart,dragged;
+            canvas.addEventListener('mousedown',function(evt){
+                document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
+                lastX = evt.offsetX || (evt.pageX - canvas.offsetLeft);
+                lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
+                dragStart = ctx.transformedPoint(lastX,lastY);
+                dragged = false;
+            },false);
+            canvas.addEventListener('mousemove',function(evt){
+                lastX = evt.offsetX || (evt.pageX - canvas.offsetLeft);
+                lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
+                dragged = true;
+                if (dragStart){
+                    var pt = ctx.transformedPoint(lastX,lastY);
+                    ctx.translate(pt.x-dragStart.x,pt.y-dragStart.y);
+                    redraw();
+                }
+            },false);
+            canvas.addEventListener('mouseup',function(evt){
+                dragStart = null;
+                if (!dragged) zoom(evt.shiftKey ? -1 : 1 );
+            },false);
+
+            var scaleFactor = 1.05;
+            var zoom = function(clicks){
+                var pt = ctx.transformedPoint(lastX,lastY);
+                ctx.translate(pt.x,pt.y);
+                var factor = Math.pow(scaleFactor,clicks);
+                ctx.scale(factor,factor);
+                ctx.translate(-pt.x,-pt.y);
+                redraw();
+            }
+
+            var handleScroll = function(evt){
+                var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
+                if (delta) zoom(delta);
+                return evt.preventDefault() && false;
+            };
+            canvas.addEventListener('DOMMouseScroll',handleScroll,false);
+            canvas.addEventListener('mousewheel',handleScroll,false);
         }
     },[canvasSize]);
 
@@ -171,28 +192,71 @@ export function Canvas(props) {
         );
     } else if (mode == 2) {                                            // SUCESSFULLY LOADED CANVAS DATA FROM SERVER
         function onCanvasClick() {
-            var ctx = canvas_ref.current.getContext('2d');
-            var anim = setInterval(()=>{
-                scale += .4;
-                drawData();
-
-                if (scale >= 4) {
-                    clearInterval(anim);
-                }
-            }, 50);
+            // TODO: implement something here...
         }
-    
-        // When canvas is first loaded...
-        window.addEventListener('load', () => {
-            var canvas = document.getElementById("canvas");
-            var context = canvas.getContext("2d");
-            context.font = "15px Consolas";
-            context.fillText("Canvas Element", 200,250);
-        });
 
         return (
-            <canvas id="canvas" onClick={onCanvasClick} ref={canvas_ref}>
+            <canvas width="600" height="600"
+            id="canvas" onClick={onCanvasClick} ref={canvas_ref}>
             </canvas>
         );
     }
+
+    // Adds ctx.getTransform() - returns an SVGMatrix
+	// Adds ctx.transformedPoint(x,y) - returns an SVGPoint
+	function trackTransforms(ctx){
+		var svg = document.createElementNS("http://www.w3.org/2000/svg",'svg');
+		var xform = svg.createSVGMatrix();
+		ctx.getTransform = function(){ return xform; };
+		
+		var savedTransforms = [];
+		var save = ctx.save;
+		ctx.save = function(){
+			savedTransforms.push(xform.translate(0,0));
+			return save.call(ctx);
+		};
+		var restore = ctx.restore;
+		ctx.restore = function(){
+			xform = savedTransforms.pop();
+			return restore.call(ctx);
+		};
+
+		var scale = ctx.scale;
+		ctx.scale = function(sx,sy){
+			xform = xform.scaleNonUniform(sx,sy);
+			return scale.call(ctx,sx,sy);
+		};
+		var rotate = ctx.rotate;
+		ctx.rotate = function(radians){
+			xform = xform.rotate(radians*180/Math.PI);
+			return rotate.call(ctx,radians);
+		};
+		var translate = ctx.translate;
+		ctx.translate = function(dx,dy){
+			xform = xform.translate(dx,dy);
+			return translate.call(ctx,dx,dy);
+		};
+		var transform = ctx.transform;
+		ctx.transform = function(a,b,c,d,e,f){
+			var m2 = svg.createSVGMatrix();
+			m2.a=a; m2.b=b; m2.c=c; m2.d=d; m2.e=e; m2.f=f;
+			xform = xform.multiply(m2);
+			return transform.call(ctx,a,b,c,d,e,f);
+		};
+		var setTransform = ctx.setTransform;
+		ctx.setTransform = function(a,b,c,d,e,f){
+			xform.a = a;
+			xform.b = b;
+			xform.c = c;
+			xform.d = d;
+			xform.e = e;
+			xform.f = f;
+			return setTransform.call(ctx,a,b,c,d,e,f);
+		};
+		var pt  = svg.createSVGPoint();
+		ctx.transformedPoint = function(x,y){
+			pt.x=x; pt.y=y;
+			return pt.matrixTransform(xform.inverse());
+		}
+	}
 }

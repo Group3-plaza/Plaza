@@ -5,7 +5,9 @@ canvas {
     font-smooth: never;
     -webkit-font-smoothing : none;
 
-    height: 500px; width: 500px;
+    /* Setting the height/width of the canvas inline seems to make canvas panning/zooming much more smooth */
+    /* height: 500px; width: 500px; */
+
     display: inline-block;
 
     image-rendering: pixelated; /* prevent blurriness when upscaling canvas data */
