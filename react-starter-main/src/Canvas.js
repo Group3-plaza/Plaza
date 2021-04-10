@@ -75,8 +75,8 @@ export function Canvas(props) {
         var canvas_width = canvas_ref.current.width;
         var canvas_height = canvas_ref.current.height;
 
-        var pixel_width = Math.trunc(canvas_width / canvasSize);
-        var pixel_height = Math.trunc(canvas_height / canvasSize);
+        var pixel_width = (canvas_height / canvasSize);
+        var pixel_height = (canvas_height / canvasSize);
 
         var p1 = context.transformedPoint(0,0);
         var p2 = context.transformedPoint(canvas_width,canvas_height);
@@ -97,7 +97,9 @@ export function Canvas(props) {
             // IMPLEMENT CANVAS PANNING/ZOOMING     http://phrogz.net/tmp/canvas_zoom_to_cursor.html
             var canvas = canvas_ref.current;
             var ctx = canvas.getContext('2d');
+            
 		    trackTransforms(ctx);
+            ctx.translate(canvas.width/4,0);
 
             redraw();
 		
@@ -183,7 +185,7 @@ export function Canvas(props) {
                     <div style={{padding: 40}}>
                         <h3>Unable to Load Canvas :(</h3>
                         <p><i>We were unable to get canvas data from our servers. Try reloading the page or trying again later.</i></p>
-                        <a style={{color: "blue", cursor: "pointer"}} onClick={test}>
+                        <a onClick={test}>
                             Continue anyway
                         </a>
                     </div>
@@ -196,7 +198,7 @@ export function Canvas(props) {
         }
 
         return (
-            <canvas width="600" height="600"
+            <canvas width="1200" height="600"
             id="canvas" onClick={onCanvasClick} ref={canvas_ref}>
             </canvas>
         );

@@ -38,3 +38,16 @@ canvas:hover {
     cursor:crosshair;
     border-color: black;
 }
+
+a {
+    color: rgb(10,10,255);
+    font-size: 11pt;
+    /* transition: transform .3; */
+}
+a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+a:active {
+    color: black;
+}
