@@ -97,7 +97,17 @@ export function Canvas(props) {
         if (mode == 2) {
             // IMPLEMENT CANVAS PANNING/ZOOMING     http://phrogz.net/tmp/canvas_zoom_to_cursor.html
             var canvas = canvas_ref.current;
+            canvas.width = window.innerWidth - 50;
+            canvas.height = window.innerHeight - 80;
+
             var ctx = canvas.getContext('2d');
+
+            window.onresize = () => {
+                canvas.width = window.innerWidth - 50;
+                canvas.height = window.innerHeight - 80;
+                trackTransforms(ctx);
+                redraw();
+            };
             
 		    trackTransforms(ctx);
             ctx.translate(canvas.width/4,0);
@@ -199,7 +209,7 @@ export function Canvas(props) {
         }
 
         return (
-            <canvas width="1200" height="600"
+            <canvas
             id="canvas" onClick={onCanvasClick} ref={canvas_ref}>
             </canvas>
         );
