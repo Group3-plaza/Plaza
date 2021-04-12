@@ -35,8 +35,10 @@ jobs:
           architecture: x64
           
       - name: Install dependencies
-        run: pip install -r react-starter-main/requirements.txt 
+        run: 
+          cd react-starter-main;
+          pip install -r requirements.txt;
         
       - name: Lint files
-        run: react-starter-main/serversidecheck.sh
+        run: pylint *.py
         
