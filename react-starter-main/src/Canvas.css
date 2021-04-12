@@ -1,0 +1,61 @@
+/* Style data for Canvas.js */
+
+canvas {
+    animation: fadeIn2 .5s;
+
+    border: solid 1px gray;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    background-color: rgb(240,240,240);
+
+    /* Setting the height/width of the canvas inline seems to make canvas panning/zooming much more smooth */
+    /* height: 500px; width: 500px; */
+
+    display: inline-block;
+
+    image-rendering: pixelated; /* prevent blurriness when upscaling canvas data */
+}
+
+@keyframes fadeIn {
+    0% {opacity: 0; transform: translatey(50px);}
+    100% {opacity: 1; transform: translatey(0);}
+}
+
+@keyframes fadeIn2 {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+div.canvas_placeholder {
+    animation: fadeIn 1s;
+    user-select: none;
+    margin: 0;
+    display: inline-block;
+    height: 500px; width: 500px;
+}
+
+div.canvas_placeholder > div {
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    height:500px;
+}
+
+canvas:hover {
+    cursor:crosshair;
+    border-color: black;
+}
+
+a {
+    color: rgb(10,10,255);
+    font-size: 11pt;
+    /* transition: transform .3; */
+}
+a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+a:active {
+    color: black;
+}
