@@ -1,8 +1,8 @@
 import struct
 from datetime import datetime
 
-BoardSize = 10 #board is nxn
-CurrentCanvasState = bytearray([12 for i in range(BoardSize*BoardSize)])#default number. Just means all white. 
+BoardSize = 50#board is nxn
+CurrentCanvasState = bytearray([12 for i in range(BoardSize**2)])#default number. Just means all white. 
 def readState():
     Read_Bin = open("CanvasBin", "rb")
     Bin_line = Read_Bin.readline()
