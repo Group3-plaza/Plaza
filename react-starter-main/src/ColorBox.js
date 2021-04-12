@@ -2,8 +2,9 @@
 import {useState} from 'react';
 
 export function ColorBox(props) {
-
+    // this.props.color = color of the box 
     return (
-        <div class="box" onClick={props.onClick} >{props.value}</div>
+        //do inline styling for color from props 
+        <div class="box" onClick={props.onClick}></div>
     )
 }
