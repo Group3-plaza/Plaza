@@ -8,16 +8,21 @@ const socket = io();
 export function Chat(props) {
     const [messageList, updateMessage] = useState([]);
     const inputRef = useRef(null);
-    //const [message, setMessages] = useState("");
     const username = props.username;
     
     function sendMessage() {
-        if (inputRef != null) {
+        if (inputRef !== null) {
             const message = inputRef.current.value;
-            if (message!= ''){
+            if (message!== ''){
                 socket.emit('chat_submit', { username: username, message: username + ": " +message });
                 inputRef.current.value="";
             }
+        }
+    }
+    
+    function keyPress(key){
+        if ( key.charCode === 13){
+            sendMessage();
         }
     }
     
@@ -33,7 +38,7 @@ export function Chat(props) {
             <div>
                 {messageList.map((message, index)=> <ListChat key={index} message={message} />)}
                 <div className="chatbox">
-                    <input placeholder=" Send a message" ref={inputRef} tyep="text"/>
+                    <input placeholder=" Send a message" ref={inputRef} onKeyPress={(key)=>keyPress(key)} tyep="text"/>
                     <button onClick={sendMessage}>ENTER</button>
                 </div>
             </div>
