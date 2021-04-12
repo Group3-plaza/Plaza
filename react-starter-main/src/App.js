@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import {useState, useEffect, useRef} from 'react';
 
 // import project elements:
-import {Canvas} from './Canvas.js';
+import { Canvas } from './Canvas.js';
 import { ColorPicker } from './ColorPicker';
 import { Chat } from './Chat';
 
@@ -18,9 +18,9 @@ function App() {
   const usernameRef= useRef(null);
   
   function onSetUsername(){
-    if(usernameRef!=null){
+    if(usernameRef!==null){
       const user = usernameRef.current.value;
-      if(user!=''){
+      if(user!==''){
         setUsername(user);
       }
     }
