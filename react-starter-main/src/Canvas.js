@@ -7,8 +7,6 @@ import {socket} from "./App.js";
 import loading_circle from './graphics/loading_circle.gif';
 
 export function Canvas(props) {
-    var Renderer;
-
     // STATES
     const [mode, setMode] = useState(0);  // current mode of canvas:
                                             //  0 - Obtaining canvas data...
@@ -20,18 +18,26 @@ export function Canvas(props) {
     const [canvasSize, setCanvasSize] = useState(0);  // contains width (width=height) of canvas displayed pixels
                                                     // NOTE: This is different from HTML canvas size
 
-    var canvas_ref = React.createRef();
+    var canvas_ref;
+    var response_timeout;
 
     // receive socketio canvas_state
-    useEffect(() => {
-        socket.on("canvas_state", (data) => {
-            if (mode == 0) {
-                alert("RECIEVED DATA FROM SERVER");
-                setData(data.data);
-                setMode(2);
-            }            
-        });
-    }, []);
+    socket.on("canvas_state", (data) => {
+        if (mode == 0) {
+            clearTimeout(response_timeout);
+
+            // obtain data and decode it from base 64 string:
+            var encoded = data.data
+            var decoded = Uint8Array.from(atob(encoded), c => c.charCodeAt(0)); // decode to bytes
+            
+            console.log("set data to " + decoded);
+            
+            setData(decoded);
+            setCanvasSize(data.size);
+
+            setMode(2);
+        }            
+    });
 
     // convert color index to rgb
     function toColor(x) {
@@ -67,13 +73,13 @@ export function Canvas(props) {
             return [0,0,0]; // index out of bounds
         }
     }
-    // uses 'data' state to create pixels
+    // uses 'data' state to create pixels 
     function redraw() {
-        var context = canvas_ref.current.getContext('2d');
+        var context = canvas_ref.getContext('2d');
         var i = 0;
         
-        var canvas_width = canvas_ref.current.width;
-        var canvas_height = canvas_ref.current.height;
+        var canvas_width = canvas_ref.width;
+        var canvas_height = canvas_ref.height;
 
         var pixel_width = (canvas_height / canvasSize);
         var pixel_height = (canvas_height / canvasSize);
@@ -95,58 +101,22 @@ export function Canvas(props) {
     // When canvas is loaded
     useEffect(()=>{
         if (mode == 2) {
-            // IMPLEMENT CANVAS PANNING/ZOOMING     http://phrogz.net/tmp/canvas_zoom_to_cursor.html
-            var canvas = canvas_ref.current;
-            var ctx = canvas.getContext('2d');
-            
-		    trackTransforms(ctx);
-            ctx.translate(canvas.width/4,0);
-
-            redraw();
-		
-            var lastX=canvas.width/2, lastY=canvas.height/2;
-            var dragStart,dragged;
-            canvas.addEventListener('mousedown',function(evt){
-                document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
-                lastX = evt.offsetX || (evt.pageX - canvas.offsetLeft);
-                lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
-                dragStart = ctx.transformedPoint(lastX,lastY);
-                dragged = false;
-            },false);
-            canvas.addEventListener('mousemove',function(evt){
-                lastX = evt.offsetX || (evt.pageX - canvas.offsetLeft);
-                lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
-                dragged = true;
-                if (dragStart){
-                    var pt = ctx.transformedPoint(lastX,lastY);
-                    ctx.translate(pt.x-dragStart.x,pt.y-dragStart.y);
-                    redraw();
-                }
-            },false);
-            canvas.addEventListener('mouseup',function(evt){
-                dragStart = null;
-                if (!dragged) zoom(evt.shiftKey ? -1 : 1 );
-            },false);
-
-            var scaleFactor = 1.05;
-            var zoom = function(clicks){
-                var pt = ctx.transformedPoint(lastX,lastY);
-                ctx.translate(pt.x,pt.y);
-                var factor = Math.pow(scaleFactor,clicks);
-                ctx.scale(factor,factor);
-                ctx.translate(-pt.x,-pt.y);
-                redraw();
-            }
-
-            var handleScroll = function(evt){
-                var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
-                if (delta) zoom(delta);
-                return evt.preventDefault() && false;
-            };
-            canvas.addEventListener('DOMMouseScroll',handleScroll,false);
-            canvas.addEventListener('mousewheel',handleScroll,false);
+            canvas_ref = document.getElementById("canvas");
+            initializeCanvasManipulation();
         }
-    },[canvasSize]);
+    },[mode]);
+
+    // send socketio request on load:
+    useEffect(()=>{
+        if (mode == 0) {
+            setTimeout(()=>{
+                socket.emit("canvas_request",{});
+                response_timeout = setTimeout(()=>{
+                    setMode(1);
+                },5000);
+            },1800);
+        }
+    });
 
     // testing function
     function test() {
@@ -164,13 +134,6 @@ export function Canvas(props) {
     }
 
     if (mode == 0) {   // CANVAS INFO NOT YET LOADED
-
-        window.addEventListener('load', () => {                         // OBTAINING CANVAS DATA FROM SERVER
-            socket.emit("canvas_request",{});
-            setTimeout(()=>{
-                setMode(1);
-            },2000);
-        });
 
         return (
             <div id="canvas" className="canvas_placeholder">
@@ -190,7 +153,7 @@ export function Canvas(props) {
                             Continue anyway
                         </a>
                     </div>
-                </div>                
+                </div>
             </div>
         );
     } else if (mode == 2) {                                            // SUCESSFULLY LOADED CANVAS DATA FROM SERVER
@@ -199,10 +162,77 @@ export function Canvas(props) {
         }
 
         return (
-            <canvas width="1200" height="600"
-            id="canvas" onClick={onCanvasClick} ref={canvas_ref}>
-            </canvas>
+            <canvas 
+                id="canvas" 
+                onClick={onCanvasClick} 
+            />
         );
+    }
+
+    function initializeCanvasManipulation() {
+        // IMPLEMENT CANVAS PANNING/ZOOMING     http://phrogz.net/tmp/canvas_zoom_to_cursor.html
+        var canvas = canvas_ref;
+        var ctx = canvas.getContext('2d');
+        
+        // automatically resize canvas
+        canvas.width = window.innerWidth - 50;
+        canvas.height = window.innerHeight - 80;
+
+        window.onresize = () => {
+            canvas.width = window.innerWidth - 50;
+            canvas.height = window.innerHeight - 80;
+            
+            trackTransforms(ctx);
+            ctx.translate(canvas.width/4,0);
+            redraw();
+        };
+        
+        trackTransforms(ctx);
+        ctx.translate(canvas.width/4,0);
+
+        redraw();
+    
+        var lastX=canvas.width/2, lastY=canvas.height/2;
+        var dragStart,dragged;
+        canvas.addEventListener('mousedown',function(evt){
+            document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
+            lastX = evt.offsetX || (evt.pageX - canvas.offsetLeft);
+            lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
+            dragStart = ctx.transformedPoint(lastX,lastY);
+            dragged = false;
+        },false);
+        canvas.addEventListener('mousemove',function(evt){
+            lastX = evt.offsetX || (evt.pageX - canvas.offsetLeft);
+            lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
+            dragged = true;
+            if (dragStart){
+                var pt = ctx.transformedPoint(lastX,lastY);
+                ctx.translate(pt.x-dragStart.x,pt.y-dragStart.y);
+                redraw();
+            }
+        },false);
+        canvas.addEventListener('mouseup',function(evt){
+            dragStart = null;
+            if (!dragged) zoom(evt.shiftKey ? -1 : 1 );
+        },false);
+
+        var scaleFactor = 1.05;
+        var zoom = function(clicks){
+            var pt = ctx.transformedPoint(lastX,lastY);
+            ctx.translate(pt.x,pt.y);
+            var factor = Math.pow(scaleFactor,clicks);
+            ctx.scale(factor,factor);
+            ctx.translate(-pt.x,-pt.y);
+            redraw();
+        }
+
+        var handleScroll = function(evt){
+            var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
+            if (delta) zoom(delta);
+            return evt.preventDefault() && false;
+        };
+        canvas.addEventListener('DOMMouseScroll',handleScroll,false);
+        canvas.addEventListener('mousewheel',handleScroll,false);
     }
 
     // Adds ctx.getTransform() - returns an SVGMatrix
