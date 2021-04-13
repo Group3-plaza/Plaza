@@ -27,4 +27,4 @@ jobs:
     - run: cd react-starter-main/;
         npm install eslint;
         npm install eslint-config-airbnb;
-        ./node_modules/.bin/eslint src/;
+        ./node_modules/.bin/eslint src/Canvas.js;
