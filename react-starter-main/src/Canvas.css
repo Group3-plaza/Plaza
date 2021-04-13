@@ -27,7 +27,7 @@ canvas {
 }
 
 div.canvas_placeholder {
-    animation: fadeIn 1s;
+    animation: fadeIn 1.5s;
     user-select: none;
     margin: 0;
     display: inline-block;
