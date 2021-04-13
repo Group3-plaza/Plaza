@@ -1,13 +1,18 @@
 import struct
 from datetime import datetime
+import os
 
 BoardSize = 50#board is nxn
-CurrentCanvasState = bytearray([12 for i in range(BoardSize**2)])#default number. Just means all white. 
+CurrentCanvasState = None#default number. Just means all white. 
+
+
 def readState():
     Read_Bin = open("CanvasBin", "rb")
     Bin_line = Read_Bin.readline()
-    for i in range(len(Bin_line)):
-        CurrentCanvasState[i] = Bin_line[i]
+    #for i in range(len(Bin_line)):
+        #CurrentCanvasState[i] = Bin_line[i]
+    CurrentCanvasState = Bin_line
+    #print(len(CurrentCanvasState))
     #print(CurrentCanvasState)
     Read_Bin.close()
     
@@ -30,6 +35,12 @@ def writeState():
     bin_file.close()
     #write something
 
+if os.path.exists("CanvasBin"):
+    print("File detected. Reading bytes.")
+    readState()
+else:
+    print("No file detected. Setting up default board.")
+    CurrentCanvasState = bytearray([12 for i in range(BoardSize**2)])
 
 #Test below for the write stage.
 
