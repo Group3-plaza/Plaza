@@ -4,9 +4,8 @@ import {useState} from 'react';
 import { ColorBox } from './ColorBox';
 
 export function ColorPicker(props) {
-    [color, setColor] = useState(null);
-    [isClicked, setClicked] = useState(false);
-
+    const [color, setColor] = useState(null);
+    const [isClicked, setClicked] = useState(false);
     const colors = [
         'Red', 
         'Red-Orange', 
@@ -29,6 +28,7 @@ export function ColorPicker(props) {
         //TODO set color to text of the color or hex value?????
         setColor(index);
         setClicked(true);
+        console.log('clicked: ' + index);
     }
 
 
@@ -37,7 +37,7 @@ export function ColorPicker(props) {
         //map through and pass hex value to ColorBox
         <div className="color-board">
             {colors.map((item, index) => (
-            <ColorBox value={item} onClick={() => onClickColor(index) } color={index} clicked={isClicked}/>
+                <ColorBox value={item} onClick={() => onClickColor(index) } color={index} clicked={isClicked}/>
             ))}
         </div>
     )

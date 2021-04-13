@@ -3,7 +3,7 @@ import {useState} from 'react';
 
 export function ColorBox(props) {
     // this.props.color = color of the box 
-
+    console.log(props.color)
     //hex value of the colors to return 
     const colorsHex = {
         0: '#FF0000', //red
@@ -22,7 +22,7 @@ export function ColorBox(props) {
         13: '#000000' //black
     };
 
-    bColor = colorsHex[this.props.color]
+    var bColor = colorsHex[props.color];
 
     const boxStyle = {
         backgroundColor: bColor,
@@ -31,6 +31,6 @@ export function ColorBox(props) {
 
     return (
         //do inline styling for color from props 
-    <div style={boxStyle} onClick={props.onClick}>{this.props.value}</div>
+    <div style={boxStyle} onClick={props.onClick}></div>
     )
 }
