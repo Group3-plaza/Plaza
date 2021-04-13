@@ -30,7 +30,7 @@ def on_connect():
 
 @socketio.on('chat_submit')
 def on_submit(data):
-    print("recieved chat from " + data.username)
+    print("recieved chat from " + data['message'])
     socketio.emit("chat_update", data, broadcast=True, include_self=True)
 
 @socketio.on('canvas_request')
