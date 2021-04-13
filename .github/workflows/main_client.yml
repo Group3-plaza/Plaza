@@ -25,4 +25,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: cd react-starter-main/;
+        npm install eslint
+        npm install eslint-config-airbnb
         ./node_modules/.bin/eslint src/;
