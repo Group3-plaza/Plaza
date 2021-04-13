@@ -6,6 +6,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
 from flask_socketio import SocketIO
 from flask import Flask, send_from_directory, json, session, render_template
+import base64
 
 app = Flask(__name__, static_folder='./build/static')
 
@@ -29,7 +30,7 @@ def on_connect():
 
 @socketio.on('chat_submit')
 def on_submit(data):
-    socketio.emit("chat_update", data, broadcast=True, include_self=alse)
+    socketio.emit("chat_update", data, broadcast=True, include_self=False)
 
 @socketio.on('canvas_request')
 def on_request(data):
@@ -44,7 +45,15 @@ def on_request(data):
     seconds = now.second
     minutes = now.minute
     #[byte_array, dimensions, minutes, seconds]
-    socketio.emit("canvas_state", [dimensions, minutes, seconds], broadcast=True,
+    
+    encoded = base64.b64encode(byte_array)
+    D = {
+        'data' : encoded.decode("ascii"),
+        'size' : dimensions,
+        'minutes' : minutes,
+        'seconds' : seconds
+    }
+    socketio.emit("canvas_state", D, broadcast=True,
                   include_self=True)
 
 @socketio.on("canvas_set")
