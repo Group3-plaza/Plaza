@@ -38,3 +38,30 @@
 }
 
 /* NAQEEB'S STYLES */
+
+/*.split{
+  height:100%;
+  width: 50%;
+  position: fixed;
+  z-index:1;
+  top: 0;
+}
+
+.right{
+  right:0;
+  background-color: black;
+}*/
+
+.left{
+  left:0;
+  background-color: green;
+}
+
+.chat{
+  height:100%;
+  width: 20%;
+  position: fixed;
+  background-color: purple;
+  right:0;
+  
+}
