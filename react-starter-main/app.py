@@ -29,7 +29,7 @@ def on_connect():
 
 @socketio.on('chat_submit')
 def on_submit(data):
-    socketio.emit("chat_update", data, broadcast=True, include_self=True)
+    socketio.emit("chat_update", data, broadcast=True, include_self=alse)
 
 @socketio.on('canvas_request')
 def on_request(data):
