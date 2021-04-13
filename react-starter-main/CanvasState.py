@@ -30,7 +30,7 @@ def writeState():
     bin_file.close()
     #write something
 
-writeState()
+
 #Test below for the write stage.
 
 #if we need to unpack print(struct.unpack("{}B".format(BoardSize*BoardSize),gaze[i]))
