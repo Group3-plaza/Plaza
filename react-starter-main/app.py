@@ -32,16 +32,25 @@ def on_submit(data):
     socketio.emit("chat_update", data, broadcast=True, include_self=True)
 
 @socketio.on('canvas_request')
-def on_request():
-    byte_array = CanvasState.getState()
+def on_request(data):
+    print("received emit from canvas")
+    
+    #byte_array = CanvasState.getState()
+    
     dimensions = CanvasState.BoardSize
-
+    print(dimensions)
+    
     #current_time = time.time()
     now = datetime.now()
     seconds = now.second
     minutes = now.minute
-    
-    socketio.emit("canvas_state", [byte_array, dimensions, minutes, seconds], broadcast=True,
+    byte_seconds = seconds.to_bytes(1, 'big')
+    byte_minutes = minutes.to_bytes(1, 'big')
+    byte_array = [byte_seconds, byte_minutes]
+    print(byte_array)
+    #[byte_array, dimensions, minutes, seconds]
+    #[byte_minutes, byte_seconds]
+    socketio.emit("canvas_state", byte_array, broadcast=True,
                   include_self=True)
 
 @socketio.on("canvas_set")
@@ -53,7 +62,7 @@ def on_set(data):
 
     byte_seconds = seconds.to_bytes(1, 'big')
     byte_minutes = minutes.to_bytes(1, 'big')
-    setPixel(byte_minutes, byte_seconds, data.x, data.y, data.color) #variable names subjedt to change
+    CanvasState.setPixel(byte_minutes, byte_seconds, data.x, data.y, data.color) #variable names subjedt to change
 
     socketio.emit("canvas_update", data, broadcast=True,
                   include_self=True)
