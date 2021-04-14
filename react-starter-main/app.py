@@ -38,7 +38,7 @@ def on_request(data):
     print("received emit from canvas")
     
     byte_array = CanvasState.getState()
-    
+    #print(len(byte_array))
     dimensions = CanvasState.BoardSize
     print(dimensions)
     
