@@ -1,0 +1,10 @@
+  
+.color-board {
+    width: 500px; /* Total horizontal dimensions */
+    height: 100px; /* Total vertical dimensions */
+    display: grid; /* Enables CSS Grid */ 
+    grid-template-columns: repeat(7, 1fr); /* Total horizontal space broken into 6 columns */
+    grid-template-rows: repeat(2, 1fr); /* Total vertical space broken into 2 rows */
+    margin: auto;
+}
+  
