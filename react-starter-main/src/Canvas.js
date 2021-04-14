@@ -135,7 +135,7 @@ export function Canvas(props) {
         const a = new Uint8ClampedArray(TESTING_SIZE * TESTING_SIZE);
         for (let x = 0; x < TESTING_SIZE * TESTING_SIZE; x += 1) {
             // eslint-disable-next-line no-bitwise
-            a[x] = (Math.random() * (13 - 0 + 1)) << 0; // generate random int between 0 & 13
+            a[x] = (Math.random() * (13 - 0 + 1)) << 0; //generate random int between 0 & 13
         }
 
         setData(a);
