@@ -1,11 +1,15 @@
   
 .color-board {
-    width: 500px; /* Total horizontal dimensions */
-    height: 100px; /* Total vertical dimensions */
+    
+    /* Naqeeb: Disabled these so that width & height can be set in App.css */
+    /*width: 500px;*/ /* Total horizontal dimensions */    
+    height: 100%; /* Total vertical dimensions */
+
+
     display: grid; /* Enables CSS Grid */ 
-    grid-template-columns: repeat(7, 1fr); /* Total horizontal space broken into 6 columns */
-    grid-template-rows: repeat(2, 1fr); /* Total vertical space broken into 2 rows */
-    grid-gap: 10px;
+    grid-template-columns: repeat(1, 1fr);; /* Total horizontal space broken into 6 columns  */
+    grid-template-rows: repeat(7, 1fr); /* Total vertical space broken into 2 rows ;*/
+    grid-gap: 1%;
     margin: auto;
 }
   

@@ -6,6 +6,8 @@ import { ColorBox } from './ColorBox';
 export function ColorPicker() {
     // const [color, setColor] = useState(null);
     const [isClicked, setClicked] = useState(false);
+    const [circleClicked, setCircleClicked] = useState(null);
+
     const colors = [
         'Red',
         'Red-Orange',
@@ -28,6 +30,7 @@ export function ColorPicker() {
         // TODO set color to text of the color or hex value?????
         // setColor(index);
         setClicked(true);
+        setCircleClicked(index)
         console.log('clicked: ', index);
     }
 
@@ -36,7 +39,7 @@ export function ColorPicker() {
         // map through and pass hex value to ColorBox
         <div className="color-board">
             {colors.map((item, index) => (
-                <ColorBox value={item} onClick={() => onClickColor(index)} color={index} clicked={isClicked} />
+                <ColorBox value={item} onClick={() => onClickColor(index)} color={index} clicked={isClicked} which={circleClicked} />
             ))}
         </div>
     );
