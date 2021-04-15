@@ -31,12 +31,6 @@ export function Canvas(props) {
     let height;
     let width;
 
-    // determine size
-    window.onload = () => {
-        width = window.innerWidth - 360;
-        height = window.innerHeight - 40;
-    };
-
     // receive socketio canvas_state
     socket.on('canvas_state', (receivedData) => {
         if (mode === 0) {
@@ -136,7 +130,7 @@ export function Canvas(props) {
         }
     });
 
-    // testing function
+    // generate random board for testing
     function test() {
         const TESTING_SIZE = 50;
 
