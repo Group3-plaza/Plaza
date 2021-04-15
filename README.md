@@ -1,6 +1,11 @@
 # Plaza
 
 ## Setup
+
+Run `RUNME.sh` which will set everything up
+
+OR
+
 - `npm install`
 - `pip install -r requirements.txt`
 
