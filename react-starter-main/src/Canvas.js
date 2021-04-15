@@ -6,7 +6,7 @@
 
 // Canvas that will display current pixel data.
 import './Canvas.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // eslint-disable-next-line import/no-cycle
 import { socket } from './App';
 import loadingCircle from './graphics/loading_circle.gif';
@@ -26,7 +26,16 @@ export function Canvas(props) {
     // NOTE: This is different from HTML canvas size
 
     let canvasRef;
+    const canvasPlaceholderRef = useRef(null);
     let responseTimeout;
+    let height;
+    let width;
+
+    // determine size
+    window.onload = () => {
+        width = window.innerWidth - 360;
+        height = window.innerHeight - 40;
+    };
 
     // receive socketio canvas_state
     socket.on('canvas_state', (receivedData) => {
@@ -44,6 +53,7 @@ export function Canvas(props) {
             setCanvasSize(receivedData.size);
 
             setMode(2);
+            props.setCanvasLoadState(true);
         }
     });
 
@@ -122,7 +132,7 @@ export function Canvas(props) {
                 responseTimeout = setTimeout(() => {
                     setMode(1);
                 }, 5000);
-            }, 1800);
+            }, 1000);
         }
     });
 
@@ -140,12 +150,13 @@ export function Canvas(props) {
 
         setData(a);
         setMode(2);
+        props.setCanvasLoadState(true);
     }
 
     if (mode === 0) { // CANVAS INFO NOT YET LOADED
         return (
-            <div id="canvas" className="canvas_placeholder">
-                <div>
+            <div id="canvas" className="canvas_placeholder" ref={canvasPlaceholderRef}>
+                <div id="placeholder_content">
                     <img src={loadingCircle} alt="" />
                 </div>
             </div>
@@ -189,12 +200,12 @@ export function Canvas(props) {
         const ctx = canvas.getContext('2d');
 
         // automatically resize canvas
-        canvas.width = window.innerWidth - 50;
-        canvas.height = window.innerHeight - 80;
+        canvas.width = window.innerWidth - 380;
+        canvas.height = window.innerHeight - 40;
 
         window.onresize = () => {
-            canvas.width = window.innerWidth - 50;
-            canvas.height = window.innerHeight - 80;
+            canvas.width = window.innerWidth - 310;
+            canvas.height = window.innerHeight - 40;
 
             trackTransforms(ctx);
             ctx.translate(canvas.width / 4, 0);
