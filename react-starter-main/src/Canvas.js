@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable func-names */
 /* eslint-disable no-console */
 /* eslint-disable no-use-before-define */
@@ -23,13 +24,16 @@ export function Canvas(props) {
     const [data, setData] = useState([]); // contains pixel data
     // contains width (width=height) of canvas displayed pixels
     const [canvasSize, setCanvasSize] = useState(0);
-    // NOTE: This is different from HTML canvas size
+    // index of selected pixel
+    let selectedPixel = [-1, -1];
 
     let canvasRef;
+    let canvasCtx;
+    let canvasWidth;
+    let canvasHeight;
+
     const canvasPlaceholderRef = useRef(null);
     let responseTimeout;
-    let height;
-    let width;
 
     // receive socketio canvas_state
     socket.on('canvas_state', (receivedData) => {
@@ -52,7 +56,10 @@ export function Canvas(props) {
     });
 
     // convert color index to rgb
-    function toColor(x) {
+    function toColor(x, iseSelected) {
+        if (iseSelected) {
+            return [0, 0, 0];
+        }
         if (x === 0) {
             return [255, 0, 0];
         } if (x === 1) {
@@ -86,11 +93,11 @@ export function Canvas(props) {
     }
     // uses 'data' state to create pixels
     function redraw() {
-        const context = canvasRef.getContext('2d');
+        const context = canvasCtx;
         let i = 0;
 
-        const canvasWidth = canvasRef.width;
-        const canvasHeight = canvasRef.height;
+        // const canvasWidth = canvasRef.width;
+        // const canvasHeight = canvasRef.height;
 
         const pixelWidth = (canvasHeight / canvasSize);
         const pixelHeight = (canvasHeight / canvasSize);
@@ -99,14 +106,63 @@ export function Canvas(props) {
         const p2 = context.transformedPoint(canvasWidth, canvasHeight);
         context.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
 
+        if (selectedPixel[0] > -1) {
+            for (let x = 0; x < canvasSize; x += 1) {
+                for (let y = 0; y < canvasSize; y += 1) {
+                    const color = toColor(data[i],
+                        (selectedPixel[0] === x) && (selectedPixel[1] === y));
+                    i += 1;
+                    context.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
+                    context.fillRect(x * pixelWidth + x, y * pixelHeight + y,
+                        pixelWidth, pixelHeight);
+                }
+            }
+        } else {
+            for (let x = 0; x < canvasSize; x += 1) {
+                for (let y = 0; y < canvasSize; y += 1) {
+                    const color = toColor(data[i]);
+                    i += 1;
+                    context.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
+                    context.fillRect(x * pixelWidth + x, y * pixelHeight + y,
+                        pixelWidth, pixelHeight);
+                }
+            }
+        }
+    }
+    // like redraw() but also returns coordinates of upper-left & lower-right corners
+    function firstRedraw() {
+        const context = canvasRef.getContext('2d');
+        let i = 0;
+
+        // const canvasWidth = canvasRef.width;
+        // const canvasHeight = canvasRef.height;
+
+        const pixelWidth = (canvasHeight / canvasSize);
+        const pixelHeight = (canvasHeight / canvasSize);
+
+        const p1 = context.transformedPoint(0, 0);
+        const p2 = context.transformedPoint(canvasWidth, canvasHeight);
+        context.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
+
+        let ulCorner;
+        let lrCorner;
+
         for (let x = 0; x < canvasSize; x += 1) {
             for (let y = 0; y < canvasSize; y += 1) {
                 const color = toColor(data[i]);
                 i += 1;
                 context.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
                 context.fillRect(x * pixelWidth + x, y * pixelHeight + y, pixelWidth, pixelHeight);
+
+                if (x === 0 && y === 0) {
+                    ulCorner = x * pixelWidth + x;
+                } else if (x === canvasSize - 1 && y === canvasSize - 1) {
+                    lrCorner = (x * pixelWidth + x) + pixelWidth;
+                }
             }
         }
+
+        return [ulCorner, lrCorner, pixelWidth];
     }
 
     // When canvas is loaded
@@ -175,7 +231,7 @@ export function Canvas(props) {
             </div>
         );
     } if (mode === 2) { // SUCESSFULLY LOADED CANVAS DATA FROM SERVER
-    // eslint-disable-next-line no-inner-declarations
+        // eslint-disable-next-line no-inner-declarations
         function onCanvasClick() {
             // TODO: implement something here...
         }
@@ -188,38 +244,75 @@ export function Canvas(props) {
         );
     }
 
+    // use current mouse position on canvas to determine which pixel is being hovered over
+    function higlightSelected(ctx, x, y, canvasRenderWidth) {
+        const pt = ctx.transformedPoint(x, y);
+
+        const newSel = [
+            // eslint-disable-next-line no-mixed-operators
+            Math.trunc((pt.x) / (canvasRenderWidth) * canvasSize),
+            // eslint-disable-next-line no-mixed-operators
+            Math.trunc((pt.y) / (canvasRenderWidth) * canvasSize)];
+
+        if (newSel[0] <= -2 || newSel[1] <= -2
+            || newSel[0] > canvasSize || newSel[1] > canvasSize) {
+            canvasRef.style.cursor = 'default';
+            return false;
+        }
+        canvasRef.style.cursor = 'none';
+
+        if (newSel[0] === selectedPixel[0] && newSel[1] === selectedPixel[1]) {
+            return false;
+        }
+        selectedPixel = newSel;
+        return true;
+    }
+
     function initializeCanvasManipulation() {
     // IMPLEMENT CANVAS PANNING/ZOOMING     http://phrogz.net/tmp/canvas_zoom_to_cursor.html
         const canvas = canvasRef;
-        const ctx = canvas.getContext('2d');
+        canvasCtx = canvas.getContext('2d');
 
         // automatically resize canvas
         canvas.width = window.innerWidth - 380;
         canvas.height = window.innerHeight - 40;
 
+        canvasWidth = canvas.width;
+        canvasHeight = canvas.height;
+
         window.onresize = () => {
-            canvas.width = window.innerWidth - 310;
+            canvas.width = window.innerWidth - 380;
             canvas.height = window.innerHeight - 40;
 
-            trackTransforms(ctx);
-            ctx.translate(canvas.width / 4, 0);
+            canvasWidth = canvas.width;
+            canvasHeight = canvas.height;
+
+            trackTransforms(canvasCtx);
+            canvasCtx.translate(canvas.width / 4, 0);
             redraw();
         };
 
-        trackTransforms(ctx);
-        ctx.translate(canvas.width / 4, 0);
+        trackTransforms(canvasCtx);
+        canvasCtx.translate(canvas.width / 4, 0);
 
-        redraw();
+        const [upperLeftCornerCoords, lowerRightCornerCoords, pixelWidth] = firstRedraw();
+        const canvasRenderWidth = lowerRightCornerCoords - upperLeftCornerCoords;
 
         let lastX = canvas.width / 2; let
             lastY = canvas.height / 2;
         let dragStart; let dragged;
+
+        window.addEventListener('mouseup', (evt) => {
+            if (dragStart) {
+                dragStart = false;
+            }
+        }, false);
         canvas.addEventListener('mousedown', (evt) => {
             // eslint-disable-next-line no-multi-assign
             document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
             lastX = evt.offsetX || (evt.pageX - canvas.offsetLeft);
             lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
-            dragStart = ctx.transformedPoint(lastX, lastY);
+            dragStart = canvasCtx.transformedPoint(lastX, lastY);
             dragged = false;
         }, false);
         canvas.addEventListener('mousemove', (evt) => {
@@ -227,25 +320,36 @@ export function Canvas(props) {
             lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
             dragged = true;
             if (dragStart) {
-                const pt = ctx.transformedPoint(lastX, lastY);
-                ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
+                const pt = canvasCtx.transformedPoint(lastX, lastY);
+                canvasCtx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
                 redraw();
+            } else {
+                // highlight pixel:
+                // eslint-disable-next-line no-lonely-if
+                if (higlightSelected(canvasCtx, evt.offsetX, evt.offsetY,
+                    canvasRenderWidth)) {
+                    redraw();
+                }
             }
         }, false);
         canvas.addEventListener('mouseup', (evt) => {
             dragStart = null;
-            if (!dragged) zoom(evt.shiftKey ? -1 : 1);
+            //if (!dragged) zoom(evt.shiftKey ? -1 : 1);
         }, false);
+        canvas.addEventListener('mouseleave', (evt) => {
+            selectedPixel = [-1, -1];
+            redraw();
+        });
 
         const scaleFactor = 1.05;
         // eslint-disable-next-line vars-on-top
         let zoom = function (clicks) {
-            const pt = ctx.transformedPoint(lastX, lastY);
-            ctx.translate(pt.x, pt.y);
+            const pt = canvasCtx.transformedPoint(lastX, lastY);
+            canvasCtx.translate(pt.x, pt.y);
             // eslint-disable-next-line no-restricted-properties
             const factor = Math.pow(scaleFactor, clicks);
-            ctx.scale(factor, factor);
-            ctx.translate(-pt.x, -pt.y);
+            canvasCtx.scale(factor, factor);
+            canvasCtx.translate(-pt.x, -pt.y);
             redraw();
         };
 
