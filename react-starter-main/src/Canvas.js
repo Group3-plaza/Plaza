@@ -334,7 +334,7 @@ export function Canvas(props) {
         }, false);
         canvas.addEventListener('mouseup', (evt) => {
             dragStart = null;
-            //if (!dragged) zoom(evt.shiftKey ? -1 : 1);
+            // if (!dragged) zoom(evt.shiftKey ? -1 : 1);
         }, false);
         canvas.addEventListener('mouseleave', (evt) => {
             selectedPixel = [-1, -1];
@@ -343,7 +343,7 @@ export function Canvas(props) {
 
         const scaleFactor = 1.05;
         // eslint-disable-next-line vars-on-top
-        let zoom = function (clicks) {
+        const zoom = function (clicks) {
             const pt = canvasCtx.transformedPoint(lastX, lastY);
             canvasCtx.translate(pt.x, pt.y);
             // eslint-disable-next-line no-restricted-properties
