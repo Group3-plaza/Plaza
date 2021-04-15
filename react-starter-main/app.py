@@ -1,5 +1,6 @@
 import os
 import CanvasState
+import models
 from datetime import datetime, time #alternative import time
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -11,6 +12,15 @@ import base64
 app = Flask(__name__, static_folder='./build/static')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+# IMPORTANT: This must be AFTER creating db variable to prevent
+# circular import issues
+#import models
+db.create_all()
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -28,6 +38,16 @@ def index(filename):
 def on_connect():
     print('User connected!')
 
+@socketio.on('login_info')
+def log_info(data):
+    #will need to know the server stuff but im guessing we can just dcheck if the user is on db or not. 
+    #If they are, check password
+    quer = models.Person.query.filter_by(username=data['user']).first()
+    if quer == None:
+        new_user = models.Person(username=data['user'], password=data['pass'])
+        db.session.add(new_user)
+        db.session.commit()
+    print("Login Data recieved.")
 @socketio.on('chat_submit')
 def on_submit(data):
     print("recieved chat from " + data['message'])
