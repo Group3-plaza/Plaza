@@ -40,8 +40,6 @@ export function ColorPicker(props) {
     }
 
     return (
-        // add colorboard to css styling for box to conatain colors
-        // map through and pass hex value to ColorBox
         <div className="color-board">
             {colors.map((item, index) => (
                 <ColorBox value={item} onClick={() => onClickColor(index)} color={index} clicked={isClicked} which={circleClicked} />
