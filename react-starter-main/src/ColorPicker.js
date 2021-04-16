@@ -42,7 +42,7 @@ export function ColorPicker(props) {
     return (
         <div className="color-board">
             {colors.map((item, index) => (
-                <ColorBox value={item} onClick={() => onClickColor(index)} color={index} clicked={isClicked} which={circleClicked} />
+                <ColorBox key={item} onClick={() => onClickColor(index)} color={index} clicked={isClicked} which={circleClicked} />
             ))}
         </div>
     );
