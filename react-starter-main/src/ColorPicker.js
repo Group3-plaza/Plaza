@@ -3,10 +3,12 @@ import './ColorPicker.css';
 import { useState } from 'react';
 import { ColorBox } from './ColorBox';
 
-export function ColorPicker() {
+export function ColorPicker(props) {
     // const [color, setColor] = useState(null);
     const [isClicked, setClicked] = useState(false);
     const [circleClicked, setCircleClicked] = useState(null);
+
+    const { setColorSelected } = props
 
     const colors = [
         'Red',
@@ -27,10 +29,13 @@ export function ColorPicker() {
 
     // when a user clicks on a specific color
     function onClickColor(index) {
-        // TODO set color to text of the color or hex value?????
-        // setColor(index);
+        // set clicked = true and set the color that is clicked to pass to colorbox.js
         setClicked(true);
         setCircleClicked(index)
+
+        // set the color in app.js
+        setColorSelected(index)
+
         console.log('clicked: ', index);
     }
 
