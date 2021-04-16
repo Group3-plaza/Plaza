@@ -49,10 +49,6 @@ div.canvas_placeholder > div {
     height: 90%;
 }
 
-canvas:hover {
-    /* cursor:none; */
-}
-
 a {
     color: rgb(10,10,255);
     font-size: 11pt;
