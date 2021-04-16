@@ -1,9 +1,9 @@
 from app import db
 
-class Username(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=False, nullable=False)
-    score = db.Column(db.Integer, nullable=False)
+    password= db.Column(db.Integer, nullable=False)
     
     def __repr__(self):
         return '<Username %r>' % self.username

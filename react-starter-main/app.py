@@ -10,7 +10,18 @@ import base64
 
 app = Flask(__name__, static_folder='./build/static')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+# IMPORTANT: This must be AFTER creating db variable to prevent
+# circular import issues
+import sqlalchemy
+from app import db
+import models
+db.create_all()
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
