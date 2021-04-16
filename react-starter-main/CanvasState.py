@@ -12,7 +12,7 @@ def readState():
     Bin_line = Read_Bin.readline()
     #for i in range(len(Bin_line)):
         #CurrentCanvasState[i] = Bin_line[i]
-    CurrentCanvasState = Bin_line
+    CurrentCanvasState = bytearray(Bin_line)
     print(len(CurrentCanvasState))
     #print(len(CurrentCanvasState))
     #print(CurrentCanvasState)
@@ -25,8 +25,9 @@ def getState():
     return CurrentCanvasState
 
 def setPixel(mins, secs, x_cord, y_cord, color):
+    global CurrentCanvasState
     hist_file = open("History_File","ab")
-    write_arr = bytearray([color, x_cord, y_cord, mins,secs])
+    write_arr = [color, x_cord, y_cord, mins,secs]
     hist_file.write(write_arr)
     hist_file.close()
     #print(write_arr)
