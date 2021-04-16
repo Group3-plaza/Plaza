@@ -66,7 +66,7 @@ def on_set(data):
 
     byte_seconds = seconds.to_bytes(1, 'big')
     byte_minutes = minutes.to_bytes(1, 'big')
-    CanvasState.setPixel(byte_minutes, byte_seconds, data['x'], data['y'], data['color']) #variable names subjedt to change
+    CanvasState.setPixel(minutes, seconds, data['x'], data['y'], data['color']) #variable names subjedt to change
 
     socketio.emit("canvas_update", data, broadcast=True,
                   include_self=True)

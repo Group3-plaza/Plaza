@@ -50,7 +50,8 @@ export function Canvas(props) {
             socket.emit('canvas_set', {
                 x: selectedPixelRef.current[0],
                 y: selectedPixelRef.current[1],
-                color: props.selectedColor,
+                color: 1,
+                //color: props.selectedColor,
             });
         }
     }
