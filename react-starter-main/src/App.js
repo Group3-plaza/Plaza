@@ -20,7 +20,7 @@ function App() {
     // Render colorpicker and chat only after canvas loads
     // Set to useState(true) if you want to disable this for testing
     const [isCanvasLoaded, setCanvasLoadState] = useState(false);
-    const [colorSelected, setColorSelected] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
     // set proper height of everything
     useEffect(() => {
         const colorPicker = document.getElementsByClassName('colorPicker');
@@ -37,16 +37,16 @@ function App() {
     // *** Use this to run code when the canvas loads successfully ***
     useEffect(() => {}, [isCanvasLoaded]);
     useEffect(() => {
-      console.log('App.js color selected: ', colorSelected);
+      console.log('App.js color selected: ', selectedColor);
 
-    }, [colorSelected]);
-    
+    }, [selectedColor]);
+
     return (
         <div className="horizontalElements">
             {isCanvasLoaded
                 && (
                     <div className="shadow container colorPicker">
-                        <ColorPicker color={colorSelected} setColorSelected={setColorSelected}/>
+                        <ColorPicker color={selectedColor} setSelectedColor={setSelectedColor}/>
                     </div>
                 )}
 

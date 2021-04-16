@@ -8,7 +8,7 @@ export function ColorPicker(props) {
     const [isClicked, setClicked] = useState(false);
     const [circleClicked, setCircleClicked] = useState(null);
 
-    const { setColorSelected } = props
+    const { setSelectedColor } = props
 
     const colors = [
         'Red',
@@ -34,7 +34,7 @@ export function ColorPicker(props) {
         setCircleClicked(index)
 
         // set the color in app.js
-        setColorSelected(index)
+        setSelectedColor(index)
 
         console.log('clicked: ', index);
     }
