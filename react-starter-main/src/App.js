@@ -20,7 +20,8 @@ function App() {
     // Render colorpicker and chat only after canvas loads
     // Set to useState(true) if you want to disable this for testing
     const [isCanvasLoaded, setCanvasLoadState] = useState(false);
-    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(1);
+
     // set proper height of everything
     useEffect(() => {
         const colorPicker = document.getElementsByClassName('colorPicker');

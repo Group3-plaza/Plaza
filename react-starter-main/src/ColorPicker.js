@@ -35,8 +35,6 @@ export function ColorPicker(props) {
 
         // set the color in app.js
         setSelectedColor(index)
-
-        console.log('clicked: ', index);
     }
 
     return (
