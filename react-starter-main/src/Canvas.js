@@ -48,9 +48,9 @@ export function Canvas(props) {
         // send a socketio emit canvas_set
         if (selectedPixelRef.current[0] !== -1 && selectedPixelRef.current[1] !== -1) {
             socket.emit('canvas_set', {
-                x: selectedPixelRef.current[0],
-                y: selectedPixelRef.current[1],
-                color: props.selectedColor,
+                x: selectedPixelRef.current[1],
+                y: selectedPixelRef.current[0],
+                color: props.selectedColor.current,
             });
         }
     }
@@ -114,13 +114,13 @@ export function Canvas(props) {
         }
 
         // draw selected pixel:
-        if (props.selectedColor !== -1 && selectedPixelRef.current[0] !== -1
+        if (props.selectedColor.current !== -1 && selectedPixelRef.current[0] !== -1
             && selectedPixelRef.current[1] !== -1) {
             // set up shadow:
             context.shadowColor = 'black';
             context.shadowBlur = 15;
 
-            const color = toColor(props.selectedColor);
+            const color = toColor(props.selectedColor.current);
             context.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
             context.fillRect(selectedPixelRef.current[0] * pixelWidth + selectedPixelRef.current[0],
                 selectedPixelRef.current[1] * pixelHeight + selectedPixelRef.current[1],

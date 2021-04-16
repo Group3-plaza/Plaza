@@ -20,7 +20,16 @@ function App() {
     // Render colorpicker and chat only after canvas loads
     // Set to useState(true) if you want to disable this for testing
     const [isCanvasLoaded, setCanvasLoadState] = useState(false);
-    const [selectedColor, setSelectedColor] = useState(null);
+
+    // use refs to fix issues with accessing states from listeners...
+    // https://medium.com/geographit/accessing-react-state-in-event-listeners-with-usestate-and-useref-hooks-8cceee73c559
+    const [selectedColor, _setSelectedColor] = useState(null);
+    const selectedColorRef = useRef(selectedColor);
+    const setSelectedColor = (value) => {
+        selectedColorRef.current = value;
+        _setSelectedColor(value);
+    };
+
     // set proper height of everything
     useEffect(() => {
         const colorPicker = document.getElementsByClassName('colorPicker');
@@ -53,8 +62,7 @@ function App() {
             <div className="container canvas">
                 <Canvas
                     setCanvasLoadState={setCanvasLoadState}
-                    selectedColor={selectedColor}
-                    setSelectedColor={setSelectedColor}
+                    selectedColor={selectedColorRef}
                 />
             </div>
 
