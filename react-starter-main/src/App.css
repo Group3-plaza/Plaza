@@ -17,6 +17,7 @@
 
   box-shadow: rgb(65, 65, 65) 0 0 40px;
   z-index: 1;
+  border-radius: 10px;
 }
 
 .canvas {
