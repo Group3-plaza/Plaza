@@ -37,8 +37,8 @@ function App() {
     // *** Use this to run code when the canvas loads successfully ***
     useEffect(() => {}, [isCanvasLoaded]);
     useEffect(() => {
-      console.log('App.js color selected: ', selectedColor);
-
+        // eslint-disable-next-line no-console
+        console.log('App.js color selected: ', selectedColor);
     }, [selectedColor]);
 
     return (
@@ -46,7 +46,7 @@ function App() {
             {isCanvasLoaded
                 && (
                     <div className="shadow container colorPicker">
-                        <ColorPicker color={selectedColor} setSelectedColor={setSelectedColor}/>
+                        <ColorPicker color={selectedColor} setSelectedColor={setSelectedColor} />
                     </div>
                 )}
 
