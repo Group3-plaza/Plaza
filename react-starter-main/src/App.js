@@ -23,7 +23,7 @@ function App() {
 
     // use refs to fix issues with accessing states from listeners...
     // https://medium.com/geographit/accessing-react-state-in-event-listeners-with-usestate-and-useref-hooks-8cceee73c559
-    const [selectedColor, _setSelectedColor] = useState(null);
+    const [selectedColor, _setSelectedColor] = useState(-1);
     const selectedColorRef = useRef(selectedColor);
     const setSelectedColor = (value) => {
         selectedColorRef.current = value;

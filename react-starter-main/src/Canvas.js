@@ -46,7 +46,8 @@ export function Canvas(props) {
 
     function placePixel() {
         // send a socketio emit canvas_set
-        if (selectedPixelRef.current[0] !== -1 && selectedPixelRef.current[1] !== -1) {
+        if (selectedPixelRef.current[0] !== -1 && selectedPixelRef.current[1] !== -1
+            && props.selectedColor.current !== -1) {
             socket.emit('canvas_set', {
                 x: selectedPixelRef.current[1],
                 y: selectedPixelRef.current[0],
@@ -283,7 +284,7 @@ export function Canvas(props) {
             // eslint-disable-next-line no-mixed-operators
             Math.trunc((pt.y) / (canvasRenderWidth) * canvasSize)];
 
-        if (newSel[0] <= -2 || newSel[1] <= -2
+        if (props.selectedColor.current === -1 || newSel[0] <= -2 || newSel[1] <= -2
             || newSel[0] > canvasSize - 1 || newSel[1] > canvasSize - 1) {
             canvasRef.style.cursor = 'default';
             setSelectedPixel([-1, -1]);
