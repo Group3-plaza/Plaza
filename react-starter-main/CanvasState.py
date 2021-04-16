@@ -32,7 +32,7 @@ def setPixel(mins, secs, x_cord, y_cord, color):
     hist_file.close()
     #print(write_arr)
     CurrentCanvasState[x_cord+(y_cord*BoardSize)] = color
-    print(CurrentCanvasState)
+    #print(CurrentCanvasState)
 
 def writeState():
     global CurrentCanvasState
@@ -47,6 +47,7 @@ if __name__ != "__app__":
         print("File detected. Reading bytes.")
         readState()
     else:
+        global CurrentCanvasState
         CurrentCanvasState = bytearray([12 for i in range(BoardSize**2)])
 
 
