@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable func-names */
 /* eslint-disable no-console */
 /* eslint-disable no-use-before-define */
@@ -19,46 +20,43 @@ export function Canvas(props) {
     //  1 - Timeout obtaining canvas data...
     //  2 - Success loading
 
+    const [hasRequested, setHasRequested] = useState(false);
+
     const [enabled, setEnabled] = useState(false); // set this to True to be able to click on canvas
     const [data, setData] = useState([]); // contains pixel data
     // contains width (width=height) of canvas displayed pixels
     const [canvasSize, setCanvasSize] = useState(0);
-    // NOTE: This is different from HTML canvas size
 
-    let canvasRef;
-    const canvasPlaceholderRef = useRef(null);
-    let responseTimeout;
-    let height;
-    let width;
-
-    // determine size
-    window.onload = () => {
-        width = window.innerWidth - 360;
-        height = window.innerHeight - 40;
+    // use refs to fix issues with accessing states from listeners...
+    // https://medium.com/geographit/accessing-react-state-in-event-listeners-with-usestate-and-useref-hooks-8cceee73c559
+    const [selectedPixel, _setSelectedPixel] = useState([-1, -1]);
+    const selectedPixelRef = useRef(selectedPixel);
+    const setSelectedPixel = (value) => {
+        selectedPixelRef.current = value;
+        _setSelectedPixel(value);
     };
 
-    // receive socketio canvas_state
-    socket.on('canvas_state', (receivedData) => {
-        if (mode === 0) {
-            clearTimeout(responseTimeout);
+    let canvasRef;
+    const canvasCtx = useRef(null);
+    let canvasWidth;
+    let canvasHeight;
 
-            // obtain data and decode it from base 64 string:
-            const encoded = receivedData.data;
-            // decode to bytes
-            const decoded = Uint8Array.from(atob(encoded), (c) => c.charCodeAt(0));
+    const canvasPlaceholderRef = useRef(null);
+    let responseTimeout;
 
-            console.log(`set data to ${decoded}`);
-
-            setData(decoded);
-            setCanvasSize(receivedData.size);
-
-            setMode(2);
-            props.setCanvasLoadState(true);
+    function placePixel() {
+        // send a socketio emit canvas_set
+        if (selectedPixelRef.current[0] !== -1 && selectedPixelRef.current[1] !== -1) {
+            socket.emit('canvas_set', {
+                x: selectedPixelRef.current[0],
+                y: selectedPixelRef.current[1],
+                color: props.selectedColor,
+            });
         }
-    });
+    }
 
     // convert color index to rgb
-    function toColor(x) {
+    function toColor(x, iseSelected) {
         if (x === 0) {
             return [255, 0, 0];
         } if (x === 1) {
@@ -88,15 +86,15 @@ export function Canvas(props) {
         } if (x === 13) {
             return [0, 0, 0];
         }
-        return [0, 0, 0]; // index out of bounds
+        return [255, 0, 255]; // index out of bounds
     }
     // uses 'data' state to create pixels
     function redraw() {
-        const context = canvasRef.getContext('2d');
+        const context = canvasCtx.current;
         let i = 0;
 
-        const canvasWidth = canvasRef.width;
-        const canvasHeight = canvasRef.height;
+        // const canvasWidth = canvasRef.width;
+        // const canvasHeight = canvasRef.height;
 
         const pixelWidth = (canvasHeight / canvasSize);
         const pixelHeight = (canvasHeight / canvasSize);
@@ -110,15 +108,102 @@ export function Canvas(props) {
                 const color = toColor(data[i]);
                 i += 1;
                 context.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
-                context.fillRect(x * pixelWidth + x, y * pixelHeight + y, pixelWidth, pixelHeight);
+                context.fillRect(x * pixelWidth + x, y * pixelHeight + y,
+                    pixelWidth, pixelHeight);
             }
         }
+
+        // draw selected pixel:
+        if (props.selectedColor !== -1 && selectedPixelRef.current[0] !== -1
+            && selectedPixelRef.current[1] !== -1) {
+            // set up shadow:
+            context.shadowColor = 'black';
+            context.shadowBlur = 15;
+
+            const color = toColor(props.selectedColor);
+            context.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
+            context.fillRect(selectedPixelRef.current[0] * pixelWidth + selectedPixelRef.current[0],
+                selectedPixelRef.current[1] * pixelHeight + selectedPixelRef.current[1],
+                pixelWidth, pixelHeight);
+
+            // remove shadow:
+            context.shadowColor = null;
+            context.shadowBlur = 0;
+        }
+    }
+    // like redraw() but also returns coordinates of upper-left & lower-right corners
+    function firstRedraw() {
+        const context = canvasRef.getContext('2d');
+        let i = 0;
+
+        // const canvasWidth = canvasRef.width;
+        // const canvasHeight = canvasRef.height;
+
+        const pixelWidth = (canvasHeight / canvasSize);
+        const pixelHeight = (canvasHeight / canvasSize);
+
+        const p1 = context.transformedPoint(0, 0);
+        const p2 = context.transformedPoint(canvasWidth, canvasHeight);
+        context.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
+
+        let ulCorner;
+        let lrCorner;
+
+        for (let x = 0; x < canvasSize; x += 1) {
+            for (let y = 0; y < canvasSize; y += 1) {
+                const color = toColor(data[i]);
+                i += 1;
+                context.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
+                context.fillRect(x * pixelWidth + x, y * pixelHeight + y, pixelWidth, pixelHeight);
+
+                if (x === 0 && y === 0) {
+                    ulCorner = x * pixelWidth + x;
+                } else if (x === canvasSize - 1 && y === canvasSize - 1) {
+                    lrCorner = (x * pixelWidth + x) + pixelWidth;
+                }
+            }
+        }
+
+        return [ulCorner, lrCorner, pixelWidth];
     }
 
     // When canvas is loaded
     useEffect(() => {
+        // receive socketio canvas_state
+        socket.on('canvas_state', (receivedData) => {
+            if (mode === 0) {
+                clearTimeout(responseTimeout);
+
+                // obtain data and decode it from base 64 string:
+                const encoded = receivedData.data;
+                // decode to bytes
+                const decoded = Uint8Array.from(atob(encoded), (c) => c.charCodeAt(0));
+
+                console.log(`set data to ${decoded}`);
+
+                setData(decoded);
+                setCanvasSize(receivedData.size);
+
+                setMode(2);
+                props.setCanvasLoadState(true);
+            }
+        });
+
         if (mode === 2) {
+            // receive socketio canvas_update
+            socket.on('canvas_update', (receivedData) => {
+                // update data:
+                const dataCopy = data;
+                dataCopy[receivedData.x + (receivedData.y * canvasSize)] = receivedData.color;
+
+                console.log(`placed pixel at ${receivedData.x}, ${receivedData.y}`);
+
+                setData(data);
+                redraw();
+            });
+
             canvasRef = document.getElementById('canvas');
+            canvasCtx.current = canvasRef.getContext('2d');
             // eslint-disable-next-line no-use-before-define
             initializeCanvasManipulation();
         }
@@ -126,9 +211,11 @@ export function Canvas(props) {
 
     // send socketio request on load:
     useEffect(() => {
-        if (mode === 0) {
+        if (mode === 0 && !hasRequested) {
             setTimeout(() => {
                 socket.emit('canvas_request', {});
+                setHasRequested(true);
+                console.log('emitted canvas request');
                 responseTimeout = setTimeout(() => {
                     setMode(1);
                 }, 5000);
@@ -136,7 +223,7 @@ export function Canvas(props) {
         }
     });
 
-    // testing function
+    // generate random board for testing
     function test() {
         const TESTING_SIZE = 50;
 
@@ -181,51 +268,83 @@ export function Canvas(props) {
             </div>
         );
     } if (mode === 2) { // SUCESSFULLY LOADED CANVAS DATA FROM SERVER
-    // eslint-disable-next-line no-inner-declarations
-        function onCanvasClick() {
-            // TODO: implement something here...
-        }
-
         return (
-            <canvas
-                id="canvas"
-                onClick={onCanvasClick}
-            />
+            <canvas id="canvas" />
         );
+    }
+
+    // use current mouse position on canvas to determine which pixel is being hovered over
+    function higlightSelected(ctx, x, y, canvasRenderWidth) {
+        const pt = ctx.transformedPoint(x, y);
+
+        const newSel = [
+            // eslint-disable-next-line no-mixed-operators
+            Math.trunc((pt.x) / (canvasRenderWidth) * canvasSize),
+            // eslint-disable-next-line no-mixed-operators
+            Math.trunc((pt.y) / (canvasRenderWidth) * canvasSize)];
+
+        if (newSel[0] <= -2 || newSel[1] <= -2
+            || newSel[0] > canvasSize - 1 || newSel[1] > canvasSize - 1) {
+            canvasRef.style.cursor = 'default';
+            setSelectedPixel([-1, -1]);
+            return false;
+        }
+        canvasRef.style.cursor = 'none';
+
+        if (newSel[0] === selectedPixel[0] && newSel[1] === selectedPixel[1]) {
+            return false;
+        }
+        setSelectedPixel(newSel);
+        return true;
     }
 
     function initializeCanvasManipulation() {
     // IMPLEMENT CANVAS PANNING/ZOOMING     http://phrogz.net/tmp/canvas_zoom_to_cursor.html
         const canvas = canvasRef;
-        const ctx = canvas.getContext('2d');
 
         // automatically resize canvas
         canvas.width = window.innerWidth - 380;
         canvas.height = window.innerHeight - 40;
 
+        canvasWidth = canvas.width;
+        canvasHeight = canvas.height;
+
         window.onresize = () => {
-            canvas.width = window.innerWidth - 310;
+            canvas.width = window.innerWidth - 380;
             canvas.height = window.innerHeight - 40;
 
-            trackTransforms(ctx);
-            ctx.translate(canvas.width / 4, 0);
+            canvasWidth = canvas.width;
+            canvasHeight = canvas.height;
+
+            trackTransforms(canvasCtx.current);
+            canvasCtx.current.translate(canvas.width / 4, 0);
             redraw();
         };
 
-        trackTransforms(ctx);
-        ctx.translate(canvas.width / 4, 0);
+        trackTransforms(canvasCtx.current);
+        canvasCtx.current.translate(canvas.width / 4, 0);
 
-        redraw();
+        const [upperLeftCornerCoords, lowerRightCornerCoords, pixelWidth] = firstRedraw();
+        const canvasRenderWidth = lowerRightCornerCoords - upperLeftCornerCoords;
 
         let lastX = canvas.width / 2; let
             lastY = canvas.height / 2;
         let dragStart; let dragged;
+
+        window.addEventListener('mouseup', (evt) => {
+            if (dragStart) {
+                dragStart = false;
+            }
+            if (!dragged) {
+                placePixel();
+            }
+        }, false);
         canvas.addEventListener('mousedown', (evt) => {
             // eslint-disable-next-line no-multi-assign
             document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
             lastX = evt.offsetX || (evt.pageX - canvas.offsetLeft);
             lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
-            dragStart = ctx.transformedPoint(lastX, lastY);
+            dragStart = canvasCtx.current.transformedPoint(lastX, lastY);
             dragged = false;
         }, false);
         canvas.addEventListener('mousemove', (evt) => {
@@ -233,25 +352,36 @@ export function Canvas(props) {
             lastY = evt.offsetY || (evt.pageY - canvas.offsetTop);
             dragged = true;
             if (dragStart) {
-                const pt = ctx.transformedPoint(lastX, lastY);
-                ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
+                const pt = canvasCtx.current.transformedPoint(lastX, lastY);
+                canvasCtx.current.translate(pt.x - dragStart.x, pt.y - dragStart.y);
                 redraw();
+            } else {
+                // highlight pixel:
+                // eslint-disable-next-line no-lonely-if
+                if (higlightSelected(canvasCtx.current, evt.offsetX, evt.offsetY,
+                    canvasRenderWidth)) {
+                    redraw();
+                }
             }
         }, false);
         canvas.addEventListener('mouseup', (evt) => {
             dragStart = null;
-            if (!dragged) zoom(evt.shiftKey ? -1 : 1);
+            // if (!dragged) zoom(evt.shiftKey ? -1 : 1);
         }, false);
+        canvas.addEventListener('mouseleave', (evt) => {
+            setSelectedPixel([-1, -1]);
+            redraw();
+        });
 
         const scaleFactor = 1.05;
         // eslint-disable-next-line vars-on-top
-        let zoom = function (clicks) {
-            const pt = ctx.transformedPoint(lastX, lastY);
-            ctx.translate(pt.x, pt.y);
+        const zoom = function (clicks) {
+            const pt = canvasCtx.current.transformedPoint(lastX, lastY);
+            canvasCtx.current.translate(pt.x, pt.y);
             // eslint-disable-next-line no-restricted-properties
             const factor = Math.pow(scaleFactor, clicks);
-            ctx.scale(factor, factor);
-            ctx.translate(-pt.x, -pt.y);
+            canvasCtx.current.scale(factor, factor);
+            canvasCtx.current.translate(-pt.x, -pt.y);
             redraw();
         };
 

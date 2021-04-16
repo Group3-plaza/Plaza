@@ -40,6 +40,7 @@ function App() {
       console.log('App.js color selected: ', colorSelected);
 
     }, [colorSelected]);
+    
     return (
         <div className="horizontalElements">
             {isCanvasLoaded
@@ -50,7 +51,11 @@ function App() {
                 )}
 
             <div className="container canvas">
-                <Canvas setCanvasLoadState={setCanvasLoadState} />
+                <Canvas
+                    setCanvasLoadState={setCanvasLoadState}
+                    selectedColor={selectedColor}
+                    setSelectedColor={setSelectedColor}
+                />
             </div>
 
             {isCanvasLoaded
