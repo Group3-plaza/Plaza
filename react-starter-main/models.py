@@ -7,3 +7,13 @@ class User(db.Model):
     
     def __repr__(self):
         return '<Username %r>' % self.username
+
+class Canvas(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    hours =  db.Column(db.Integer, unique=False, nullable=False)
+    x_cord = db.Column(db.Integer, unique=False, nullable=False)
+    y_cord = db.Column(db.Integer, unique=False, nullable=False)
+    color = db.Column(db.Integer, unique=False, nullable=False)
+    
+    def __repr__(self):
+        return '<hours %r>' % self.hours
