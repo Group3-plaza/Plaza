@@ -54,9 +54,9 @@ def on_request(data):
         currentState[pixel.x_cord+(pixel.y_cord*CanvasState.BoardSize)] = pixel.color
         
     
-    byte_array = CanvasState.getState()
-    #byte_array = bytearray(currentState)
-    #print(currentState)
+    #byte_array = CanvasState.getState()
+    byte_array = bytearray(currentState)
+    print(currentState)
     dimensions = CanvasState.BoardSize
     
     now = datetime.now()
