@@ -1,6 +1,7 @@
+/* eslint-disable import/prefer-default-export */
 // Color picker that allows the selection of a color to be used by Canvas.js
 import './ColorPicker.css';
-import { useState } from 'react';
+import { useState, React } from 'react';
 import { ColorBox } from './ColorBox';
 
 export function ColorPicker(props) {
@@ -42,7 +43,9 @@ export function ColorPicker(props) {
     return (
         <div className="color-board">
             {colors.map((item, index) => (
-                <ColorBox key={item} onClick={() => onClickColor(index)} color={index} clicked={isClicked} which={circleClicked} />
+                <ColorBox key={item} onClick={() => onClickColor(index)}
+                 color={index} clicked={isClicked} which={circleClicked}
+                 />
             ))}
         </div>
     );

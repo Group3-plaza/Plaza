@@ -304,15 +304,15 @@ export function Canvas(props) {
         const canvas = canvasRef;
 
         // automatically resize canvas
-        canvas.width = window.innerWidth - 380;
-        canvas.height = window.innerHeight - 40;
+        canvas.width = window.innerWidth - 240;
+        canvas.height = window.innerHeight;
 
-        canvasWidth = canvas.width;
-        canvasHeight = canvas.height;
+        canvasWidth = window.innerWidth - 240;
+        canvasHeight = window.innerHeight;
 
         window.onresize = () => {
-            canvas.width = window.innerWidth - 380;
-            canvas.height = window.innerHeight - 40;
+            canvas.width = window.innerWidth - 240;
+            canvas.height = window.innerHeight;
 
             canvasWidth = canvas.width;
             canvasHeight = canvas.height;
