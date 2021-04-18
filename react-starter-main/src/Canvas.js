@@ -319,12 +319,14 @@ export function Canvas(props) {
             canvasHeight = canvas.height;
 
             trackTransforms(canvasCtx.current);
-            canvasCtx.current.translate(canvas.width / 4, 0);
+            canvasCtx.current.translate(canvas.width / 4, canvas.height / 8);
+            canvasCtx.current.scale(0.7, 0.7);
             redraw();
         };
 
         trackTransforms(canvasCtx.current);
-        canvasCtx.current.translate(canvas.width / 4, 0);
+        canvasCtx.current.translate(canvas.width / 4, canvas.height / 8);
+        canvasCtx.current.scale(0.7, 0.7);
 
         const [upperLeftCornerCoords, lowerRightCornerCoords, pixelWidth] = firstRedraw();
         const canvasRenderWidth = lowerRightCornerCoords - upperLeftCornerCoords;
