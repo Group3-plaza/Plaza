@@ -13,7 +13,7 @@ class Canvas(db.Model):
     hours =  db.Column(db.Integer, unique=False, nullable=False)
     x_cord = db.Column(db.Integer, unique=False, nullable=False)
     y_cord = db.Column(db.Integer, unique=False, nullable=False)
-    color = db.Column(db.Integer, unique=False, nullable=False)
+    color = db.Column(db.Integer, unique=False, nullable=True)
     
     def __repr__(self):
         return '<hours %r>' % self.hours
