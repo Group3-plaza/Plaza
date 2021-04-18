@@ -32,10 +32,18 @@
 }
 
 .chat {
+  z-index: 1;
+  margin-left:-260px;
   animation: fadeIn2 1.5s;
-  background-color: white;
-  width:240px;
+  background-color: rgba(255,255,255,0.4);
+  width:260px;
   height:100%;
+  border: solid 1px black;
+
+  transition: background-color 0.25s;
+}
+.chat:hover {
+  background-color: white;
 }
 
 .horizontalElements {
@@ -50,11 +58,12 @@ body {
 }
 
 
-/* Buttons */
+/* App Theme */
+
 button {
   outline: none;
   background-color: white;
-  border: solid black 3px;
+  border: solid black 2px;
   border-radius: 15px;
   padding-left: 10px;
   padding-right: 10px;
@@ -73,4 +82,24 @@ button:active {
 button:disabled {
   color:gray;
   border-color: gray;
+}
+
+input {
+  outline: none;
+  background-color: white;
+  border: solid grey 2px;
+  border-radius: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;  
+
+  transition: box-shadow 0.25s, border-color 0.25s;
+}
+input:hover {
+  border-color: black;
+}
+input:focus {
+  border-color: black;
+  box-shadow: 0 3px 10px grey;
 }
