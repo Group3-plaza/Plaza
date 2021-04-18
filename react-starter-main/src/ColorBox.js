@@ -60,6 +60,6 @@ export function ColorBox(props) {
 
     return (
         // do inline styling for color from props
-        <div style={boxStyle} onClick={props.onClick}></div>
+        <div className="colorbox" style={boxStyle} onClick={props.onClick}></div>
     );
 }

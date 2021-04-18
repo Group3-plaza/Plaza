@@ -10,8 +10,19 @@ import base64
 
 app = Flask(__name__, static_folder='./build/static')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') #Comment this out if database URL is not installed locally
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
+
+# IMPORTANT: This must be AFTER creating db variable to prevent
+# circular import issues
+import sqlalchemy
+from app import db
+import models
+db.create_all()
+
+models.Canvas.query.all()
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 socketio = SocketIO(app,
@@ -36,13 +47,18 @@ def on_submit(data):
 @socketio.on('canvas_request')
 def on_request(data):
     print("received emit from canvas")
+    currentState = bytearray([12 for i in range(CanvasState.BoardSize**2)])
+    history = models.Canvas.query.all()
     
-    byte_array = CanvasState.getState()
-    #print(len(byte_array))
+    for pixel in history: 
+        currentState[pixel.x_cord+(pixel.y_cord*CanvasState.BoardSize)] = pixel.color
+        
+    
+    #byte_array = CanvasState.getState()
+    byte_array = bytearray(currentState)
+    print(currentState)
     dimensions = CanvasState.BoardSize
-    print(dimensions)
     
-    #current_time = time.time()
     now = datetime.now()
     seconds = now.second
     minutes = now.minute
@@ -54,6 +70,7 @@ def on_request(data):
         'minutes' : minutes,
         'seconds' : seconds
     }
+
     socketio.emit("canvas_state", D, broadcast=True,
                   include_self=True)
 
@@ -61,12 +78,14 @@ def on_request(data):
 def on_set(data):
     #current_time = time.time()
     now = datetime.now()
+    hours = now.hour
     seconds = now.second
     minutes = now.minute
 
-    byte_seconds = seconds.to_bytes(1, 'big')
-    byte_minutes = minutes.to_bytes(1, 'big')
-    CanvasState.setPixel(byte_minutes, byte_seconds, data['x'], data['y'], data['color']) #variable names subjedt to change
+    update = models.Canvas(hours=hours, x_cord=data['x'], y_cord=data['y'], color=data['color'])
+    db.session.add(update)
+    db.session.commit()
+    CanvasState.setPixel(minutes, seconds, data['x'], data['y'], data['color']) #variable names subjedt to change
 
     socketio.emit("canvas_update", data, broadcast=True,
                   include_self=True)

@@ -12,28 +12,37 @@
 .colorPicker {
   animation: fadeIn2 1.5s;
   width: 100px;
-  margin-top: 30px;
-  margin-bottom: 30px;
-
+  height: 500px;
+  margin-left: 20px;
   box-shadow: rgb(65, 65, 65) 0 0 40px;
   z-index: 1;
+  padding: 5px;
   border-radius: 10px;
+  background-color: rgba(200,200,200,.5);
+  margin-right: -120px;
+  transition: background-color 0.5s;
+}
+.colorPicker:hover {
+  background-color: rgba(230,230,230,1);
 }
 
 .canvas {
   flex: 1;
+  height: 100%;
 }
 
 .chat {
   animation: fadeIn2 1.5s;
   background-color: white;
   width:240px;
+  height:100%;
 }
 
 .horizontalElements {
   display: flex;
   width: 100%;
   height: 100%;
+  align-items: center;
 }
 
 body {

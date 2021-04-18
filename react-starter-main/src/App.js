@@ -37,9 +37,6 @@ function App() {
 
         const horizontalElements = document.getElementsByClassName('horizontalElements');
 
-        colorPicker.height = horizontalElements.height - colorPicker.margin_top
-        - colorPicker.margin_bottom;
-
         chat.height = horizontalElements.height - chat.margin_top;
     });
 
