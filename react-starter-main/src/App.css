@@ -48,3 +48,29 @@
 body {
   background-color: rgb(240,240,240);
 }
+
+
+/* Buttons */
+button {
+  outline: none;
+  background-color: white;
+  border: solid black 3px;
+  border-radius: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  transition: background-color 0.25s, color 0.25s, box-shadow 0.25s;
+}
+button:hover {
+  background-color:black;
+  color:white;
+  cursor: pointer;
+}
+button:active {
+  box-shadow: 0 0 10px black;
+}
+button:disabled {
+  color:gray;
+  border-color: gray;
+}

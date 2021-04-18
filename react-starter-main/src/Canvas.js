@@ -261,8 +261,8 @@ export function Canvas(props) {
                                 Try reloading the page or trying again later.
                             </i>
                         </p>
-                        <button type="button" onClick={test}>
-                            Continue anyway
+                        <button type="button" onClick={test} title="Generate random pixels">
+                            Generate Random
                         </button>
                     </div>
                 </div>
