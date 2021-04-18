@@ -61,15 +61,15 @@ export function Canvas(props) {
         if (x === 0) {
             return [255, 0, 0];
         } if (x === 1) {
-            return [255, 69, 0];
+            return [255, 80, 0];
         } if (x === 2) {
-            return [255, 165, 0];
+            return [255, 150, 0];
         } if (x === 3) {
-            return [255, 174, 66];
+            return [255, 200, 66];
         } if (x === 4) {
             return [255, 255, 0];
         } if (x === 5) {
-            return [154, 205, 50];
+            return [120, 180, 50];
         } if (x === 6) {
             return [0, 255, 0];
         } if (x === 7) {
@@ -89,6 +89,7 @@ export function Canvas(props) {
         }
         return [255, 0, 255]; // index out of bounds
     }
+
     // uses 'data' state to create pixels
     function redraw() {
         const context = canvasCtx.current;

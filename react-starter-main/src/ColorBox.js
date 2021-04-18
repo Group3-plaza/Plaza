@@ -10,15 +10,15 @@ export function ColorBox(props) {
         if (x === 0) {
             return 'rgb(255, 0, 0)';
         } if (x === 1) {
-            return 'rgb(255, 69, 0)';
+            return 'rgb(255, 80, 0)';
         } if (x === 2) {
-            return 'rgb(255, 165, 0)';
+            return 'rgb(255, 150, 0)';
         } if (x === 3) {
-            return 'rgb(255, 174, 66)';
+            return 'rgb(255, 200, 66)';
         } if (x === 4) {
             return 'rgb(255, 255, 0)';
         } if (x === 5) {
-            return 'rgb(154, 205, 50)';
+            return 'rgb(120, 180, 50)';
         } if (x === 6) {
             return 'rgb(0, 255, 0)';
         } if (x === 7) {
