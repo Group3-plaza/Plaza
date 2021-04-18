@@ -1,3 +1,3 @@
 export function ListChat(props){
-    return (<dl>{props.message}</dl>);
+    return (<dl className="chatMessage">{props.message}</dl>);
 }
