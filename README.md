@@ -1,5 +1,9 @@
 # Plaza
 
+## Heroku Link
+
+You can view the application at http://group3-plaza.herokuapp.com/
+
 ## Setup
 
 Run `RUNME.sh` which will set everything up
