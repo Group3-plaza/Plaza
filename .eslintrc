@@ -1,6 +1,5 @@
 {
-	/*
-	//"extends" : "airbnb",
+	"extends" : "airbnb",
 	"rules": {
 		// indentation issues
 		"indent": ["error", 4],
@@ -16,5 +15,5 @@
 	"env" : {
 		"browser": true
 	}
-*/	
+
 }
