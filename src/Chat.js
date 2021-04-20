@@ -1,11 +1,18 @@
-import { useState, useEffect, useRef } from 'react';
+/* eslint max-len: ["error", { "code": 150 }] */
+/* eslint no-magic-numbers: ["error", { "ignore": [13] }] */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/prop-types */
+/* eslint no-useless-rename: "error" */
+import {
+    React, useState, useEffect, useRef,
+} from 'react';
 import io from 'socket.io-client';
-import { ListChat } from './ListChat.js';
+import ListChat from './ListChat';
 import './Chat.css';
 
 const socket = io();
 // Chat panel that allows users to communicate with all other users on the server
-export function Chat(props) {
+export default function Chat(props) {
     const [messageList, updateMessage] = useState([]);
     const inputRef = useRef(null);
     const { username } = props;
@@ -39,15 +46,17 @@ export function Chat(props) {
                     {messageList.map((message, index) => <ListChat key={index} message={message} />)}
                     <div className="chatbox">
                         <input placeholder=" Send a message" ref={inputRef} onKeyPress={(key) => keyPress(key)} tyep="text" />
-                        <button onClick={sendMessage}>Send</button>
+                        <button onClick={sendMessage} type="button">Send</button>
                     </div>
                 </div>
             ) : (
                 <div className="messageList">
-                    {messageList.map((message, index) => <ListChat key={index} message={message} />)}
+                    {
+                        messageList.map((message, index) => <ListChat key={index} message={message} />)
+                    }
                     <div className="chatbox">
                         <input placeholder=" Send a message" ref={inputRef} tyep="text" />
-                        <button>Send</button>
+                        <button type="button">Send</button>
                     </div>
                 </div>
             )}
