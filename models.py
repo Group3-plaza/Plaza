@@ -1,5 +1,5 @@
 ''' For use in database row models '''
-from app import db
+from app import db # pylint: disable=cyclic-import
 
 class User(db.Model): # pylint: disable=too-few-public-methods
     '''User entry'''
