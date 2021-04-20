@@ -1,1 +1,1 @@
-web: python react-starter-main/app.py
+web: python app.py
