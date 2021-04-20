@@ -6,7 +6,8 @@
 		"react/jsx-indent": ["error", 4],
 		"react/jsx-indent-props": ["error", 4],
 		// allow jsx code in .js files
-		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+		"react/prop-types": "off"
 	},
 	// allow dynamic imports (like in reportWebVitals.js)
 	"parserOptions": {

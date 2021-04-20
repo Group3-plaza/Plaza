@@ -9,6 +9,7 @@ export function ColorPicker(props) {
     const [isClicked, setClicked] = useState(false);
     const [circleClicked, setCircleClicked] = useState(null);
 
+    // turned react prop-types off in lint
     const { setSelectedColor } = props;
 
     const colors = [
@@ -37,7 +38,7 @@ export function ColorPicker(props) {
         // set the color in app.js
         setSelectedColor(index);
 
-        console.log('clicked: ', index);
+        // console.log('clicked: ', index);
     }
 
     return (
