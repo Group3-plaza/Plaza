@@ -61,15 +61,15 @@ export function Canvas(props) {
         if (x === 0) {
             return [255, 0, 0];
         } if (x === 1) {
-            return [255, 69, 0];
+            return [255, 80, 0];
         } if (x === 2) {
-            return [255, 165, 0];
+            return [255, 150, 0];
         } if (x === 3) {
-            return [255, 174, 66];
+            return [255, 200, 66];
         } if (x === 4) {
             return [255, 255, 0];
         } if (x === 5) {
-            return [154, 205, 50];
+            return [120, 180, 50];
         } if (x === 6) {
             return [0, 255, 0];
         } if (x === 7) {
@@ -89,6 +89,7 @@ export function Canvas(props) {
         }
         return [255, 0, 255]; // index out of bounds
     }
+
     // uses 'data' state to create pixels
     function redraw() {
         const context = canvasCtx.current;
@@ -261,8 +262,8 @@ export function Canvas(props) {
                                 Try reloading the page or trying again later.
                             </i>
                         </p>
-                        <button type="button" onClick={test}>
-                            Continue anyway
+                        <button type="button" onClick={test} title="Generate random pixels">
+                            Generate Random
                         </button>
                     </div>
                 </div>
@@ -304,26 +305,28 @@ export function Canvas(props) {
         const canvas = canvasRef;
 
         // automatically resize canvas
-        canvas.width = window.innerWidth - 380;
-        canvas.height = window.innerHeight - 40;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        canvasWidth = canvas.width;
-        canvasHeight = canvas.height;
+        canvasWidth = window.innerWidth;
+        canvasHeight = window.innerHeight;
 
         window.onresize = () => {
-            canvas.width = window.innerWidth - 380;
-            canvas.height = window.innerHeight - 40;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
             canvasWidth = canvas.width;
             canvasHeight = canvas.height;
 
             trackTransforms(canvasCtx.current);
-            canvasCtx.current.translate(canvas.width / 4, 0);
+            canvasCtx.current.translate(canvas.width / 4, canvas.height / 8);
+            canvasCtx.current.scale(0.7, 0.7);
             redraw();
         };
 
         trackTransforms(canvasCtx.current);
-        canvasCtx.current.translate(canvas.width / 4, 0);
+        canvasCtx.current.translate(canvas.width / 4, canvas.height / 8);
+        canvasCtx.current.scale(0.7, 0.7);
 
         const [upperLeftCornerCoords, lowerRightCornerCoords, pixelWidth] = firstRedraw();
         const canvasRenderWidth = lowerRightCornerCoords - upperLeftCornerCoords;

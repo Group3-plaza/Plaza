@@ -35,19 +35,19 @@ export function Chat(props) {
     return (
         <div className="Chat">
             {username ? (
-            <div>
+            <div className="messageList">
                 {messageList.map((message, index)=> <ListChat key={index} message={message} />)}
                 <div className="chatbox">
                     <input placeholder=" Send a message" ref={inputRef} onKeyPress={(key)=>keyPress(key)} tyep="text"/>
-                    <button onClick={sendMessage}>ENTER</button>
+                    <button onClick={sendMessage}>Send</button>
                 </div>
             </div>
             ):(
-            <div>
+            <div className="messageList">
                 {messageList.map((message, index)=> <ListChat key={index} message={message} />)}
                 <div className="chatbox">
                     <input placeholder=" Send a message" ref={inputRef} tyep="text"/>
-                    <button>ENTER</button>
+                    <button>Send</button>
                 </div>
             </div>
             )}
