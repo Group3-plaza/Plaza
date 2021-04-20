@@ -1,9 +1,16 @@
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/destructuring-assignment */
+
 // Color picker that allows the selection of a color to be used by Canvas.js
 // import { useState } from 'react';
 
 export function ColorBox(props) {
-
-    const { color, clicked } = props;
+    const { color, clicked, which } = props;
 
     // convert color index to rgb
     function toColor(x) {
@@ -47,8 +54,8 @@ export function ColorBox(props) {
         height: '40px',
     };
 
-    // need a way to identify a singular color maybe index -> pass as a prop? 
-    if (clicked && (props.which == color)) {
+    // need a way to identify a singular color maybe index -> pass as a prop?
+    if (clicked && (which === color)) {
         boxStyle = {
             backgroundColor: bColor,
             border: '4px solid darkgrey',
@@ -60,6 +67,6 @@ export function ColorBox(props) {
 
     return (
         // do inline styling for color from props
-        <div className="colorbox" style={boxStyle} onClick={props.onClick}></div>
+        <div className="colorbox" style={boxStyle} onClick={props.onClick} />
     );
 }
