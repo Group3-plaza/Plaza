@@ -1,6 +1,6 @@
 #pylint: disable=C0114
 #pylint: disable=invalid-envvar-default
-#pylint: E0401
+#pylint: disable=import-error
 import os
 import base64
 from datetime import datetime  #alternative import time
