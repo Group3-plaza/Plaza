@@ -28,3 +28,9 @@ yarn-error.log*
 react-starter-main/__pycache__/CanvasState.cpython-38.pyc
 react-starter-main/History_File
 .vscode/settings.json
+
+History_File
+CanvasBin
+
+react-starter-main
+CanvasState.pyc
