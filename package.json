@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "postinstall": "cd react-start-main && npm install"
+    }
+}
