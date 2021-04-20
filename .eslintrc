@@ -1,0 +1,20 @@
+{
+	/*
+	//"extends" : "airbnb",
+	"rules": {
+		// indentation issues
+		"indent": ["error", 4],
+		"react/jsx-indent": ["error", 4],
+		"react/jsx-indent-props": ["error", 4],
+		// allow jsx code in .js files
+		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+	},
+	// allow dynamic imports (like in reportWebVitals.js)
+	"parserOptions": {
+		"ecmaVersion": 11
+	},
+	"env" : {
+		"browser": true
+	}
+*/	
+}
