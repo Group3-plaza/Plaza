@@ -10,7 +10,7 @@ import base64
 
 app = Flask(__name__, static_folder='./build/static')
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') #Comment this out if database URL is not installed locally
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') #Comment this out if database URL is not installed locally
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
