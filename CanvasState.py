@@ -16,7 +16,6 @@ def readState():
     read_bin.close()
 def getState():
     global CurrentCanvasState
-    #print("State len: {}".format(len(CurrentCanvasState)))
     return CurrentCanvasState
 
 def setPixel(mins, secs, x_cord, y_cord, color):
@@ -34,8 +33,6 @@ def setPixel(mins, secs, x_cord, y_cord, color):
     print("X_cord={} Y Cord = {} BoardSize = {}".format(x_cord, y_cord, BoardSize))
     print("Writing to coord {}".format(x_cord+(y_cord*BoardSize)))
     CurrentCanvasState[x_cord+(y_cord*BoardSize)] = color
-    
-    return CurrentCanvasState
     #writeState()
 def writeState():
     '''WRites to the binary file.'''
