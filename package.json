@@ -1,5 +1,5 @@
 {
     "scripts": {
-        "start": "cd react-starter-main && npm install"
+        "heroku-postbuild" : "./RUNME.sh"
     }
 }
