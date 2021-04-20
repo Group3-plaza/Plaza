@@ -41,9 +41,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run:
         pylint app.py CanvasState.py models.py
-    
-
-  React UnitTesting:
+  React_UnitTesting:
     name: React Unit Tests
     runs-on: ubuntu-latest
     strategy:
