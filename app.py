@@ -1,5 +1,5 @@
 import os
-import CanvasState
+import canvasstate
 from datetime import datetime, time #alternative import time
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -49,17 +49,17 @@ def on_submit(data):
 @socketio.on('canvas_request')
 def on_request(data):
     print("received emit from canvas")
-    currentState = bytearray([12 for i in range(CanvasState.BoardSize**2)])
+    currentState = bytearray([12 for i in range(canvasstate.BOARD_SIZE**2)])
     history = models.Canvas.query.all()
     
     for pixel in history: 
-        currentState[pixel.x_cord+(pixel.y_cord*CanvasState.BoardSize)] = pixel.color
+        currentState[pixel.x_cord+(pixel.y_cord*canvasstate.BOARD_SIZE)] = pixel.color
         
     
     #byte_array = CanvasState.getState()
     byte_array = bytearray(currentState)
     print(currentState)
-    dimensions = CanvasState.BoardSize
+    dimensions = canvasstate.BOARD_SIZE
     
     now = datetime.now()
     seconds = now.second
@@ -87,7 +87,7 @@ def on_set(data):
     update = models.Canvas(hours=hours, x_cord=data['x'], y_cord=data['y'], color=data['color'])
     db.session.add(update)
     db.session.commit()
-    CanvasState.setPixel(minutes, seconds, data['x'], data['y'], data['color']) #variable names subjedt to change
+    canvasstate.set_pixel(minutes, seconds, data['x'], data['y'], data['color']) #variable names subjedt to change
 
     socketio.emit("canvas_update", data, broadcast=True,
                   include_self=True)
