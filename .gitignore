@@ -1,8 +1,3 @@
-<<<<<<< HEAD:react-starter-main/.gitignore
-react-starter-main/__pycache__/CanvasState.cpython-38.pyc
-react-starter-main/History_File
-.vscode/settings.json
-=======
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -14,7 +9,7 @@ react-starter-main/History_File
 /coverage
 
 # production
-#/build
+/build
 
 # misc
 .env
@@ -29,4 +24,7 @@ __pycache__
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
->>>>>>> 931464860b5a1cef3d280cceb3c963b52badfb3b:.gitignore.bak
+
+react-starter-main/__pycache__/CanvasState.cpython-38.pyc
+react-starter-main/History_File
+.vscode/settings.json
