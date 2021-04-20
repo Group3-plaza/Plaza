@@ -61,7 +61,7 @@ def on_submit(data):
     socketio.emit("chat_update", data, broadcast=True, include_self=True)
 
 @socketio.on('canvas_request')
-def on_request(data):
+def on_request(data): # pylint: disable=unused-argument
     print("received emit from canvas")
     currentState = bytearray([12 for i in range(canvasstate.BOARD_SIZE**2)])
     history = models.Canvas.query.all()
