@@ -21,8 +21,9 @@ sql.env
 .env.test.local
 .env.production.local
 __pycache__
-History_File
-.vscode
+react-starter-main/__pycache__/CanvasState.cpython-38.pyc
+react-starter-main/History_File
+.vscode/settings.json
 
 
 npm-debug.log*

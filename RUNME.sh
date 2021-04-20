@@ -4,11 +4,11 @@ echo "Setting up Plaza"
 echo "******************"
 echo ""
 
-# if ! cd "react-starter-main" &> /dev/null ; then
-#     echo ""
-#     echo "**** Unable to open 'react-starter-main' folder. Make sure you are in ./Plaza when running this script"
-#     exit 1
-# fi
+if ! cd "react-starter-main" &> /dev/null ; then
+    echo ""
+    echo "**** Unable to open 'react-starter-main' folder. Make sure you are in ./Plaza when running this script"
+    exit 1
+fi
 
 echo ""
 echo "(npm install)"
