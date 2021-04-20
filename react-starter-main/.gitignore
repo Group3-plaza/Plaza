@@ -14,7 +14,7 @@
 
 # misc
 .env
-/sql.env
+sql.env
 .DS_Store
 .env.local
 .env.development.local
