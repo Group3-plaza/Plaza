@@ -15,7 +15,10 @@ def read_state():
     #print(CurrentCanvasState)
     read_bin.close()
     return CURR_CANVASSTATE
-
+def get_state():
+    '''retrieve canvasstate'''
+    global CURR_CANVASSTATE
+    return CURR_CANVASSTATE
 def set_pixel(mins, secs, x_cord, y_cord, color):
     '''Sets the pixel state and writes to a history file.'''
     print("mins:{} secs:{} x_cord:{} y_cord:{} color:{}".format(mins, secs, x_cord, y_cord, color))
