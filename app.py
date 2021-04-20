@@ -8,6 +8,8 @@ from flask_socketio import SocketIO
 from flask import Flask, send_from_directory, json, session, render_template
 import base64
 
+load_dotenv(find_dotenv())
+
 app = Flask(__name__, static_folder='./build/static')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') #Comment this out if database URL is not installed locally
