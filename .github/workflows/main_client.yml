@@ -40,7 +40,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run:
-        pylint app.py CanvasState.py models.py
+        pip install pylint;
+        pylint app.py CanvasState.py models.py;
   React_UnitTesting:
     name: React Unit Tests
     runs-on: ubuntu-latest
@@ -54,6 +55,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run:
-        npm install
-        npm test -- --watchAll=false    
+        npm install;
+        npm test -- --watchAll=false;
     
