@@ -1,8 +1,8 @@
-name: Node.js Tests
+name: Client
 
 on:
   push:
-    branches: [ main, Canvas-Element ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -10,19 +10,51 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-
+  js_linting:
+    name: JS Linting
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x]
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd react-starter-main/;
+    - run:
+        npm install eslint;
+        npm install eslint-config-airbnb;
         ./node_modules/.bin/eslint src/;
+
+  py_linting:
+    name: Python Linting
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run:
+        pip install pylint;
+        pylint app.py canvasstate.py models.py;
+  React_UnitTesting:
+    name: React Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run:
+        npm install;
+        npm test -- --watchAll=false;
+    

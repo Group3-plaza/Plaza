@@ -1,0 +1,22 @@
+.chatbox{
+    display: flex;
+    bottom:0;
+    position: fixed;
+    margin-bottom:10px;
+    flex: 1;
+}
+
+.chatbox > input {
+    flex: 1;
+    width: 157px;
+    margin-right: 5px
+}
+
+.messageList {
+    padding: 10px;
+}
+.chatMessage {
+    font-size: 12pt;
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
