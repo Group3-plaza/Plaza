@@ -1,6 +1,9 @@
 {
     "scripts": {
-        "heroku-postbuild" : "./RUNME.sh",
-        "start" : "cd react-starter-main && npm start"
+        "heroku-postbuild": "./RUNME.sh",
+        "start": "cd react-starter-main && npm start"
+    },
+    "dependencies": {
+        "eslint": "^7.24.0"
     }
 }
