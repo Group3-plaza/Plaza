@@ -5,7 +5,11 @@ BOARD_SIZE = 50 #board is nxn
 CURR_CANVASSTATE = [] #default number. Just means all white.
 def read_state():
     '''Reads the current Canvas State.'''
+<<<<<<< HEAD
     global CURR_CANVASSTATE
+=======
+    global CURR_CANVASSTATE # pylint: disable=global-statement
+>>>>>>> b87f0927a69fb90a7438e0fb62d219cc5f2cbcb4
     read_bin = open("CanvasBin", "rb")
     bin_line = read_bin.readline()
     #print(len(bin_line))
@@ -17,12 +21,20 @@ def read_state():
     return CURR_CANVASSTATE
 def get_state():
     '''retrieve canvasstate'''
+<<<<<<< HEAD
     global CURR_CANVASSTATE
+=======
+    global CURR_CANVASSTATE # pylint: disable=global-statement
+>>>>>>> b87f0927a69fb90a7438e0fb62d219cc5f2cbcb4
     return CURR_CANVASSTATE
 def set_pixel(mins, secs, x_cord, y_cord, color):
     '''Sets the pixel state and writes to a history file.'''
     print("mins:{} secs:{} x_cord:{} y_cord:{} color:{}".format(mins, secs, x_cord, y_cord, color))
+<<<<<<< HEAD
     global CURR_CANVASSTATE
+=======
+    global CURR_CANVASSTATE # pylint: disable=global-statement
+>>>>>>> b87f0927a69fb90a7438e0fb62d219cc5f2cbcb4
     hist_file = open("History_File", "w+")
     write_arr = str([color, x_cord, y_cord, mins, secs])
     hist_file.write(write_arr)
@@ -37,7 +49,11 @@ def set_pixel(mins, secs, x_cord, y_cord, color):
     #writeState()
 def write_state():
     '''WRites to the binary file.'''
+<<<<<<< HEAD
     global CURR_CANVASSTATE
+=======
+    global CURR_CANVASSTATE # pylint: disable=global-statement
+>>>>>>> b87f0927a69fb90a7438e0fb62d219cc5f2cbcb4
     bin_file = open("CanvasBin", "wb")
     bin_file.write(CURR_CANVASSTATE)
     bin_file.close()

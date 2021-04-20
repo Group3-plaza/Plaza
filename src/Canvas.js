@@ -246,7 +246,7 @@ export function Canvas(props) {
         return (
             <div id="canvas" className="canvas_placeholder" ref={canvasPlaceholderRef}>
                 <div id="placeholder_content">
-                    <img src={loadingCircle} alt="" />
+                    <img data-testid="loading_circle" src={loadingCircle} alt="" />
                 </div>
             </div>
         );
