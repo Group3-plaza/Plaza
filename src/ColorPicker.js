@@ -1,5 +1,8 @@
 /* eslint-disable import/prefer-default-export */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-unresolved */
 // Color picker that allows the selection of a color to be used by Canvas.js
+
 import './ColorPicker.css';
 import { useState, React } from 'react';
 import { ColorBox } from './ColorBox';
