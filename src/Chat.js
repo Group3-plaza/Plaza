@@ -2,11 +2,12 @@
 /* eslint no-magic-numbers: ["error", { "ignore": [13] }] */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
+/* eslint no-useless-rename: "error" */
 import {
     React, useState, useEffect, useRef,
 } from 'react';
 import io from 'socket.io-client';
-import { ListChat } from './ListChat';
+import ListChat from './ListChat';
 import './Chat.css';
 
 const socket = io();
