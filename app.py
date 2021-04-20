@@ -22,7 +22,7 @@ load_dotenv(find_dotenv())
 
 app = Flask(__name__, static_folder='./build/static')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL2') 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
