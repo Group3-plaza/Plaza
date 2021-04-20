@@ -2,6 +2,7 @@
 // import { useState } from 'react';
 
 export function ColorBox(props) {
+
     const { color, clicked } = props;
 
     // convert color index to rgb
@@ -46,7 +47,7 @@ export function ColorBox(props) {
         height: '40px',
     };
 
-    // need a way to identify a singular color maybe index -> pass as a prop?
+    // need a way to identify a singular color maybe index -> pass as a prop? 
     if (clicked && (props.which == color)) {
         boxStyle = {
             backgroundColor: bColor,
@@ -59,6 +60,6 @@ export function ColorBox(props) {
 
     return (
         // do inline styling for color from props
-        <div className="colorbox" style={boxStyle} onClick={props.onClick} />
+        <div className="colorbox" style={boxStyle} onClick={props.onClick}></div>
     );
 }

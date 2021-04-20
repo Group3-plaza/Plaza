@@ -39,8 +39,6 @@ def setPixel(mins, secs, x_cord, y_cord, color):
     print("X_cord={} Y Cord = {} BoardSize = {}".format(x_cord,y_cord,BoardSize))
     print("Writing to coord {}".format(x_cord+(y_cord*BoardSize)))
     CurrentCanvasState[x_cord+(y_cord*BoardSize)] = color
-    
-    return CurrentCanvasState
     #writeState()
     #print(CurrentCanvasState[0:(x_cord+(y_cord*BoardSize))+1])    
     #print(CurrentCanvasState)
