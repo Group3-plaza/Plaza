@@ -10,7 +10,7 @@ import {
 // eslint-disable-next-line import/no-cycle
 import { Canvas } from './Canvas';
 import { ColorPicker } from './ColorPicker';
-import { Chat } from './Chat';
+import Chat from './Chat';
 
 export const socket = io();
 
