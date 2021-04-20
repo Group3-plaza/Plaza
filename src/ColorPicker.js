@@ -9,7 +9,7 @@ export function ColorPicker(props) {
     const [isClicked, setClicked] = useState(false);
     const [circleClicked, setCircleClicked] = useState(null);
 
-    const { setSelectedColor } = props
+    const { setSelectedColor } = props;
 
     const colors = [
         'Red',
@@ -32,10 +32,10 @@ export function ColorPicker(props) {
     function onClickColor(index) {
         // set clicked = true and set the color that is clicked to pass to colorbox.js
         setClicked(true);
-        setCircleClicked(index)
+        setCircleClicked(index);
 
         // set the color in app.js
-        setSelectedColor(index)
+        setSelectedColor(index);
 
         console.log('clicked: ', index);
     }
@@ -43,9 +43,13 @@ export function ColorPicker(props) {
     return (
         <div className="color-board">
             {colors.map((item, index) => (
-                <ColorBox key={item} onClick={() => onClickColor(index)}
-                 color={index} clicked={isClicked} which={circleClicked}
-                 />
+                <ColorBox
+                    key={item}
+                    onClick={() => onClickColor(index)}
+                    color={index}
+                    clicked={isClicked}
+                    which={circleClicked}
+                />
             ))}
         </div>
     );
