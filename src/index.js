@@ -3,13 +3,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import { TitleBar } from './TitleBar';
+import { Router } from './Router';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
+    <BrowserRouter>
+        <div className="App">
+            <TitleBar />
+            <Router />
+        </div>
+    </BrowserRouter>,
     document.getElementById('root'),
 );
 

@@ -306,17 +306,17 @@ export function Canvas(props) {
 
         // automatically resize canvas
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.height = window.innerHeight - 40;
 
         canvasWidth = window.innerWidth;
-        canvasHeight = window.innerHeight;
+        canvasHeight = window.innerHeight - 40;
 
         window.onresize = () => {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.height = window.innerHeight - 40;
 
             canvasWidth = canvas.width;
-            canvasHeight = canvas.height;
+            canvasHeight = canvas.height - 40;
 
             trackTransforms(canvasCtx.current);
             canvasCtx.current.translate(canvas.width / 4, canvas.height / 8);
