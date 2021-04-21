@@ -2,23 +2,59 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 // Title bar allowing navigation to different pages and login/signup
-import { React } from 'react';
-import { useHistory } from 'react-router-dom';
+import { React, useEffect, useRef } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import './TitleBar.css';
 import plazaLogo from './graphics/Plaza.png';
 
 // eslint-disable-next-line import/prefer-default-export
 export function TitleBar() {
     const history = useHistory();
+    const location = useLocation();
 
-    function LogoClick() {
-        history.push('/signup');
+    const titlebarDiv = useRef(null);
+    const buttonCanvas = useRef(null);
+    const buttonHistory = useRef(null);
+    const buttonLogin = useRef(null);
+    const buttonSignup = useRef(null);
+
+    function Navigate(destination) {
+        history.push(`/${destination}`);
     }
+
+    useEffect(() => {
+        if (titlebarDiv != null) {
+            const p = location.pathname;
+
+            buttonCanvas.current.className = '';
+            buttonHistory.current.className = '';
+            buttonSignup.current.className = '';
+            buttonLogin.current.className = '';
+
+            if (p === '/') {
+                buttonCanvas.current.className = 'selectedButton';
+            } else if (p === '/history') {
+                buttonHistory.current.className = 'selectedButton';
+            } else if (p === '/signup') {
+                buttonSignup.current.className = 'selectedButton';
+            } else if (p === '/login') {
+                buttonLogin.current.className = 'selectedButton';
+            }
+        }
+    }, [titlebarDiv, location]);
 
     return (
         // TODO: Implement titlebar
-        <div className="TitleBar">
-            <img src={plazaLogo} alt="Plaza" onClick={LogoClick} />
+        <div className="TitleBar" ref={titlebarDiv}>
+            <img src={plazaLogo} alt="Plaza" />
+            <div className="Navigation middle">
+                <button type="button" ref={buttonCanvas} onClick={() => Navigate('')}>Canvas</button>
+                <button type="button" ref={buttonHistory} onClick={() => Navigate('history')}>History</button>
+            </div>
+            <div className="Navigation">
+                <button type="button" ref={buttonLogin} onClick={() => Navigate('login')}>Login</button>
+                <button type="button" ref={buttonSignup} onClick={() => Navigate('signup')}>Signup</button>
+            </div>
         </div>
     );
 }

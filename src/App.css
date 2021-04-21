@@ -44,7 +44,7 @@
   background-color: rgba(255,255,255,0.4);
   width:260px;
   height:100%;
-  border: solid 1px black;
+  /* border: solid 1px black; */
 
   transition: background-color 0.25s;
 }
@@ -88,6 +88,11 @@ button:active {
 button:disabled {
   color:gray;
   border-color: gray;
+}
+button.selectedButton {
+  user-select: none;
+  background-color: black;
+  color:white;
 }
 
 input {

@@ -316,7 +316,7 @@ export function Canvas(props) {
             canvas.height = window.innerHeight - 40;
 
             canvasWidth = canvas.width;
-            canvasHeight = canvas.height - 40;
+            canvasHeight = canvas.height;
 
             trackTransforms(canvasCtx.current);
             canvasCtx.current.translate(canvas.width / 4, canvas.height / 8);

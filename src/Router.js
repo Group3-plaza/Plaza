@@ -17,6 +17,9 @@ export function Router() {
             <Route exact path="/login">
                 <p>THIS IS THE LOGIN PAGE</p>
             </Route>
+            <Route exact path="/history">
+                <p>THIS IS THE HISTORY PAGE</p>
+            </Route>
             <Route>
                 <p>404 - Page not found :(</p>
             </Route>
