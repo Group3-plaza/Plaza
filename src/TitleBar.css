@@ -1,0 +1,23 @@
+.TitleBar {
+    background-color: white;
+    height:40px;
+    display: flex;
+    z-index: 3;
+
+    box-shadow: 0 0 10px gray;
+}
+
+.Navigation {
+    margin-top: 5px;
+}
+
+.Navigation > button {
+    margin-right: 10px;
+    padding-left: 10px; padding-right: 10px;
+    height: 30px;
+}
+
+.middle {
+    flex: 1;
+    text-align: center;
+}
