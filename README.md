@@ -1,5 +1,9 @@
 # Plaza
 
+![Plaza Logo](Plaza.png)
+
+Plaza is a web-application powered by Flask, ReactJS, and PostgreSQL that lets anyone contribute pixel-by-pixel to a canvas visible to the world.
+
 ## Heroku Link
 
 You can view the application at http://group3-plaza.herokuapp.com/
