@@ -20,6 +20,9 @@ export function Router() {
             <Route exact path="/history">
                 <p>THIS IS THE HISTORY PAGE</p>
             </Route>
+            <Route exact path="/tutorial">
+                <p>THIS IS THE TUTORIAL PAGE</p>
+            </Route>
             <Route>
                 <p>404 - Page not found :(</p>
             </Route>
