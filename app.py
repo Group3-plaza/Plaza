@@ -9,6 +9,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
 from flask_socketio import SocketIO, emit
 from flask import Flask, send_from_directory, json
+from canvasstate import *
 
 # pylint: disable=global-statement
 #pylint: disable=missing-function-docstring
@@ -63,21 +64,11 @@ def on_submit(data):
 @socketio.on('canvas_request')
 def on_request(data): # pylint: disable=unused-argument
     print("received emit from canvas")
-    currentState = bytearray([12 for i in range(canvasstate.BOARD_SIZE**2)])
-    history = models.Canvas.query.all()
-    for pixel in history:
-        currentState[pixel.x_cord +
-                     (pixel.y_cord * canvasstate.BOARD_SIZE)] = pixel.color
-
-    #byte_array = CanvasState.getState()
-    byte_array = bytearray(currentState)
-    print(currentState)
+    byte_array = canvasstate.get_state()
     dimensions = canvasstate.BOARD_SIZE
-
     now = datetime.now()
     seconds = now.second
     minutes = now.minute
-
     encoded = base64.b64encode(byte_array)
     D = {
         'data': encoded.decode("ascii"),
@@ -93,16 +84,19 @@ def on_request(data): # pylint: disable=unused-argument
 def on_set(data):
     #current_time = time.time()
     now = datetime.now()
-    hours = now.hour
+    #hours = now.hour
     seconds = now.second
     minutes = now.minute
 
-    update = models.Canvas(hours=hours,
-                           x_cord=data['x'],
-                           y_cord=data['y'],
-                           color=data['color'])
-    db.session.add(update)
-    db.session.commit()
+    # update = models.Canvas(hours=hours,
+    #                        x_cord=data['x'],
+    #                        y_cord=data['y'],
+    #                        color=data['color'])
+    # db.session.add(update)
+    # db.session.commit()
+
+    canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],data['color'])
+
     canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],
                           data['color'])  #variable names subjedt to change
 
