@@ -1,20 +1,13 @@
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/no-named-as-default */
-import React from 'react';
+import { React } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
-import { TitleBar } from './TitleBar';
 import { Router } from './Router';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-    <BrowserRouter>
-        <div className="App">
-            <TitleBar />
-            <Router />
-        </div>
-    </BrowserRouter>,
+    <Router />,
     document.getElementById('root'),
 );
 

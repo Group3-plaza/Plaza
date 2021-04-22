@@ -8,7 +8,10 @@ import './TitleBar.css';
 import plazaLogo from './graphics/Plaza.png';
 
 // eslint-disable-next-line import/prefer-default-export
-export function TitleBar() {
+export function TitleBar(props) {
+    // eslint-disable-next-line react/prop-types
+    const { isLoggedIn, username } = props;
+
     const history = useHistory();
     const location = useLocation();
 
@@ -28,20 +31,22 @@ export function TitleBar() {
 
             buttonCanvas.current.className = '';
             buttonHistory.current.className = '';
-            buttonSignup.current.className = '';
-            buttonLogin.current.className = '';
+            if (!isLoggedIn) {
+                buttonSignup.current.className = '';
+                buttonLogin.current.className = '';
+            }
 
             if (p === '/') {
                 buttonCanvas.current.className = 'selectedButton';
             } else if (p === '/history') {
                 buttonHistory.current.className = 'selectedButton';
             } else if (p === '/signup') {
-                buttonSignup.current.className = 'selectedButton';
+                if (!isLoggedIn) buttonSignup.current.className = 'selectedButton';
             } else if (p === '/login') {
-                buttonLogin.current.className = 'selectedButton';
+                if (!isLoggedIn) buttonLogin.current.className = 'selectedButton';
             }
         }
-    }, [titlebarDiv, location]);
+    }, [isLoggedIn, location]);
 
     return (
         // TODO: Implement titlebar
@@ -51,10 +56,18 @@ export function TitleBar() {
                 <button type="button" ref={buttonCanvas} onClick={() => Navigate('')}>Canvas</button>
                 <button type="button" ref={buttonHistory} onClick={() => Navigate('history')}>History</button>
             </div>
-            <div className="Navigation">
-                <button type="button" ref={buttonLogin} onClick={() => Navigate('login')}>Login</button>
-                <button type="button" ref={buttonSignup} onClick={() => Navigate('signup')}>Signup</button>
-            </div>
+            {!isLoggedIn ? (
+                <div className="Navigation">
+                    <button type="button" ref={buttonLogin} onClick={() => Navigate('login')}>Login</button>
+                    <button type="button" ref={buttonSignup} onClick={() => Navigate('signup')}>Signup</button>
+                </div>
+            ) : (
+                <span className="Navigation">
+                    Logged in as
+                    {'\u00A0'}
+                    <b>{username}</b>
+                </span>
+            )}
         </div>
     );
 }

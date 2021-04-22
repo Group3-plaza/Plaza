@@ -14,8 +14,9 @@ import Chat from './Chat';
 
 export const socket = io();
 
-function App() {
-    // TODO: Conditionally render/configure elements based on whether or not user is logged-in.
+function App(props) {
+    // eslint-disable-next-line react/prop-types
+    const { isLoggedIn, userAuthentication } = props;
 
     // Render colorpicker and chat only after canvas loads
     // Set to useState(true) if you want to disable this for testing
@@ -49,7 +50,7 @@ function App() {
 
     return (
         <div className="horizontalElements">
-            {isCanvasLoaded
+            {(isCanvasLoaded && isLoggedIn)
                 && (
                     <div className="shadow container colorPicker">
                         <ColorPicker color={selectedColor} setSelectedColor={setSelectedColor} />
@@ -66,7 +67,9 @@ function App() {
             {isCanvasLoaded
             && (
                 <div className="shadow container chat">
-                    <Chat username="Default User" />
+                    <Chat
+                        username={isLoggedIn ? 'Default User' : ''}
+                    />
                 </div>
             )}
         </div>
