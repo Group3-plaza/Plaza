@@ -7,7 +7,7 @@ from datetime import datetime  #alternative import time
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from flask import Flask, send_from_directory, json
 
 # pylint: disable=global-statement
@@ -86,7 +86,7 @@ def on_request(data): # pylint: disable=unused-argument
         'seconds': seconds
     }
 
-    socketio.emit("canvas_state", D, broadcast=True, include_self=True)
+    emit("canvas_state", D) # emit instead of socketio.emit to only respond to sending client
 
 
 @socketio.on("canvas_set")
