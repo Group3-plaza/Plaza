@@ -4,12 +4,12 @@
 import os
 import base64
 from datetime import datetime  #alternative import time
+import hashlib
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
 from flask_socketio import SocketIO, emit
 from flask import Flask, send_from_directory, json
-import hashlib
 
 # pylint: disable=global-statement
 #pylint: disable=missing-function-docstring
@@ -119,7 +119,10 @@ def on_set(data):
 @socketio.on("login_request")
 def on_login_request(data):
     # look through database for username & password:
-    result = models.User.query.filter_by(username=data['username'], password=data['password']).first()
+    result = models.User.query.filter_by(
+        username=data['username'],
+        password=data['password']
+    ).first()
     if result is None:
         # username or password is incorrect
         emit("login_response", {"status": 1})
