@@ -20,6 +20,7 @@ export function TitleBar(props) {
     const buttonHistory = useRef(null);
     const buttonLogin = useRef(null);
     const buttonSignup = useRef(null);
+    const buttonTutorial = useRef(null);
 
     function Navigate(destination) {
         history.push(`/${destination}`);
@@ -31,6 +32,7 @@ export function TitleBar(props) {
 
             buttonCanvas.current.className = '';
             buttonHistory.current.className = '';
+            buttonTutorial.current.className = '';
             if (!isLoggedIn) {
                 buttonSignup.current.className = '';
                 buttonLogin.current.className = '';
@@ -44,6 +46,8 @@ export function TitleBar(props) {
                 if (!isLoggedIn) buttonSignup.current.className = 'selectedButton';
             } else if (p === '/login') {
                 if (!isLoggedIn) buttonLogin.current.className = 'selectedButton';
+            } else if (p === '/tutorial') {
+                buttonTutorial.current.className = 'selectedButton';
             }
         }
     }, [isLoggedIn, location]);
@@ -55,6 +59,7 @@ export function TitleBar(props) {
             <div className="Navigation middle">
                 <button type="button" ref={buttonCanvas} onClick={() => Navigate('')}>Canvas</button>
                 <button type="button" ref={buttonHistory} onClick={() => Navigate('history')}>History</button>
+                <button type="button" ref={buttonTutorial} onClick={() => Navigate('tutorial')}>Tutorial</button>
             </div>
             {!isLoggedIn ? (
                 <div className="Navigation">
@@ -62,7 +67,7 @@ export function TitleBar(props) {
                     <button type="button" ref={buttonSignup} onClick={() => Navigate('signup')}>Signup</button>
                 </div>
             ) : (
-                <span className="Navigation">
+                <span className="Navigation" style={{ marginRight: '20px', marginTop: '7px' }}>
                     Logged in as
                     {'\u00A0'}
                     <b>{username}</b>

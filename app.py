@@ -4,10 +4,11 @@
 import os
 import base64
 from datetime import datetime  #alternative import time
+import hashlib
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from flask import Flask, send_from_directory, json
 
 # pylint: disable=global-statement
@@ -58,26 +59,21 @@ def on_connect():
 @socketio.on('chat_submit')
 def on_submit(data):
     print("recieved chat from " + data['message'])
-    socketio.emit("chat_update", data, broadcast=True, include_self=True)
+
+    result = models.User.query.filter_by(auth_token=data['userAuthentication']).first()
+    if result is not None: # only propagate chat if user authentication token is valid
+        socketio.emit("chat_update", data, broadcast=True)
+    else:
+        print("Bad authentication token -> Ignoring chat message...")
 
 @socketio.on('canvas_request')
 def on_request(data): # pylint: disable=unused-argument
     print("received emit from canvas")
-    currentState = bytearray([12 for i in range(canvasstate.BOARD_SIZE**2)])
-    history = models.Canvas.query.all()
-    for pixel in history:
-        currentState[pixel.x_cord +
-                     (pixel.y_cord * canvasstate.BOARD_SIZE)] = pixel.color
-
-    #byte_array = CanvasState.getState()
-    byte_array = bytearray(currentState)
-    print(currentState)
+    byte_array = canvasstate.get_state()
     dimensions = canvasstate.BOARD_SIZE
-
     now = datetime.now()
     seconds = now.second
     minutes = now.minute
-
     encoded = base64.b64encode(byte_array)
     D = {
         'data': encoded.decode("ascii"),
@@ -86,27 +82,83 @@ def on_request(data): # pylint: disable=unused-argument
         'seconds': seconds
     }
 
-    socketio.emit("canvas_state", D, broadcast=True, include_self=True)
+    emit("canvas_state", D) # emit instead of socketio.emit to only respond to sending client
 
 
 @socketio.on("canvas_set")
 def on_set(data):
+    result = models.User.query.filter_by(auth_token=data['auth_token']).first()
+    if result is None:
+        print("Bad authentication token -> Ignoring pixel placement")
+        return
+
     #current_time = time.time()
     now = datetime.now()
-    hours = now.hour
+    #hours = now.hour
     seconds = now.second
     minutes = now.minute
+    # update = models.Canvas(hours=hours,
+    #                        x_cord=data['x'],
+    #                        y_cord=data['y'],
+    #                        color=data['color'])
+    # db.session.add(update)
+    # db.session.commit()
 
-    update = models.Canvas(hours=hours,
-                           x_cord=data['x'],
-                           y_cord=data['y'],
-                           color=data['color'])
-    db.session.add(update)
-    db.session.commit()
+    # verify auth token:
+    
+
+    canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],data['color'])
+
     canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],
                           data['color'])  #variable names subjedt to change
 
     socketio.emit("canvas_update", data, broadcast=True, include_self=True)
+
+# receive login/signup emits:
+
+@socketio.on("login_request")
+def on_login_request(data):
+    # look through database for username & password:
+    result = models.User.query.filter_by(
+        username=data['username'],
+        password=data['password']
+    ).first()
+    if result is None:
+        # username or password is incorrect
+        emit("login_response", {"status": 1})
+    else:
+        # username found
+        emit("login_response", {"status": 1, "auth": result.auth_token})
+
+@socketio.on("signup_request")
+def on_signup_request(data):
+    # look through database of username to make sure it doesn't already exist:
+    result = models.User.query.filter_by(username=data['username']).first()
+    if result is not None:
+        # error: user already exists:
+        emit("signup_response", {"status": 1})
+    else:
+        # create new user:
+        hash_obj = hashlib.sha256(str.encode(data['username']))
+        new_user = models.User(
+            username=data['username'],
+            password=data['password'],
+            auth_token=str(hash_obj.hexdigest()),
+            last_placed=0,
+            pixel_num=0
+        )
+        # add to database
+        db.session.add(new_user)
+        db.session.commit()
+        
+        # return response:
+        emit("signup_response", {"status": 0})
+
+@socketio.on("timer_request")
+def on_timer_request(data):
+    result = models.User.query.filter_by(username=data['username']).first()
+    if result is not None:
+        emit("timer_response", {"time": result.last_placed})
 
 
 app.run(
