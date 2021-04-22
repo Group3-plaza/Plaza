@@ -6,8 +6,8 @@ class User(db.Model):  # pylint: disable=too-few-public-methods
     '''User entry'''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=False, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
-    auth_token = db.Column(db.String(255), unique=False, nullable=False)
+    password = db.Column(db.String(256), nullable=False)
+    auth_token = db.Column(db.String(256), unique=False, nullable=False)
     last_placed = db.Column(db.Integer, nullable=False)
     pixel_num = db.Column(db.Integer, nullable=False)
 
