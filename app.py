@@ -58,7 +58,12 @@ def on_connect():
 @socketio.on('chat_submit')
 def on_submit(data):
     print("recieved chat from " + data['message'])
-    socketio.emit("chat_update", data, broadcast=True, include_self=True)
+
+    result = models.User.query.filter_by(auth_token=data['userAuthentication']).first()
+    if result is not None: # only propagate chat if user authentication token is valid
+        socketio.emit("chat_update", data, broadcast=True)
+    else:
+        print("bad authentication token")
 
 @socketio.on('canvas_request')
 def on_request(data): # pylint: disable=unused-argument

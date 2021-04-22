@@ -8,7 +8,7 @@ class User(db.Model):  # pylint: disable=too-few-public-methods
     username = db.Column(db.String(80), unique=False, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     auth_token = db.Column(db.String(255), unique=False, nullable=False)
-    pixel = db.Column(db.Integer, nullable=False)
+    last_placed = db.Column(db.Integer, nullable=False)
     pixel_num = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
