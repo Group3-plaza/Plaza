@@ -59,6 +59,8 @@ function App(props) {
 
             <div className="container canvas">
                 <Canvas
+                    userAuthentication={userAuthentication}
+                    isLoggedIn={isLoggedIn}
                     setCanvasLoadState={setCanvasLoadState}
                     selectedColor={selectedColorRef}
                 />
