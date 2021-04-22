@@ -20,6 +20,7 @@ export function Router() {
                         <App
                             userAuthentication={userAuthentication}
                             isLoggedIn={isLoggedIn}
+                            username={username}
                         />
                     </Route>
                     <Route exact path="/signup">

@@ -62,7 +62,7 @@ export function TitleBar(props) {
                     <button type="button" ref={buttonSignup} onClick={() => Navigate('signup')}>Signup</button>
                 </div>
             ) : (
-                <span className="Navigation">
+                <span className="Navigation" style={{ marginRight: '20px', marginTop: '7px' }}>
                     Logged in as
                     {'\u00A0'}
                     <b>{username}</b>

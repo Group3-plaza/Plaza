@@ -16,7 +16,7 @@ export const socket = io();
 
 function App(props) {
     // eslint-disable-next-line react/prop-types
-    const { isLoggedIn, userAuthentication } = props;
+    const { isLoggedIn, userAuthentication, username } = props;
 
     // Render colorpicker and chat only after canvas loads
     // Set to useState(true) if you want to disable this for testing
@@ -68,7 +68,9 @@ function App(props) {
             && (
                 <div className="shadow container chat">
                     <Chat
-                        username={isLoggedIn ? 'Default User' : ''}
+                        isEnabled={isLoggedIn}
+                        username={username}
+                        userAuthentication={userAuthentication}
                     />
                 </div>
             )}
