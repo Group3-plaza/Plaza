@@ -9,7 +9,6 @@ from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
 from flask_socketio import SocketIO, emit
 from flask import Flask, send_from_directory, json
-from canvasstate import *
 
 # pylint: disable=global-statement
 #pylint: disable=missing-function-docstring
