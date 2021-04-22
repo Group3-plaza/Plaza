@@ -23,8 +23,8 @@ def set_pixel(mins, secs, x_cord, y_cord, color):
     '''Sets the pixel state and writes to a history file.'''
     print("mins:{} secs:{} x_cord:{} y_cord:{} color:{}".format(mins, secs, x_cord, y_cord, color))
     global CURR_CANVASSTATE # pylint: disable=global-statement
-    hist_file = open("History_File", "w+")
-    write_arr = str([color, x_cord, y_cord, mins, secs])
+    hist_file = open("History_File", "wb")
+    write_arr = bytearray([x_cord, y_cord],color)
     hist_file.write(write_arr)
     hist_file.close()
     #print(write_arr)
