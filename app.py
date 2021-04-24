@@ -4,6 +4,7 @@
 import os
 import base64
 from datetime import datetime  #alternative import time
+import time
 import hashlib
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -103,14 +104,16 @@ def on_set(data):
     #                        color=data['color'])
     # db.session.add(update)
     # db.session.commit()
-
-    # verify auth token:
     
 
     canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],data['color'])
 
     canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],
                           data['color'])  #variable names subjedt to change
+
+    # update last placed time
+    result.last_placed = time.time()
+    db.session.commit()
 
     socketio.emit("canvas_update", data, broadcast=True, include_self=True)
 
@@ -156,8 +159,10 @@ def on_signup_request(data):
 
 @socketio.on("timer_request")
 def on_timer_request(data):
+    print("received timer request for " + data['username'])
     result = models.User.query.filter_by(username=data['username']).first()
     if result is not None:
+        print("responding with time: " + str(result.last_placed))
         emit("timer_response", {"time": result.last_placed})
 
 

@@ -58,6 +58,8 @@ export function Canvas(props) {
                     y: selectedPixelRef.current[0],
                     color: props.selectedColor.current,
                 });
+                props.setSelectedColor(-1);
+                props.setStartTimerFlag(true);
             }
         }
     }
