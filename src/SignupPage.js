@@ -7,3 +7,5 @@ function SignUp(){
     
     return (<div> <p> Kill me. </p> </div>)
 }
+
+export default SignUp
