@@ -2,3 +2,41 @@
     0% {opacity: 0;}
     100% {opacity: 1;}
   }
+ 
+  .colorpicker {
+   
+  }
+
+  .canvas {
+   
+  }
+
+  .chat {
+    
+  }
+
+  .tutorialPage {
+    background-color: lightpink;
+    height:100%;
+    
+  }
+
+  .startPage {
+      text-align: center;
+      background-color: lightpink;
+  }
+
+  .startButton{
+    animation: fadeIn2 3.0s;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    
+      
+  }
+
+  h1 {
+    animation: fadeIn2 3.0s;
+    text-align: center;
+  }
