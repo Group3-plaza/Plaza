@@ -11,6 +11,7 @@ import {
 import { Canvas } from './Canvas';
 import { ColorPicker } from './ColorPicker';
 import Chat from './Chat';
+import { Timer } from './Timer';
 
 export const socket = io();
 
@@ -31,13 +32,13 @@ function App(props) {
         _setSelectedColor(value);
     };
 
+    const [timerStartFlag, setTimerStartFlag] = useState(false);
+
     // set proper height of everything
     useEffect(() => {
-        const colorPicker = document.getElementsByClassName('colorPicker');
+        // const colorPicker = document.getElementsByClassName('colorPicker');
         const chat = document.getElementsByClassName('chat');
-
         const horizontalElements = document.getElementsByClassName('horizontalElements');
-
         chat.height = horizontalElements.height - chat.margin_top;
     });
 
@@ -52,9 +53,13 @@ function App(props) {
         <div className="horizontalElements">
             {(isCanvasLoaded && isLoggedIn)
                 && (
-                    <div className="shadow container colorPicker">
-                        <ColorPicker color={selectedColor} setSelectedColor={setSelectedColor} />
-                    </div>
+                    <Timer
+                        username={username}
+                        color={selectedColor}
+                        setSelectedColor={setSelectedColor}
+                        timerStartFlag={timerStartFlag}
+                        setTimerStartFlag={setTimerStartFlag}
+                    />
                 )}
 
             <div className="container canvas">
@@ -63,6 +68,8 @@ function App(props) {
                     isLoggedIn={isLoggedIn}
                     setCanvasLoadState={setCanvasLoadState}
                     selectedColor={selectedColorRef}
+                    setStartTimerFlag={setTimerStartFlag}
+                    setSelectedColor={setSelectedColor}
                 />
             </div>
 
