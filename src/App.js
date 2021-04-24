@@ -11,6 +11,7 @@ import {
 import { Canvas } from './Canvas';
 import { ColorPicker } from './ColorPicker';
 import Chat from './Chat';
+// eslint-disable-next-line import/no-cycle
 import { Timer } from './Timer';
 
 export const socket = io();
