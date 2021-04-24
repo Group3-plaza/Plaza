@@ -4,8 +4,10 @@ import {
 
 
 function SignUp(){
-    
-    return (<div> <p> Kill me. </p> </div>)
+    const [Sign,SetSign] = useState(0)
+    return (<div> <p> 
+    Kill me. {Sign} 
+    </p> </div>);
 }
 
-export default SignUp
+export default SignUp;
