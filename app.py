@@ -55,8 +55,7 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
-
-
+    
 @socketio.on('chat_submit')
 def on_submit(data):
     print("recieved chat from " + data['message'])
@@ -106,7 +105,7 @@ def on_set(data):
     # db.session.commit()
     
 
-    canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],data['color'])
+    canvasstate.set_pixel(minutes, seconds, data['x'], data['y'], data['color'])
 
     canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],
                           data['color'])  #variable names subjedt to change
