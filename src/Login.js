@@ -56,6 +56,12 @@ export default function Login(props) {
         history.push(`/${destination}`);
     }
 
+    function keyPress(key) {
+        if (key.charCode === 13) {
+            confirm(userInput, passInput);
+        }
+    }
+
     useEffect(() => { /* eslint-disable consistent-return */
         if (mode === 1) {
             socket.on('login_response', (status) => {
@@ -97,8 +103,8 @@ export default function Login(props) {
                 <div className="login-page">
                     <div className="form">
                         <form className="register-form">
-                            <input type="text" ref={userInput} placeholder="username" />
-                            <input type="password" name="password" ref={passInput} placeholder="password" />
+                            <input type="text" ref={userInput} onKeyPress={(key) => keyPress(key)} placeholder="username" />
+                            <input type="password" name="password" ref={passInput} onKeyPress={(key) => keyPress(key)} placeholder="password" />
                             <button type="button" onClick={() => confirm(userInput, passInput)}>
                                 Login!
                             </button>
