@@ -1,7 +1,7 @@
 /* Style data for Canvas.js */
 
 canvas {
-    animation: fadeIn2 .5s;
+    animation: fadeIn2 .25s;
 
     font-smooth: never;
     -webkit-font-smoothing : none;
@@ -20,8 +20,8 @@ canvas {
 }
 
 @keyframes fadeIn {
-    0% {opacity: 0; transform: translatey(50px);}
-    100% {opacity: 1; transform: translatey(0);}
+    0% {opacity: 0;}
+    100% {opacity: 1;}
 }
 
 @keyframes fadeIn2 {
