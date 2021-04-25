@@ -4,6 +4,7 @@ import { React, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { TitleBar } from './TitleBar';
 import App from './App';
+import History from './History';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Router() {
@@ -31,7 +32,7 @@ export function Router() {
                         <p>THIS IS THE LOGIN PAGE</p>
                     </Route>
                     <Route exact path="/history">
-                        <p>THIS IS THE HISTORY PAGE</p>
+                        <History/>
                     </Route>
                     <Route exact path="/tutorial">
                         <p>THIS IS THE TUTORIAL PAGE</p>
