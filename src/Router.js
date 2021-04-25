@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
+/* eslint-disable import/no-cycle */
 import { React, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Login from './Login';
 import { TitleBar } from './TitleBar';
 import App from './App';
 import SignUp from './SignupPage.js';
@@ -30,7 +32,8 @@ export function Router() {
                         <SignUp/>
                     </Route>
                     <Route exact path="/login">
-                        <p>THIS IS THE LOGIN PAGE</p>
+                        <Login />
+
                     </Route>
                     <Route exact path="/history">
                         <p>THIS IS THE HISTORY PAGE</p>
