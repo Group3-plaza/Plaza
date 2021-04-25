@@ -15,13 +15,13 @@ const socket = io();
 export default function Chat(props) {
     const [messageList, updateMessage] = useState([]);
     const inputRef = useRef(null);
-    const { username } = props;
+    const { username, isEnabled, userAuthentication } = props;
 
     function sendMessage() {
         if (inputRef !== null) {
             const message = inputRef.current.value;
             if (message !== '') {
-                socket.emit('chat_submit', { username, message: `${username}: ${message}` });
+                socket.emit('chat_submit', { userAuthentication, message: `${username}: ${message}` });
                 inputRef.current.value = '';
             }
         }
@@ -41,7 +41,7 @@ export default function Chat(props) {
 
     return (
         <div className="Chat">
-            {username ? (
+            {isEnabled ? (
                 <div className="messageList">
                     {messageList.map((message, index) => <ListChat key={index} message={message} />)}
                     <div className="chatbox">
@@ -54,9 +54,8 @@ export default function Chat(props) {
                     {
                         messageList.map((message, index) => <ListChat key={index} message={message} />)
                     }
-                    <div className="chatbox">
-                        <input placeholder=" Send a message" ref={inputRef} tyep="text" />
-                        <button type="button">Send</button>
+                    <div className="chatbox" style={{ width: '240px' }}>
+                        <p style={{ textAlign: 'center', flex: '1' }}>Log in to send messages</p>
                     </div>
                 </div>
             )}

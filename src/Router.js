@@ -7,10 +7,11 @@ import { TitleBar } from './TitleBar';
 import App from './App';
 
 // eslint-disable-next-line import/prefer-default-export
-export function Router(props) {
+export function Router() {
+    // FOR TESTING, SIGN IN AS username='admin' with userAuthentication='abcdefg'
     const [userAuthentication, setUserAuth] = useState(null);
     const [isLoggedIn, setUserLoginStatus] = useState(false);
-    const [username, setUsername] = useState('Default User');
+    const [username, setUsername] = useState(null);
 
     return (
         <BrowserRouter>
@@ -21,6 +22,7 @@ export function Router(props) {
                         <App
                             userAuthentication={userAuthentication}
                             isLoggedIn={isLoggedIn}
+                            username={username}
                         />
                     </Route>
                     <Route exact path="/signup">

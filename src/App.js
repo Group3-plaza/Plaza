@@ -11,12 +11,14 @@ import {
 import { Canvas } from './Canvas';
 import { ColorPicker } from './ColorPicker';
 import Chat from './Chat';
+// eslint-disable-next-line import/no-cycle
+import { Timer } from './Timer';
 
 export const socket = io();
 
 function App(props) {
     // eslint-disable-next-line react/prop-types
-    const { isLoggedIn, userAuthentication } = props;
+    const { isLoggedIn, userAuthentication, username } = props;
 
     // Render colorpicker and chat only after canvas loads
     // Set to useState(true) if you want to disable this for testing
@@ -31,13 +33,13 @@ function App(props) {
         _setSelectedColor(value);
     };
 
+    const [timerStartFlag, setTimerStartFlag] = useState(false);
+
     // set proper height of everything
     useEffect(() => {
-        const colorPicker = document.getElementsByClassName('colorPicker');
+        // const colorPicker = document.getElementsByClassName('colorPicker');
         const chat = document.getElementsByClassName('chat');
-
         const horizontalElements = document.getElementsByClassName('horizontalElements');
-
         chat.height = horizontalElements.height - chat.margin_top;
     });
 
@@ -52,15 +54,23 @@ function App(props) {
         <div className="horizontalElements">
             {(isCanvasLoaded && isLoggedIn)
                 && (
-                    <div className="shadow container colorPicker">
-                        <ColorPicker color={selectedColor} setSelectedColor={setSelectedColor} />
-                    </div>
+                    <Timer
+                        username={username}
+                        color={selectedColor}
+                        setSelectedColor={setSelectedColor}
+                        timerStartFlag={timerStartFlag}
+                        setTimerStartFlag={setTimerStartFlag}
+                    />
                 )}
 
             <div className="container canvas">
                 <Canvas
+                    userAuthentication={userAuthentication}
+                    isLoggedIn={isLoggedIn}
                     setCanvasLoadState={setCanvasLoadState}
                     selectedColor={selectedColorRef}
+                    setStartTimerFlag={setTimerStartFlag}
+                    setSelectedColor={setSelectedColor}
                 />
             </div>
 
@@ -68,7 +78,9 @@ function App(props) {
             && (
                 <div className="shadow container chat">
                     <Chat
-                        username={isLoggedIn ? 'Default User' : ''}
+                        isEnabled={isLoggedIn}
+                        username={username}
+                        userAuthentication={userAuthentication}
                     />
                 </div>
             )}

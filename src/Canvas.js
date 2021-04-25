@@ -14,6 +14,9 @@ import loadingCircle from './graphics/loading_circle.gif';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Canvas(props) {
+    // PROPS
+    const { userAuthentication, isLoggedIn } = props;
+
     // STATES
     const [mode, setMode] = useState(0); // current mode of canvas:
     //  0 - Obtaining canvas data...
@@ -45,14 +48,19 @@ export function Canvas(props) {
     let responseTimeout;
 
     function placePixel() {
-        // send a socketio emit canvas_set
-        if (selectedPixelRef.current[0] !== -1 && selectedPixelRef.current[1] !== -1
-            && props.selectedColor.current !== -1) {
-            socket.emit('canvas_set', {
-                x: selectedPixelRef.current[1],
-                y: selectedPixelRef.current[0],
-                color: props.selectedColor.current,
-            });
+        if (isLoggedIn) { // final check just incase before sending pixel placement event
+            // send a socketio emit canvas_set
+            if (selectedPixelRef.current[0] !== -1 && selectedPixelRef.current[1] !== -1
+                && props.selectedColor.current !== -1) {
+                socket.emit('canvas_set', {
+                    auth_token: userAuthentication,
+                    x: selectedPixelRef.current[1],
+                    y: selectedPixelRef.current[0],
+                    color: props.selectedColor.current,
+                });
+                props.setSelectedColor(-1);
+                props.setStartTimerFlag(true);
+            }
         }
     }
 
