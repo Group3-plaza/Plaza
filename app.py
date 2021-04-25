@@ -54,7 +54,11 @@ def index(filename):
 def on_connect():
     print('User connected!')
 
-
+@socketio.on('login_request')
+def on_login_request(data):
+    print("receive Login from " + data['username'])
+    socketio.emit("login_response", {"status": 0}, broadcast=False, include_self=True)
+    
 @socketio.on('chat_submit')
 def on_submit(data):
     print("recieved chat from " + data['message'])
