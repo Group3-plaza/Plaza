@@ -22,3 +22,7 @@ dl{
     justify-content: center;
     position:fixed;
 }
+.changes{
+    object-fit: contain;
+    width:auto;
+}

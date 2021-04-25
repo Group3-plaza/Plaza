@@ -12,3 +12,4 @@ pylint-flask-sqlalchemy
 pylint-plugin-utils
 react
 SQLAlchemy
+imageio
