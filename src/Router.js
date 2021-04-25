@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
+/* eslint-disable import/no-cycle */
 import { React, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';

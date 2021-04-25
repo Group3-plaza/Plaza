@@ -105,7 +105,7 @@ def on_set(data):
     # db.session.commit()
     
 
-    canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],data['color'])
+    canvasstate.set_pixel(minutes, seconds, data['x'], data['y'], data['color'])
 
     canvasstate.set_pixel(minutes, seconds, data['x'], data['y'],
                           data['color'])  #variable names subjedt to change
