@@ -35,7 +35,7 @@ export function Router() {
 
                     </Route>
                     <Route exact path="/history">
-                        <History/>
+                        <History />
                     </Route>
                     <Route exact path="/tutorial">
                         <p>THIS IS THE TUTORIAL PAGE</p>
