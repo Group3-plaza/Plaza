@@ -7,15 +7,18 @@ import {
 import { useHistory } from 'react-router-dom';
 import { socket } from './App';
 
-import { Router } from './Router';
+// import { Router } from './Router';
 import './Login.css';
 import loadingCircle from './graphics/loading_circle.gif';
 
 const sha256 = require('js-sha256');
-const jwt = require('jsonwebtoken');
 
-export default function Login() {
+export default function Login(props) {
+    // eslint-disable-next-line react/prop-types
+    const { setUserAuth, setUserLoginStatus, setUsername } = props;
+
     const [mode, setMode] = useState(0);
+    const [_username, _setUsername] = useState(null);
 
     const userInput = useRef(null);
     const passInput = useRef(null);
@@ -26,6 +29,7 @@ export default function Login() {
 
     function confirm() {
         const username = userInput.current.value;
+        _setUsername(username);
         const password = passInput.current.value;
 
         if (username !== '' && password !== '') {
@@ -53,33 +57,26 @@ export default function Login() {
     }
 
     useEffect(() => { /* eslint-disable consistent-return */
-        socket.on('login_response', (status) => {
-            if (status.status === 0) {
-                const authToken = jwt.sign(
-                    { userId: userInput },
-                    'RANDOM_TOKEN_SECRET',
-                    { expiresIn: '24h' },
-                );
+        if (mode === 1) {
+            socket.on('login_response', (status) => {
+                if (status.status === 0) {
+                    console.log(`${status.status} has been recieved`);
+                    /* Unsure on how to change Login status or send authentication */
+                    setMode(0);
 
-                console.log(`${status.status} has been recieved`);
-                /* Unsure on how to change Login status or send authentication */
-                setMode(0);
-                return (
-                    <div>
-                        <Router
-                            userAuthentication={authToken}
-                        />
-                        <div>{Navigate('')}</div>
-                    </div>
-                );
-            } if (status.status === 1) {
-                console.log(`${status.status} has been recieved`);
-                setMode(2);
-            } else {
-                window.alert('Status Unkown');
-            }
-        });
-    }, []);
+                    Navigate('');
+                    setUserLoginStatus(true);
+                    setUserAuth(status.auth);
+                    setUsername(_username);
+                } if (status.status === 1) {
+                    console.log(`${status.status} has been recieved`);
+                    setMode(2);
+                } else {
+                    window.alert('Status Unkown');
+                }
+            });
+        }
+    }, [mode]);
 
     if (mode === 1) {
         return (
