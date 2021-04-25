@@ -7,6 +7,11 @@
     box-shadow: 0 0 10px gray;
 }
 
+img {
+    width: 100px;
+    object-fit: scale-down;
+}
+
 .Navigation {
     margin-top: 5px;
 }
@@ -20,4 +25,24 @@
 .middle {
     flex: 1;
     text-align: center;
+}
+
+.TitleBar > div > button {
+    border: solid transparent 2px;
+    transition: border 0.25s, background-color 0.25s, color 0.25s, box-shadow 0.25s;
+}
+.TitleBar > div > button:hover {
+    border: solid black 2px;
+    background-color: transparent;
+    color: black;
+}
+.TitleBar > div > button:active {
+    border: solid black 2px;
+    background-color: black;
+    color: white;
+}
+.TitleBar > div > button.selectedButton:hover {
+    border: solid black 2px;
+    background-color: black;
+    color: white;
 }
