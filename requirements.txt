@@ -3,7 +3,6 @@ requests
 Flask-SocketIO
 Flask-Cors
 Flask-SQLAlchemy
-jsonwebtoken
 psycopg2
 python-dotenv
 pylint
