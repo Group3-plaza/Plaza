@@ -18,24 +18,19 @@ export function TutorialPage(props) {
         console.log('Start clicked')
     }
 
-
+    <img class='tchat' src={chat} />
     if(start){
         return (
 
             <div class='tutorialPage'>
-
                 <h1>WELCOME TO THE PLAZA TUTORIAL!</h1>
+                <h4>Authors: Naqeeb, Phillip, Elijah, Colton, Hemang</h4>
+                <h4>Hover to find out about each element!</h4>
 
-                <div class='trow'>
-                    <div class='tcolumn'>
-                        <img class='tcolorpicker' src={colorPicker} />
-                    </div>
-                    <div class='tcolumn'>
-                        <img class='tcanvas' src={canvas} />
-                    </div>
-                    <div class='tcolumn'>
-                        <img class='tchat' src={chat} />
-                    </div>
+                <div class='threedivs'> 
+                    <div class='tcolor'></div>
+                    <div class='tcanvas'></div>
+                    <div class='tchat'></div>
                 </div>
 
             </div>
