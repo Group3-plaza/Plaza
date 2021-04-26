@@ -2,24 +2,37 @@
     0% {opacity: 0;}
     100% {opacity: 1;}
   }
- 
-  .colorpicker {
-      
-      width: auto;
-      height: 100px;
-      
+
+  .tcolorpicker {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    float: left;
   }
 
-  .canvas {
-      
-      width: 100px;
-      
+  .tcanvas {
+
   }
 
-  .chat {
-      
-      width: 100px;
-      
+  .tchat {
+    width: 100px;
+    height: 300px;
+    object-fit: contain;
+    float: left;
+  }
+
+  .trow:after {
+    content: "";
+    display: table;
+    clear: both;
+    height: 657px;
+  }
+
+
+  .tcolumn {
+    float: left;
+    width: 33.33%;
+    height: 657px;
   }
 
   .tutorialPage {

@@ -22,13 +22,22 @@ export function TutorialPage(props) {
     if(start){
         return (
 
-            <div>
+            <div class='tutorialPage'>
+
                 <h1>WELCOME TO THE PLAZA TUTORIAL!</h1>
-                <div>
-                    <img class="colorpicker" src={colorPicker} />
-                    <img class='canvas' src={canvas} />
-                    <img class='chat' src={chat} />
+
+                <div class='trow'>
+                    <div class='tcolumn'>
+                        <img class='tcolorpicker' src={colorPicker} />
+                    </div>
+                    <div class='tcolumn'>
+                        <img class='tcanvas' src={canvas} />
+                    </div>
+                    <div class='tcolumn'>
+                        <img class='tchat' src={chat} />
+                    </div>
                 </div>
+
             </div>
         );
 
