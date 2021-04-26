@@ -4,15 +4,22 @@
   }
  
   .colorpicker {
-   
+      flex: 1;
+      width: auto;
+      height: 100px;
+      object-fit: contain;
   }
 
   .canvas {
-   
+      flex: 2;
+      width: 100px;
+      object-fit: contain;
   }
 
   .chat {
-    
+      flex: 3;
+      width: 100px;
+      object-fit: contain;
   }
 
   .tutorialPage {
@@ -40,3 +47,9 @@
     animation: fadeIn2 3.0s;
     text-align: center;
   }
+
+.container {
+    display: flexbox;
+    flex-direction: row;
+    justify-content: center;
+}
