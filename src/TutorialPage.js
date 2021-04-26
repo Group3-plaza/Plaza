@@ -24,7 +24,7 @@ export function TutorialPage(props) {
 
             <div>
                 <h1>WELCOME TO THE PLAZA TUTORIAL!</h1>
-                <div class='container'>
+                <div>
                     <img class="colorpicker" src={colorPicker} />
                     <img class='canvas' src={canvas} />
                     <img class='chat' src={chat} />
