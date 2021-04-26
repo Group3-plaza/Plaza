@@ -1,3 +1,4 @@
+# pylint: disable=consider-using-with
 '''These functions are essential for the canvas board, read/write/set/get'''
 import os
 
