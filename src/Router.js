@@ -6,6 +6,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import { TitleBar } from './TitleBar';
 import App from './App';
+import { TutorialPage } from './TutorialPage';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Router() {
@@ -37,7 +38,7 @@ export function Router() {
                         <p>THIS IS THE HISTORY PAGE</p>
                     </Route>
                     <Route exact path="/tutorial">
-                        <p>THIS IS THE TUTORIAL PAGE</p>
+                        <TutorialPage />
                     </Route>
                     <Route>
                         <p>404 - Page not found :(</p>
