@@ -3,88 +3,83 @@ import {
 } from 'react'; /* eslint-disable no-alert */
 import { useHistory } from 'react-router-dom';
 import { socket } from './App';
-
-import { Router } from './Router';
 import './Login.css';
-import loadingCircle from './graphics/loading_circle.gif';
+// import loadingCircle from './graphics/loading_circle.gif';
 
 const sha256 = require('js-sha256');
-const jwt = require('jsonwebtoken');
 
-function SignUp(){
-    const [SignMode,SetSign] = useState(0)
-    const UserSign = useRef(null)
-    const PassSign = useRef(null)
-    const History = useHistory()
-    function to_login(){
-        History.push('/login')
+function SignUp() {
+    const [SignMode, SetSign] = useState(0);
+    const UserSign = useRef(null);
+    const PassSign = useRef(null);
+    const History = useHistory();
+    function ToLogin() {
+        History.push('/login');
     }
-    function inp_data(){
-        console.log("In funct");
-        console.log(SignMode)
+    function InpData() {
+        // console.log(`In funct | ${SignMode}`);
 
         if (SignMode === 1) {
             UserSign.current.value = '';
             PassSign.current.value = '';
-            console.log("Sign-in Flag hit. Returning.");
+            // console.log('Sign-in Flag hit. Returning.');
             return 1;
         }
 
         const NewUser = UserSign.current.value;
         const UserPass = PassSign.current.value;
-        
-        console.log(NewUser + " " + UserPass);
+
+        //console.log(`${NewUser} ${UserPass}`);
         if (NewUser === '' || UserPass === '') {
-            window.alert("One of the registry fields is missing.");
+            window.alert('One of the registry fields is missing.');
             return -1;
         }
-        
-        else if (NewUser !== '' && UserPass !== ''){
-            const pass_encrypt = sha256(UserPass)
-            console.log(pass_encrypt)
-            socket.emit('signup_request',{
-                username:NewUser,
-                password:pass_encrypt
+
+        if (NewUser !== '' && UserPass !== '') {
+            const PassEncrypt = sha256(UserPass);
+            socket.emit('signup_request', {
+                username: NewUser,
+                password: PassEncrypt,
             });
-            console.log("Data emitted!")
+            // console.log('Data emitted!');
             UserSign.current.value = '';
             PassSign.current.value = '';
             SetSign(1);
-
         }
     }
-     useEffect(() => {
-         socket.on('signup_response',(serv_data)=>{
-             console.log("Server data recieved.");
-             console.log(serv_data.status)
-             if (serv_data.status === 0){
-                 window.alert("Registration successful! Please log in.")
-                 to_login();
-             }
-             else{
-                 SetSign(0)
-                 console.log("User tried to use an already existing username.")
-             }
-         });
-         
-     },[]);
-             
-     
+    useEffect(() => {
+        socket.on('signup_response', (ServData) => {
+            // console.log('Server data recieved.');
+            // console.log(ServData.status);
+            if (ServData.status === 0) {
+                window.alert('Registration successful! Please log in.');
+                ToLogin();
+            } else {
+                SetSign(0);
+                window.alert('Username is taken. Please use a different one.');
+                // console.log('User tried to use an already existing username.');
+            }
+        });
+    }, []);
+
     return (
         <div>
             <p>
-                This is the Signup Page. Enter A username and password. After creating an account the user will be able to play!
+                This is the Signup Page. Enter A username and password.
+                {' '}
+                <br />
+                After creating an account the user will be redirected to the login page!
             </p>
             <form className="register-form">
                 <input type="text" ref={UserSign} placeholder="new-user" />
-                <br/>
+                <br />
                 <input type="password" name="password" ref={PassSign} placeholder="new-password" />
-                <br/>
-                <button type="button" onClick ={() => inp_data()} > Click to signup! </button>
+                <br />
+                <button type="button" onClick={() => InpData()}> Click to signup! </button>
             </form>
         </div>
-       
-        );
+
+    );
 }
 
 export default SignUp;
