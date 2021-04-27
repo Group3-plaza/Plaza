@@ -37,7 +37,7 @@ export default function Login(props) {
             setMode(1);
             socket.emit('login_request', { username, password: encrypt });
         } else {
-            window.alert('Username or Password has not been filled');
+            setMode(3);
         }
     }
 
@@ -46,6 +46,14 @@ export default function Login(props) {
             return (
                 <div>
                     <p>Incorrect username or password. Please try again</p>
+                </div>
+            );
+        }
+
+        if (mode === 3) {
+            return (
+                <div>
+                    <p>Username or Password has not been filled</p>
                 </div>
             );
         }
