@@ -15,9 +15,9 @@ function SignUp(){
     const [SignMode,SetSign] = useState(0)
     const UserSign = useRef(null)
     const PassSign = useRef(null)
-    const history = useHistory()
-    function to_home(){
-        history.push('/')
+    const History = useHistory()
+    function to_login(){
+        History.push('/login')
     }
     function inp_data(){
         console.log("In funct");
@@ -59,7 +59,7 @@ function SignUp(){
              console.log(serv_data.status)
              if (serv_data.status === 0){
                  window.alert("Registration successful! Please log in.")
-                 to_home();
+                 to_login();
              }
              else{
                  SetSign(0)
