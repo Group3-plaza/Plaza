@@ -15,7 +15,10 @@ function SignUp(){
     const [SignMode,SetSign] = useState(0)
     const UserSign = useRef(null)
     const PassSign = useRef(null)
-    
+    const history = useHistory()
+    function to_home(){
+        history.push('/')
+    }
     function inp_data(){
         console.log("In funct");
         console.log(SignMode)
@@ -53,10 +56,17 @@ function SignUp(){
      useEffect(() => {
          socket.on('signup_response',(serv_data)=>{
              console.log("Server data recieved.");
-             console.log(serv_data)
+             console.log(serv_data.status)
+             if (serv_data.status === 0){
+                 to_home();
+             }
+             else{
+                 SetSign(0)
+                 console.log("User tried to use an already existing username.")
+             }
          });
          
-     });
+     },[]);
              
      
     return (
