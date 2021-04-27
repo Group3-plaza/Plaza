@@ -19,9 +19,11 @@ export function TutorialPage() {
         return (
 
             <div className="tutorialPage">
-                <h1>WELCOME TO THE PLAZA TUTORIAL!</h1>
-                <h4>Authors: Naqeeb, Phillip, Elijah, Colton, Hemang</h4>
-                <h4>Hover to find out about each element!</h4>
+                <div className="tutorial_header">
+                    <h1>WELCOME TO THE PLAZA TUTORIAL!</h1>
+                    <h4>Authors: Naqeeb, Phillip, Elijah, Colton, Hemang</h4>
+                    <h4>Hover to find out about each element!</h4>
+                </div>
 
                 <div className="threedivs">
                     <div className="tcolor">
@@ -59,11 +61,13 @@ export function TutorialPage() {
         return (
             <div className="tutorialPage">
                 <div className="startPage">
-                    <h1>WELCOME TO THE PLAZA TUTORIAL!</h1>
-                    <h3>Click start to learn more about/how to use our intuitive app!</h3>
-                    <button type="button" className="startButton">
-                        <img src={plazaLogo} alt="start tutorial" onClick={onClickStart} />
-                    </button>
+                    <div className="tutorial_header">
+                        <h1>WELCOME TO THE PLAZA TUTORIAL!</h1>
+                        <h3>Click start to learn more about/how to use our intuitive app!</h3>
+                        <button type="button" className="startButton">
+                            <img src={plazaLogo} alt="start tutorial" onClick={onClickStart} />
+                        </button>
+                    </div>
                 </div>
 
             </div>
