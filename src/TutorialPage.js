@@ -30,18 +30,29 @@ export function TutorialPage(props) {
                 <div class='threedivs'> 
                     <div class='tcolor'>
                         <div class="coloroverlay">
-                            <div class="text">Color Picker</div>
+                            <div class="text">
+                                Color Picker:
+                                To select a color to place on the canvas simply 
+                                click on a color from our 14 different options!
+                            </div>
                         </div>
                     </div>
                     <div class='tcanvas'>
                         <div class="canvasoverlay">
-                            <div class="text">Canvas</div>
+                            <div class="text">
+                                Canvas:
+                                Make your work come to life in the canvas.
+                                This is where you can color specific pixels, 
+                                all you have to do is click!
+                            </div>
                         </div>
                     </div>
                     <div class='tchat'>
                         <div class="chatoverlay">
                             <div class="text">
-                                Chat
+                                Chat: 
+                                Chat with other users while you are logged in!
+                                Just type in the chat bar and hit send!
                             </div>
                         </div>
                     </div>
