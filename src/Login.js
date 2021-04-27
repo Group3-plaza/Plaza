@@ -44,16 +44,20 @@ export default function Login(props) {
     function errorMessage() {
         if (mode === 2) {
             return (
-                <div>
-                    <p>Incorrect username or password. Please try again</p>
+                <div className="error">
+                    <p>
+                        Incorrect username or password.
+                        <br />
+                        Please try again
+                    </p>
                 </div>
             );
         }
 
         if (mode === 3) {
             return (
-                <div>
-                    <p>Username or Password has not been filled</p>
+                <div className="error">
+                    <p>Please enter a username and password</p>
                 </div>
             );
         }
@@ -73,16 +77,18 @@ export default function Login(props) {
     useEffect(() => { /* eslint-disable consistent-return */
         if (mode === 1) {
             socket.on('login_response', (status) => {
+                console.log(`Received login response: ${status.status} ${status.auth}`);
                 if (status.status === 0) {
                     console.log(`${status.status} has been recieved`);
                     /* Unsure on how to change Login status or send authentication */
-                    setMode(0);
+                    // setMode(0);
 
-                    Navigate('');
                     setUserLoginStatus(true);
                     setUserAuth(status.auth);
                     setUsername(_username);
-                } if (status.status === 1) {
+
+                    Navigate('');
+                } else if (status.status === 1) {
                     console.log(`${status.status} has been recieved`);
                     setMode(2);
                 } else {
@@ -110,11 +116,12 @@ export default function Login(props) {
             <body>
                 <div className="login-page">
                     <div className="form">
+                        <p className="subheader">Log in to interact with the canvas and chat</p>
                         <form className="register-form">
-                            <input type="text" ref={userInput} onKeyPress={(key) => keyPress(key)} placeholder="username" />
-                            <input type="password" name="password" ref={passInput} onKeyPress={(key) => keyPress(key)} placeholder="password" />
-                            <button type="button" onClick={() => confirm(userInput, passInput)}>
-                                Login!
+                            <input type="text" ref={userInput} onKeyPress={(key) => keyPress(key)} placeholder="Enter your username..." />
+                            <input type="password" name="password" ref={passInput} onKeyPress={(key) => keyPress(key)} placeholder="Enter your password..." />
+                            <button type="button" className="login_button" onClick={() => confirm(userInput, passInput)}>
+                                Login
                             </button>
                             <div className="ErrorMessasge">{errorMessage()}</div>
                         </form>
