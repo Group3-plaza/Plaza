@@ -34,20 +34,66 @@
     background-color: rgb(240,240,240);
 }
 
+  .tchat:hover .chatoverlay {
+    opacity: 1;
+  }
+
+
+  .chatoverlay {
+    position: fixed;
+    float: left;
+    width: 25%;
+    height: 600px;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: blue;
+  }
+
+  .tcanvas:hover .canvasoverlay {
+    opacity: 1;
+  }
+
+
+  .canvasoverlay {
+    position: absolute;
+    float: left;
+    width: 50%;
+    height: 600px;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: red;
+  }
+
+  .tcolor:hover .coloroverlay {
+    opacity: 1;
+  }
+
+
+  .coloroverlay {
+    position: absolute;
+    float: left;
+    width: 25%;
+    height: 600px;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: green;
+  }
+
   .threedivs{
       width: 100%;
-      height: 100%;
+      height: 600px;
   }
 
   .tutorialPage {
-    background-color: lightpink;
+    color: white;
+    background-color: grey;
     height:100%;
     overflow-y:auto;
   }
 
   .startPage {
       text-align: center;
-      background-color: lightpink;
+      background-color: tan;
   }
 
   .startButton{
@@ -80,19 +126,6 @@
     text-align: center;
   }
 
-  .toverlay {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-    transition: .5s ease;
-    background-color: #008CBA;
-  }
+ 
 
-  .tcolumn:hover .toverlay {
-    opacity: 1;
-  }
+ 

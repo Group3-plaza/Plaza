@@ -28,11 +28,24 @@ export function TutorialPage(props) {
                 <h4>Hover to find out about each element!</h4>
 
                 <div class='threedivs'> 
-                    <div class='tcolor'></div>
-                    <div class='tcanvas'></div>
-                    <div class='tchat'></div>
+                    <div class='tcolor'>
+                        <div class="coloroverlay">
+                            <div class="text">Color Picker</div>
+                        </div>
+                    </div>
+                    <div class='tcanvas'>
+                        <div class="canvasoverlay">
+                            <div class="text">Canvas</div>
+                        </div>
+                    </div>
+                    <div class='tchat'>
+                        <div class="chatoverlay">
+                            <div class="text">
+                                Chat
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         );
 
