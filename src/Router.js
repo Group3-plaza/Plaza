@@ -31,7 +31,11 @@ export function Router() {
                         <p>THIS IS THE SIGNUP PAGE</p>
                     </Route>
                     <Route exact path="/login">
-                        <Login />
+                        <Login
+                            setUserAuth={setUserAuth}
+                            setUserLoginStatus={setUserLoginStatus}
+                            setUsername={setUsername}
+                        />
 
                     </Route>
                     <Route exact path="/history">
