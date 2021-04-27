@@ -17,14 +17,48 @@ function SignUp(){
     const PassSign = useRef(null)
     
     function inp_data(){
-        let NewUser = UserSign.current.value;
-        let UserPass = PassSign.current.value;
-        if (NewUser === null || UserPass === null) {
-            window.alert("One of the registry fields are missing.")
-            return -1
-        } 
+        console.log("In funct");
+        console.log(SignMode)
+
+        if (SignMode === 1) {
+            UserSign.current.value = '';
+            PassSign.current.value = '';
+            console.log("Sign-in Flag hit. Returning.");
+            return 1;
+        }
+
+        const NewUser = UserSign.current.value;
+        const UserPass = PassSign.current.value;
+        
+        console.log(NewUser + " " + UserPass);
+        if (NewUser === '' || UserPass === '') {
+            window.alert("One of the registry fields is missing.");
+            return -1;
+        }
+        
+        else if (NewUser !== '' && UserPass !== ''){
+            const pass_encrypt = sha256(UserPass)
+            console.log(pass_encrypt)
+            socket.emit('signup_request',{
+                username:NewUser,
+                password:UserPass
+            });
+            console.log("Data emitted!")
+            UserSign.current.value = '';
+            PassSign.current.value = '';
+            SetSign(1);
+
+        }
     }
-    
+     useEffect(() => {
+         socket.on('signup_response',(serv_data)=>{
+             console.log("Server data recieved.");
+             console.log(serv_data)
+         });
+         
+     });
+             
+     
     return (
         <div>
             <p>
@@ -35,7 +69,7 @@ function SignUp(){
                 <br/>
                 <input type="password" name="password" ref={PassSign} placeholder="new-password" />
                 <br/>
-                <button> Click to signup! </button>
+                <button type="button" onClick ={() => inp_data()} > Click to signup! </button>
             </form>
         </div>
        

@@ -6,11 +6,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import { TitleBar } from './TitleBar';
 import App from './App';
-<<<<<<< HEAD
-import SignUp from './SignupPage.js';
-=======
 import { TutorialPage } from './TutorialPage';
->>>>>>> b2fdaf62229d887eba4855e477e1aed5b5ae2c3f
+import SignUp from './SignupPage.js'
 
 // eslint-disable-next-line import/prefer-default-export
 export function Router() {
