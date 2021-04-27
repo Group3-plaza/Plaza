@@ -44,7 +44,7 @@ function SignUp(){
             console.log(pass_encrypt)
             socket.emit('signup_request',{
                 username:NewUser,
-                password:UserPass
+                password:pass_encrypt
             });
             console.log("Data emitted!")
             UserSign.current.value = '';
@@ -58,6 +58,7 @@ function SignUp(){
              console.log("Server data recieved.");
              console.log(serv_data.status)
              if (serv_data.status === 0){
+                 window.alert("Registration successful! Please log in.")
                  to_home();
              }
              else{
@@ -72,7 +73,7 @@ function SignUp(){
     return (
         <div>
             <p>
-                This is the Signup Page. Enter A username and password.
+                This is the Signup Page. Enter A username and password. After creating an account the user will be able to play!
             </p>
             <form className="register-form">
                 <input type="text" ref={UserSign} placeholder="new-user" />
