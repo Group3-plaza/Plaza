@@ -33,30 +33,32 @@ def to_rgb(index):
 def generate_history():
     """Starts with white board and add to all the changes made one at time,
     then feed that array to imageio to convert it into gif"""
-    file = open("History_File", 'rb')
-    history = file.read()
-    file.close()
-
-    data = []
-    for val in history:
-        data.append(int(val))
-
-
     #white board
     board = numpy.array([[(255, 255, 255)]*BOARD_SIZE]*BOARD_SIZE, dtype=numpy.uint8)
 
     image = Image.fromarray(board)
     image.save('./history/start.png')
 
-    change = 0
-    for i in range(0, len(data), 3):
-        image.putpixel((data[i], data[i+1]), to_rgb(data[i+2]))
-        image.save('./history/change'+str(change)+'.png')
-        change += 1
+    try:
+        file = open("History_File", 'rb')
+        history = file.read()
+        file.close()
 
-    images = []
-    filelist = os.listdir('./history')
-    for files in filelist:
-        images.append(imageio.imread('./history/'+files))
+        data = []
+        for val in history:
+            data.append(int(val))
 
-    imageio.mimsave('./src/graphics/changes.gif', images, 'GIF', fps=12)
+        change = 0
+        for i in range(0, len(data), 3):
+            image.putpixel((data[i], data[i+1]), to_rgb(data[i+2]))
+            image.save('./history/change'+str(change)+'.png')
+            change += 1
+    except FileNotFoundError:
+        print("no histroy at the moment!\nCreating basic board.")
+    finally:
+        images = []
+        filelist = os.listdir('./history')
+        for files in filelist:
+            images.append(imageio.imread('./history/'+files))
+
+        imageio.mimsave('./src/graphics/changes.gif', images, 'GIF', fps=12)
