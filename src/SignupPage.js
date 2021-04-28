@@ -29,7 +29,6 @@ function SignUp() {
         const NewUser = UserSign.current.value;
         const UserPass = PassSign.current.value;
 
-        //console.log(`${NewUser} ${UserPass}`);
         if (NewUser === '' || UserPass === '') {
             window.alert('One of the registry fields is missing.');
             return -1;
