@@ -7,6 +7,7 @@ import Login from './Login';
 import { TitleBar } from './TitleBar';
 import App from './App';
 import { TutorialPage } from './TutorialPage';
+import SignUp from './SignupPage';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Router() {
@@ -29,6 +30,7 @@ export function Router() {
                     </Route>
                     <Route exact path="/signup">
                         <p>THIS IS THE SIGNUP PAGE</p>
+                        <SignUp />
                     </Route>
                     <Route exact path="/login">
                         <Login
