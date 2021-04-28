@@ -37,7 +37,11 @@ def generate_history():
     board = numpy.array([[(255, 255, 255)]*BOARD_SIZE]*BOARD_SIZE, dtype=numpy.uint8)
 
     image = Image.fromarray(board)
-    image.save('./history/start.png')
+    try:
+        image.save('./history/start.png')
+    except FileNotFoundError:
+        os.mkdir('./history')
+        image.save('./history/start.png')
 
     try:
         file = open("History_File", 'rb')
