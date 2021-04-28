@@ -120,17 +120,20 @@ def on_set(data):
 
 @socketio.on("login_request")
 def on_login_request(data):
+    print("Received login request...")
     # look through database for username & password:
     result = models.User.query.filter_by(
         username=data['username'],
         password=data['password']
     ).first()
     if result is None:
+        print("Incorrect username or password")
         # username or password is incorrect
         emit("login_response", {"status": 1})
     else:
+        print("Returning auth token: " + result.auth_token)
         # username found
-        emit("login_response", {"status": 1, "auth": result.auth_token})
+        emit("login_response", {"status": 0, "auth": result.auth_token})
 
 @socketio.on("signup_request")
 def on_signup_request(data):
