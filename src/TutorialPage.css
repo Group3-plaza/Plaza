@@ -13,6 +13,8 @@
     background-size: contain;
   }
 
+
+
   .tcanvas {
     float: left;
     width: 50%;
@@ -21,6 +23,8 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+
+
 
   .tchat {
     float: left;
@@ -31,7 +35,7 @@
     background-size: contain;
     background-position: right;
     background-color: rgb(240,240,240);
-}
+  }
 
 
   .chatoverlay {
@@ -44,9 +48,12 @@
     background-color: blue;
   }
 
+
+
   .tcanvas:hover .canvasoverlay, .tcolor:hover .coloroverlay, .tchat:hover .chatoverlay {
     opacity: 0.8;
   }
+
 
 
   .canvasoverlay {
@@ -59,6 +66,8 @@
     background-color: red;
   }
 
+
+
   .coloroverlay {
     position: absolute;
     float: left;
@@ -68,6 +77,8 @@
     transition: .5s ease;
     background-color: green;
   }
+
+
 
   .threedivs{
       animation: fadeIn2 3.0s;
@@ -79,17 +90,48 @@
 
 
   .tutorialPage {
-    color: white;
-    background-color: grey;
+    color: black;
+    background-color: rgb(240,240,240);
     height:100%;
     overflow-y:auto;
   }
 
 
+  .tutorialSPage {
+    text-emphasis: center;
+    color: black;
+    background-color: rgb(240,240,240);
+    height:100%;
+    overflow-y:auto;
+    animation: fadeIn2 3.0s;
+  }
+
 
   .startPage {
       text-align: center;
-      background-color: tan;
+      float: left;
+      background-color: darkgrey;
+      background-size: cover;
+      width: 49%;
+      height: 50%;
+      margin: auto;
+      text-shadow: blue;
+      border: 5px solid;
+      border-color: black;
+  }
+
+
+
+  .tutorialStart {
+    text-align: center;
+    float: right;
+    background-image: url("./graphics/canvas.png");
+    height: 50%;
+    width: 49%;
+    margin: auto;
+    border: darkgreen;
+    border: 5px solid;
+    border-image: linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(255, 0, 0) 20%, rgb(60, 255, 0) 20%, rgb(60, 255, 0) 40%,blue 40%, blue 60%, yellow 60%, yellow 80%, red 80%, red) 5;
   }
 
 
@@ -99,9 +141,7 @@
     margin-top: auto;
     margin-bottom: auto;
     margin-left: auto;
-    margin-right: auto;
-    
-      
+    margin-right: auto; 
   }
 
 
@@ -110,7 +150,6 @@
     animation: fadeIn2 3.0s;
     text-align: center;
   }
-
 
 
 
@@ -125,7 +164,3 @@
     transform: translate(-50%, -50%);
     text-align: center;
   }
-
- 
-
- 
