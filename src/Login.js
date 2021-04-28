@@ -7,15 +7,18 @@ import {
 import { useHistory } from 'react-router-dom';
 import { socket } from './App';
 
-import { Router } from './Router';
+// import { Router } from './Router';
 import './Login.css';
 import loadingCircle from './graphics/loading_circle.gif';
 
 const sha256 = require('js-sha256');
-const jwt = require('jsonwebtoken');
 
-export default function Login() {
+export default function Login(props) {
+    // eslint-disable-next-line react/prop-types
+    const { setUserAuth, setUserLoginStatus, setUsername } = props;
+
     const [mode, setMode] = useState(0);
+    const [_username, _setUsername] = useState(null);
 
     const userInput = useRef(null);
     const passInput = useRef(null);
@@ -26,6 +29,7 @@ export default function Login() {
 
     function confirm() {
         const username = userInput.current.value;
+        _setUsername(username);
         const password = passInput.current.value;
 
         if (username !== '' && password !== '') {
@@ -33,15 +37,27 @@ export default function Login() {
             setMode(1);
             socket.emit('login_request', { username, password: encrypt });
         } else {
-            window.alert('Username or Password has not been filled');
+            setMode(3);
         }
     }
 
     function errorMessage() {
         if (mode === 2) {
             return (
-                <div>
-                    <p>Incorrect username or password. Please try again</p>
+                <div className="error">
+                    <p>
+                        Incorrect username or password.
+                        <br />
+                        Please try again
+                    </p>
+                </div>
+            );
+        }
+
+        if (mode === 3) {
+            return (
+                <div className="error">
+                    <p>Please enter a username and password</p>
                 </div>
             );
         }
@@ -52,34 +68,35 @@ export default function Login() {
         history.push(`/${destination}`);
     }
 
-    useEffect(() => { /* eslint-disable consistent-return */
-        socket.on('login_response', (status) => {
-            if (status.status === 0) {
-                const authToken = jwt.sign(
-                    { userId: userInput },
-                    'RANDOM_TOKEN_SECRET',
-                    { expiresIn: '24h' },
-                );
+    function keyPress(key) {
+        if (key.charCode === 13) {
+            confirm(userInput, passInput);
+        }
+    }
 
-                console.log(`${status.status} has been recieved`);
-                /* Unsure on how to change Login status or send authentication */
-                setMode(0);
-                return (
-                    <div>
-                        <Router
-                            userAuthentication={authToken}
-                        />
-                        <div>{Navigate('')}</div>
-                    </div>
-                );
-            } if (status.status === 1) {
-                console.log(`${status.status} has been recieved`);
-                setMode(2);
-            } else {
-                window.alert('Status Unkown');
-            }
-        });
-    }, []);
+    useEffect(() => { /* eslint-disable consistent-return */
+        if (mode === 1) {
+            socket.on('login_response', (status) => {
+                console.log(`Received login response: ${status.status} ${status.auth}`);
+                if (status.status === 0) {
+                    console.log(`${status.status} has been recieved`);
+                    /* Unsure on how to change Login status or send authentication */
+                    // setMode(0);
+
+                    setUserLoginStatus(true);
+                    setUserAuth(status.auth);
+                    setUsername(_username);
+
+                    Navigate('');
+                } else if (status.status === 1) {
+                    console.log(`${status.status} has been recieved`);
+                    setMode(2);
+                } else {
+                    window.alert('Status Unkown');
+                }
+            });
+        }
+    }, [mode]);
 
     if (mode === 1) {
         return (
@@ -99,11 +116,12 @@ export default function Login() {
             <body>
                 <div className="login-page">
                     <div className="form">
+                        <p className="subheader">Log in to interact with the canvas and chat</p>
                         <form className="register-form">
-                            <input type="text" ref={userInput} placeholder="username" />
-                            <input type="password" name="password" ref={passInput} placeholder="password" />
-                            <button type="button" onClick={() => confirm(userInput, passInput)}>
-                                Login!
+                            <input type="text" ref={userInput} onKeyPress={(key) => keyPress(key)} placeholder="Enter your username..." />
+                            <input type="password" name="password" ref={passInput} onKeyPress={(key) => keyPress(key)} placeholder="Enter your password..." />
+                            <button type="button" className="login_button" onClick={() => confirm(userInput, passInput)}>
+                                Login
                             </button>
                             <div className="ErrorMessasge">{errorMessage()}</div>
                         </form>
