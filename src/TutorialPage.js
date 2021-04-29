@@ -15,8 +15,6 @@ export function TutorialPage() {
         setStart(true);
     }
 
-
-    // notes: left boarder with different colors( about page ) and right is grid background to tutorial 
     if (start) {
         return (
 
@@ -62,13 +60,12 @@ export function TutorialPage() {
         return (
             <div className="tutorialSPage">
                 <div className="startPage">
-                    
                     <h1>WELCOME TO PLAZA!</h1>
                     <h4>Authors: Naqeeb, Elijah, Philip, Colton, Hemang</h4>
                     <h2>
-                        Our mission is to provide an enjoyable and easy atmosphere for you to 
-                        tap into your inner artist! Chat with your friends while you see your 
-                        work come to life on our intuitive canvas! 
+                        Our mission is to provide an enjoyable and easy atmosphere for you to
+                        tap into your inner artist! Chat with your friends while you see your
+                        work come to life on our intuitive canvas!
                     </h2>
                 </div>
                 <div className="tutorialStart">
