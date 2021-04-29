@@ -64,7 +64,7 @@ export function TutorialPage() {
                 <div className="startPage">
                     
                     <h1>WELCOME TO PLAZA!</h1>
-                    <h4>Authors: Naqeeb, Elijah, Phillip, Colton, Hemang</h4>
+                    <h4>Authors: Naqeeb, Elijah, Philip, Colton, Hemang</h4>
                     <h2>
                         Our mission is to provide an enjoyable and easy atmosphere for you to 
                         tap into your inner artist! Chat with your friends while you see your 
