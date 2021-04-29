@@ -1,0 +1,28 @@
+.history{
+    background-color: rgb(240,240,240);
+    width:100%;
+    height: 100%;
+    align-items:center;
+    display: flex;
+    image-rendering: pixelated;
+
+}
+ul{
+    text-align: left;
+    align-self:flex-start;
+}
+
+.gif{
+    display:flex;
+    
+    image-rendering: pixelated;
+    height:75%;
+    width:100%;
+    align-content: center;
+    justify-content: center;
+    position:fixed;
+}
+.changes{
+    object-fit: contain;
+    width:auto;
+}

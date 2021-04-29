@@ -34,7 +34,9 @@ db = SQLAlchemy(app)
 import canvasstate
 from app import db
 import models
+import historypage
 
+count_update = 0
 db.create_all()
 
 models.Canvas.query.all()
@@ -115,6 +117,11 @@ def on_set(data):
     db.session.commit()
 
     socketio.emit("canvas_update", data, broadcast=True, include_self=True)
+    global count_update
+    count_update += 1
+    if (count_update % 10) == 0:
+        historypage.generate_history()
+    
 
 # receive login/signup emits:
 
