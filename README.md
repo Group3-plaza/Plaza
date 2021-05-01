@@ -6,7 +6,7 @@ Plaza is a web-application powered by Flask, ReactJS, and PostgreSQL that lets a
 
 ## Heroku Link
 
-You can view the application at http://group3-plaza.herokuapp.com/
+You can view the application at https://group3-plaza2.herokuapp.com/
 
 ## Setup
 

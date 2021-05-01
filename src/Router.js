@@ -6,6 +6,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import { TitleBar } from './TitleBar';
 import App from './App';
+import History from './History';
 import { TutorialPage } from './TutorialPage';
 import SignUp from './SignupPage';
 
@@ -41,7 +42,7 @@ export function Router() {
 
                     </Route>
                     <Route exact path="/history">
-                        <p>THIS IS THE HISTORY PAGE</p>
+                        <History />
                     </Route>
                     <Route exact path="/tutorial">
                         <TutorialPage />
