@@ -10,6 +10,8 @@ const sha256 = require('js-sha256');
 
 function SignUp() {
     const [SignMode, SetSign] = useState(0);
+    const [LogError,SetError] = useState(0);
+    const [ErrMes,SetMes] = useState(null)
     const UserSign = useRef(null);
     const PassSign = useRef(null);
     const History = useHistory();
@@ -18,7 +20,7 @@ function SignUp() {
     }
     function InpData() {
         // console.log(`In funct | ${SignMode}`);
-
+        SetError(0);
         if (SignMode === 1) {
             UserSign.current.value = '';
             PassSign.current.value = '';
@@ -30,7 +32,9 @@ function SignUp() {
         const UserPass = PassSign.current.value;
 
         if (NewUser === '' || UserPass === '') {
-            window.alert('One of the registry fields is missing.');
+            //window.alert('One of the registry fields is missing.');
+            SetMes('One of the registry fields is missing.');
+            SetError(1);
             return -1;
         }
 
@@ -55,7 +59,11 @@ function SignUp() {
                 ToLogin();
             } else {
                 SetSign(0);
-                window.alert('Username is taken. Please use a different one.');
+                SetError(1);
+                //window.alert('Username is taken. Please use a different one.');
+                SetMes('Username is taken. Please use a different one.');
+
+                
                 // console.log('User tried to use an already existing username.');
             }
         });
@@ -76,6 +84,12 @@ function SignUp() {
                 <br />
                 <button type="button" onClick={() => InpData()}> Click to signup! </button>
             </form>
+            {LogError === 1 ? (
+                <div>
+                <h4> {ErrMes}</h4>
+                </div>
+            
+            ): null}
         </div>
 
     );
