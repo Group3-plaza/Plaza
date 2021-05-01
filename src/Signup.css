@@ -1,0 +1,15 @@
+.errorMes {
+    color: red;
+    font-family: arial;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: -10px;
+}
+.Signup-Page {
+    width: 360px;
+    padding: 10% 0 0;
+    text-align: center;
+    font-family:arial;
+    margin: auto;
+
+}
