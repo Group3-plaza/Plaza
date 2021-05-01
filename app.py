@@ -137,6 +137,8 @@ def on_login_request(data):
 
 @socketio.on("signup_request")
 def on_signup_request(data):
+    print("Recieved signup request...")
+    print(data)
     # look through database of username to make sure it doesn't already exist:
     result = models.User.query.filter_by(username=data['username']).first()
     if result is not None:
