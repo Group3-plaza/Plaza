@@ -9,6 +9,7 @@ import App from './App';
 import History from './History';
 import { TutorialPage } from './TutorialPage';
 import SignUp from './SignupPage';
+import { Home } from './Home';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Router() {
@@ -23,6 +24,9 @@ export function Router() {
                 <TitleBar isLoggedIn={isLoggedIn} username={username} />
                 <Switch>
                     <Route exact path="/">
+                        <Home />
+                    </Route>
+                    <Route exact path="/canvas">
                         <App
                             userAuthentication={userAuthentication}
                             isLoggedIn={isLoggedIn}
@@ -38,7 +42,6 @@ export function Router() {
                             setUserLoginStatus={setUserLoginStatus}
                             setUsername={setUsername}
                         />
-
                     </Route>
                     <Route exact path="/history">
                         <History />

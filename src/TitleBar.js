@@ -16,6 +16,7 @@ export function TitleBar(props) {
     const location = useLocation();
 
     const titlebarDiv = useRef(null);
+    const buttonHome = useRef(null);
     const buttonCanvas = useRef(null);
     const buttonHistory = useRef(null);
     const buttonLogin = useRef(null);
@@ -30,6 +31,7 @@ export function TitleBar(props) {
         if (titlebarDiv != null) {
             const p = location.pathname;
 
+            buttonHome.current.className = '';
             buttonCanvas.current.className = '';
             buttonHistory.current.className = '';
             buttonTutorial.current.className = '';
@@ -39,7 +41,7 @@ export function TitleBar(props) {
             }
 
             if (p === '/') {
-                buttonCanvas.current.className = 'selectedButton';
+                buttonHome.current.className = 'selectedButton';
             } else if (p === '/history') {
                 buttonHistory.current.className = 'selectedButton';
             } else if (p === '/signup') {
@@ -48,6 +50,8 @@ export function TitleBar(props) {
                 if (!isLoggedIn) buttonLogin.current.className = 'selectedButton';
             } else if (p === '/tutorial') {
                 buttonTutorial.current.className = 'selectedButton';
+            } else if (p === '/canvas') {
+                buttonCanvas.current.className = 'selectedButton';
             }
         }
     }, [isLoggedIn, location]);
@@ -57,7 +61,8 @@ export function TitleBar(props) {
         <div className="TitleBar" ref={titlebarDiv}>
             <img src={plazaLogo} alt="Plaza" />
             <div className="Navigation middle">
-                <button type="button" ref={buttonCanvas} onClick={() => Navigate('')}>Canvas</button>
+                <button type="button" ref={buttonHome} onClick={() => Navigate('')}>Home</button>
+                <button type="button" ref={buttonCanvas} onClick={() => Navigate('canvas')}>Canvas</button>
                 <button type="button" ref={buttonHistory} onClick={() => Navigate('history')}>History</button>
                 <button type="button" ref={buttonTutorial} onClick={() => Navigate('tutorial')}>Tutorial</button>
             </div>
