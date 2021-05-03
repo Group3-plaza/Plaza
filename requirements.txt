@@ -14,4 +14,3 @@ pillow
 react
 SQLAlchemy
 imageio
-react-custom-scrollbars
