@@ -2,31 +2,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-else-return */
 
-import { React, useState } from 'react';
+import { React } from 'react';
 import './TutorialPage.css';
-import { useHistory } from 'react-router-dom';
-import plazaLogo from './graphics/start_plaza.png';
 
 // eslint-disable-next-line import/prefer-default-export
 export function TutorialPage() {
-    //const [start, setStart] = useState(false);
-    const History = useHistory();
-    // <button class="button">Next</button>
-
-    /*function onClickStart() {
-        setStart(true);
-    }
-    */
-
-    function ToLogin() {
-        History.push('/login');
-    }
-
-    function ToSignUp() {
-        History.push('/signup');
-    }
-
-    
     return (
         <div className="tutorialPage">
             <div className="tutorial_header">

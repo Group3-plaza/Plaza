@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-else-return */
 
-import { React, useState } from 'react';
+import { React } from 'react';
 import './TutorialPage.css';
 import { useHistory } from 'react-router-dom';
 import plazaLogo from './graphics/start_plaza.png';

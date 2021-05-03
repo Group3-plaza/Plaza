@@ -30,7 +30,7 @@ export function TitleBar(props) {
     useEffect(() => {
         if (titlebarDiv != null) {
             const p = location.pathname;
-            
+
             buttonHome.current.className = '';
             buttonCanvas.current.className = '';
             buttonHistory.current.className = '';
@@ -51,7 +51,7 @@ export function TitleBar(props) {
             } else if (p === '/tutorial') {
                 buttonTutorial.current.className = 'selectedButton';
             } else if (p === '/canvas') {
-                buttonCanvas.current.className = 'selectedButton'; 
+                buttonCanvas.current.className = 'selectedButton';
             }
         }
     }, [isLoggedIn, location]);
