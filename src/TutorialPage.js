@@ -4,15 +4,25 @@
 
 import { React, useState } from 'react';
 import './TutorialPage.css';
+import { useHistory } from 'react-router-dom';
 import plazaLogo from './graphics/start_plaza.png';
 
 // eslint-disable-next-line import/prefer-default-export
 export function TutorialPage() {
     const [start, setStart] = useState(false);
+    const History = useHistory();
     // <button class="button">Next</button>
 
     function onClickStart() {
         setStart(true);
+    }
+
+    function ToLogin() {
+        History.push('/login');
+    }
+
+    function ToSignUp() {
+        History.push('/signup');
     }
 
     if (start) {
@@ -67,6 +77,8 @@ export function TutorialPage() {
                         tap into your inner artist! Chat with your friends while you see your
                         work come to life on our intuitive canvas!
                     </h2>
+                    <button type="button" onClick={() => ToLogin()}>Login</button>
+                    <button type="button" onClick={() => ToSignUp()}>Sign up</button>
                 </div>
                 <div className="tutorialStart">
                     <h1>TUTORIAL</h1>
