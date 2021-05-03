@@ -36,33 +36,35 @@ def generate_history():
     #white board
     board = numpy.array([[(255, 255, 255)]*BOARD_SIZE]*BOARD_SIZE, dtype=numpy.uint8)
 
-    image = Image.fromarray(board)
-    try:
-        image.save('./history/start.png')
-    except FileNotFoundError:
-        os.mkdir('./history')
-        image.save('./history/start.png')
+    image = [Image.fromarray(board)]
 
     try:
         file = open("History_File", 'rb')
         history = file.read()
         file.close()
 
+        # convert from byte to int and inset of [ x, y, color] cord
         data = []
+        cord = []
         for val in history:
-            data.append(int(val))
+            if len(cord) < 2:
+                cord.append(int(val))
+            else:
+                cord.append(int(val))
+                data.append(cord)
+                cord = []
 
-        change = 0
-        for i in range(0, len(data), 3):
-            image.putpixel((data[i], data[i+1]), to_rgb(data[i+2]))
-            image.save('./history/change'+str(change)+'.png')
-            change += 1
+        for cord in data:
+            board[cord[0]][cord[1]] = to_rgb(cord[2])
+            image.append(Image.fromarray(board))
+
     except FileNotFoundError:
         print("no histroy at the moment!\nCreating basic board.")
     finally:
-        images = []
-        filelist = os.listdir('./history')
-        for files in filelist:
-            images.append(imageio.imread('./history/'+files))
-
-        imageio.mimsave('./src/graphics/changes.gif', images, 'GIF', fps=12)
+        image[0].save(
+            './src/graphics/changes.gif',
+            save_all=True,
+            append_images=image[1:],
+            duration=50,
+            loop=0,
+            )
