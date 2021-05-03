@@ -4,12 +4,15 @@ import {
 import { useHistory } from 'react-router-dom';
 import { socket } from './App';
 import './Login.css';
+import './Signup.css';
 // import loadingCircle from './graphics/loading_circle.gif';
 
 const sha256 = require('js-sha256');
 
 function SignUp() {
     const [SignMode, SetSign] = useState(0);
+    const [LogError, SetError] = useState(0);
+    const [ErrMes, SetMes] = useState(null);
     const UserSign = useRef(null);
     const PassSign = useRef(null);
     const History = useHistory();
@@ -18,7 +21,7 @@ function SignUp() {
     }
     function InpData() {
         // console.log(`In funct | ${SignMode}`);
-
+        SetError(0);
         if (SignMode === 1) {
             UserSign.current.value = '';
             PassSign.current.value = '';
@@ -30,7 +33,9 @@ function SignUp() {
         const UserPass = PassSign.current.value;
 
         if (NewUser === '' || UserPass === '') {
-            window.alert('One of the registry fields is missing.');
+            // window.alert('One of the registry fields is missing.');
+            SetMes('One of the registry fields is missing.');
+            SetError(1);
             return -1;
         }
 
@@ -55,7 +60,10 @@ function SignUp() {
                 ToLogin();
             } else {
                 SetSign(0);
-                window.alert('Username is taken. Please use a different one.');
+                SetError(1);
+                // window.alert('Username is taken. Please use a different one.');
+                SetMes('Username is taken. Please use a different one.');
+
                 // console.log('User tried to use an already existing username.');
             }
         });
@@ -69,13 +77,23 @@ function SignUp() {
                 <br />
                 After creating an account the user will be redirected to the login page!
             </p>
-            <form className="register-form">
-                <input type="text" ref={UserSign} placeholder="new-user" />
-                <br />
-                <input type="password" name="password" ref={PassSign} placeholder="new-password" />
-                <br />
-                <button type="button" onClick={() => InpData()}> Click to signup! </button>
-            </form>
+            <div className="Signup-Page">
+                <h6> Create an account here! </h6>
+                <form className="register-form">
+                    <input type="text" ref={UserSign} placeholder="new-user" />
+                    <br />
+                    <input type="password" name="password" ref={PassSign} placeholder="new-password" />
+                    <br />
+                    <button type="button" onClick={() => InpData()}> Click to signup! </button>
+                </form>
+
+                {LogError === 1 ? (
+                    <h4 className="errorMes">
+                        {' '}
+                        {ErrMes}
+                    </h4>
+                ) : null}
+            </div>
         </div>
 
     );
