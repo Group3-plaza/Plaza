@@ -2,6 +2,8 @@
 Cretates the gif by reading from History_File and creating .png file for each changes
 and converting them into numpy array
 """
+import os
+import imageio
 import numpy
 from PIL import Image
 
