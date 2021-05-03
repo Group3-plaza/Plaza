@@ -3,7 +3,7 @@ Cretates the gif by reading from History_File and creating .png file for each ch
 and converting them into numpy array
 """
 import os
-#import imageio
+import imageio
 import numpy
 from PIL import Image
 
