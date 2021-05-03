@@ -66,3 +66,4 @@ def generate_history():
             duration=50,
             loop=0,
             )
+        print("New GIF created!")
