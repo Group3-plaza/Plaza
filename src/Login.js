@@ -87,7 +87,7 @@ export default function Login(props) {
                     setUserAuth(status.auth);
                     setUsername(_username);
 
-                    Navigate('');
+                    Navigate('canvas');
                 } else if (status.status === 1) {
                     console.log(`${status.status} has been recieved`);
                     setMode(2);
