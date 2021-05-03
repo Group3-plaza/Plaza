@@ -35,3 +35,5 @@ history/*
 !history/.keep
 react-starter-main
 CanvasState.pyc
+
+src/graphics/changes.gif
