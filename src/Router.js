@@ -30,7 +30,6 @@ export function Router() {
                         />
                     </Route>
                     <Route exact path="/signup">
-                        <p>THIS IS THE SIGNUP PAGE</p>
                         <SignUp />
                     </Route>
                     <Route exact path="/login">
