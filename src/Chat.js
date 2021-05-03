@@ -7,6 +7,7 @@ import {
     React, useState, useEffect, useRef,
 } from 'react';
 import io from 'socket.io-client';
+import { Scrollbars } from 'react-custom-scrollbars';
 import ListChat from './ListChat';
 import './Chat.css';
 
@@ -42,22 +43,36 @@ export default function Chat(props) {
     return (
         <div className="Chat">
             {isEnabled ? (
-                <div className="messageList">
-                    {messageList.map((message, index) => <ListChat key={index} message={message} />)}
-                    <div className="chatbox">
-                        <input placeholder=" Send a message" ref={inputRef} onKeyPress={(key) => keyPress(key)} tyep="text" />
-                        <button onClick={sendMessage} type="button">Send</button>
+                <Scrollbars
+                    autoHide
+                    autoHeight
+                    autoHeightMin={100}
+                    autoHeightMax={900}
+                >
+                    <div className="messageList">
+                        {messageList.map((message, index) => <ListChat key={index} message={message} />)}
+                        <div className="chatbox">
+                            <input placeholder=" Send a message" ref={inputRef} onKeyPress={(key) => keyPress(key)} tyep="text" />
+                            <button onClick={sendMessage} type="button">Send</button>
+                        </div>
                     </div>
-                </div>
+                </Scrollbars>
             ) : (
-                <div className="messageList">
-                    {
-                        messageList.map((message, index) => <ListChat key={index} message={message} />)
-                    }
-                    <div className="chatbox" style={{ width: '240px' }}>
-                        <p style={{ textAlign: 'center', flex: '1' }}>Log in to send messages</p>
+                <Scrollbars
+                    autoHide
+                    autoHeight
+                    autoHeightMin={100}
+                    autoHeightMax={900}
+                >
+                    <div className="messageList">
+                        {
+                            messageList.map((message, index) => <ListChat key={index} message={message} />)
+                        }
+                        <div className="chatbox" style={{ width: '240px' }}>
+                            <p style={{ textAlign: 'center', flex: '1' }}>Log in to send messages</p>
+                        </div>
                     </div>
-                </div>
+                </Scrollbars>
             )}
         </div>
     );

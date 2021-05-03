@@ -13,3 +13,4 @@ pylint-plugin-utils
 react
 SQLAlchemy
 imageio
+react-custom-scrollbars
