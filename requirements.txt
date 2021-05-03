@@ -10,6 +10,7 @@ pylint-django
 pylint-flask
 pylint-flask-sqlalchemy
 pylint-plugin-utils
+pillow
 react
 SQLAlchemy
 imageio
